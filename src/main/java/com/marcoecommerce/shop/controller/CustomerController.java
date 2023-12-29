@@ -42,6 +42,12 @@ public class CustomerController {
                 .collect(Collectors.toList()), HttpStatus.OK);
     }
 
+    @GetMapping(path = "/customersj")
+    public ResponseEntity<String> getCustomersj() {
+        List<CustomerEntity> customerEntities = customerService.findAll();
+        return new ResponseEntity<>("fkjlajalfjlsjsjsl", HttpStatus.CREATED);
+    }
+
     @GetMapping(path = "/customers/{id}")
     public ResponseEntity<CustomerDto> getCustomerById(@PathVariable("id") Long id) {
         Optional<CustomerEntity> foundCustomer = customerService.findById(id);
