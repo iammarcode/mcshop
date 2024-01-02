@@ -13,17 +13,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 public class OrderMapperUnitTest {
-    private final Mapper<OrderEntity, OrderDto> orderMapper;
 
     @Autowired
-    public OrderMapperUnitTest(Mapper<OrderEntity, OrderDto> orderMapper) {
-        this.orderMapper = orderMapper;
-    }
+    private Mapper<OrderEntity, OrderDto> underTest;
 
     @Test
     public void TestConvertOrderEntityToDto() {
         OrderEntity orderAEntity = TestDataUtil.createOrderEntityA();
-        OrderDto orderDtoA = orderMapper.mapTo(orderAEntity);
+        OrderDto orderDtoA = underTest.mapTo(orderAEntity);
 
         assertEquals(orderDtoA.getId(), orderAEntity.getId());
         assertEquals(orderDtoA.getStatus(), orderAEntity.getStatus());
@@ -32,7 +29,7 @@ public class OrderMapperUnitTest {
     @Test
     public void TestConvertOrderDtoToEntity() {
         OrderDto orderDtoA = TestDataUtil.createOrderDtoA();
-        OrderEntity orderEntityA = orderMapper.mapFrom(orderDtoA);
+        OrderEntity orderEntityA = underTest.mapFrom(orderDtoA);
 
         assertEquals(orderEntityA.getId(), orderDtoA.getId());
         assertEquals(orderEntityA.getStatus(), orderDtoA.getStatus());

@@ -19,13 +19,8 @@ import java.util.Optional;
 @ExtendWith(SpringExtension.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class OrderRepositoryIntegrationTest {
-
-    private final OrderRepository underTest;
-
     @Autowired
-    public OrderRepositoryIntegrationTest(OrderRepository underTest) {
-        this.underTest = underTest;
-    }
+    private OrderRepository underTest;
 
     @Test
     public void testThatOrderCanBeCreatedAndRecalled() {

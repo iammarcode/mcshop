@@ -19,12 +19,8 @@ import java.util.Optional;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class CustomerRepositoryIntegrationTest {
 
-    private final CustomerRepository underTest;
-
     @Autowired
-    public CustomerRepositoryIntegrationTest(CustomerRepository underTest) {
-        this.underTest = underTest;
-    }
+    private CustomerRepository underTest;
 
     @Test
     public void testThatCustomerCanBeCreatedAndRecalled() {

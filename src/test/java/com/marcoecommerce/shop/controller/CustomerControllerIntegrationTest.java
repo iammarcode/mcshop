@@ -20,16 +20,12 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @AutoConfigureMockMvc
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class CustomerControllerIntegrationTest {
-    private final ObjectMapper objectMapper;
-    private final MockMvc mockMvc;
-    private final CustomerService customerService;
-
     @Autowired
-    public CustomerControllerIntegrationTest(MockMvc mockMvc, CustomerService customerService) {
-        this.customerService = customerService;
-        this.objectMapper = new ObjectMapper();
-        this.mockMvc = mockMvc;
-    }
+    private ObjectMapper objectMapper;
+    @Autowired
+    private MockMvc mockMvc;
+    @Autowired
+    private CustomerService customerService;
 
     @Test
     public void testCreateCustomerSuccessfully() throws Exception {
