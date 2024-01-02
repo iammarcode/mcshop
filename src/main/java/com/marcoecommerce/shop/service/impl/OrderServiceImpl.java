@@ -3,6 +3,7 @@ package com.marcoecommerce.shop.service.impl;
 import com.marcoecommerce.shop.model.order.OrderEntity;
 import com.marcoecommerce.shop.repository.OrderRepository;
 import com.marcoecommerce.shop.service.OrderService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,11 +13,8 @@ import java.util.stream.StreamSupport;
 
 @Service
 public class OrderServiceImpl implements OrderService {
-    private final OrderRepository orderRepository;
-
-    public OrderServiceImpl(OrderRepository orderRepository) {
-        this.orderRepository = orderRepository;
-    }
+    @Autowired
+    private OrderRepository orderRepository;
 
     @Override
     public OrderEntity save(OrderEntity orderEntity) {

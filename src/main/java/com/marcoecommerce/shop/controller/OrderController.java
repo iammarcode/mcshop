@@ -15,15 +15,10 @@ import java.util.stream.Collectors;
 
 @RestController
 public class OrderController {
-
-    private final OrderService orderService;
-    private final OrderMapper orderMapper;
-
     @Autowired
-    public OrderController(OrderService orderService, OrderMapper orderMapper) {
-        this.orderService = orderService;
-        this.orderMapper = orderMapper;
-    }
+    private OrderService orderService;
+    @Autowired
+    private OrderMapper orderMapper;
 
     @PostMapping(path = "/orders")
     public ResponseEntity<OrderDto> createOrders(@RequestBody OrderDto orderDto) {

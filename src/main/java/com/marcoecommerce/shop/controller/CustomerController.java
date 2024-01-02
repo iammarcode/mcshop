@@ -15,16 +15,10 @@ import java.util.stream.Collectors;
 
 @RestController
 public class CustomerController {
-
-    private final CustomerService customerService;
-    private final CustomerMapper customerMapper;
-
     @Autowired
-    public CustomerController(CustomerService customerService, CustomerMapper customerMapper) {
-        this.customerService = customerService;
-        this.customerMapper = customerMapper;
-    }
-
+    private CustomerService customerService;
+    @Autowired
+    private CustomerMapper customerMapper;
 
     @PostMapping(path = "/customers")
     public ResponseEntity<CustomerDto> createCustomers(@RequestBody CustomerDto customerDto) {
