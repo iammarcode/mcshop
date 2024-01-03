@@ -1,0 +1,3 @@
+INSERT IGNORE INTO customer VALUES (1, 'Test');
+
+INSERT IGNORE INTO orders VALUES (1, 'ORDERED', 1);

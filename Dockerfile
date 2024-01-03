@@ -11,10 +11,10 @@ FROM base as test
 RUN ["./mvnw", "test"]
 
 FROM base as local
-CMD ["./mvnw", "spring-boot:run", "-Dspring-boot.run.jvmArguments='-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8000'"]
+CMD ["./mvnw", "spring-boot:run", "-Dspring-profiles-active=local", "-Dspring-boot.run.jvmArguments='-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8000'"]
 
 FROM base as development
-CMD ["./mvnw", "spring-boot:run", "-Dspring-boot.run.jvmArguments='-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8000'"]
+CMD ["./mvnw", "spring-boot:run", "-Dspring-profiles-active=dev", "-Dspring-boot.run.jvmArguments='-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8000'"]
 
 FROM base as build
 RUN ./mvnw package
@@ -22,4 +22,4 @@ RUN ./mvnw package
 FROM eclipse-temurin:17-jre-jammy as production
 EXPOSE 8080
 COPY --from=build /app/target/shop-*.jar /shop-server.jar
-CMD ["java", "-Djava.security.egd=file:/dev/./urandom", "-jar", "/shop-server.jar"]
+CMD ["java", "-Dspring-profiles-active=prod" ,"-Djava.security.egd=file:/dev/./urandom", "-jar", "/shop-server.jar"]

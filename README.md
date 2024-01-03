@@ -2,29 +2,31 @@
 
 ## Run Shop Server locally
 
-1.You can run it from Maven directly using the Spring Boot Maven plugin. At first you have to kick off a local mysql defined in `docker-compose.yml`.
+1.Run it from Maven directly using the Spring Boot Maven plugin.
 
 ```bash
-docker compose up 
-./mvnw spring-boot:run
+docker compose -f docker-compose.test.yml up
+./mvnw spring-boot:run -Dspring-boot-profiles=test
 ```
 
-2.Or you can run it all with docker:
+2.Or run it all with docker
 ```bash
 docker compose -f docker-compose.local.yml up
 ```
 
 # Test Applications
-with H2 database
-```bash
-docker build -t shop-test --target test .
-```
-or
 
+1.Start databases services:
+```bash
+docker compose -f docker-compose.test.yml up
+```
+2.Run test
 ```bash
 ./mvnw test
 ```
 
-## License
+or 
 
-The Spring Shop Server application is released under version 2.0 of the [Apache License](https://www.apache.org/licenses/LICENSE-2.0).
+```bash
+docker build -t shop-test --target test .
+```

@@ -22,6 +22,9 @@ services:
     container_name: shop_redis_test
     ports:
       - '6379:6379'
+    environment:
+      - REDIS_HOST=localhost
+      - REDIS_PORT=6379
 
 volumes:
   mysql_data:
