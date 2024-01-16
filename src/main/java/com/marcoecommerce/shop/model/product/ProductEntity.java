@@ -3,7 +3,7 @@ package com.marcoecommerce.shop.model.product;
 import com.marcoecommerce.shop.model.orderItem.OrderItemEntity;
 import com.marcoecommerce.shop.model.productCategory.ProductCategoryEntity;
 import com.marcoecommerce.shop.model.productDiscount.ProductDiscountEntity;
-import com.marcoecommerce.shop.model.productDiscountLinkEntity.ProductDiscountLinkEntity;
+import com.marcoecommerce.shop.model.productDiscountLink.ProductDiscountLinkEntity;
 import com.marcoecommerce.shop.model.productInventory.ProductInventoryEntity;
 import com.marcoecommerce.shop.model.shoppingCartItem.ShoppingCartItemEntity;
 import jakarta.persistence.*;

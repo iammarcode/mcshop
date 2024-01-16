@@ -2,20 +2,12 @@ package com.marcoecommerce.shop.model.product;
 
 import com.marcoecommerce.shop.model.productCategory.ProductCategoryEntity;
 import com.marcoecommerce.shop.model.productDiscount.ProductDiscountDto;
-import com.marcoecommerce.shop.model.productDiscount.ProductDiscountEntity;
-import com.marcoecommerce.shop.model.productDiscountLinkEntity.ProductDiscountLinkEntity;
 import com.marcoecommerce.shop.model.productInventory.ProductInventoryEntity;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @EqualsAndHashCode(callSuper = false)
 @Data

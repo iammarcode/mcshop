@@ -1,4 +1,4 @@
-package com.marcoecommerce.shop.model.productDiscountLinkEntity;
+package com.marcoecommerce.shop.model.productDiscountLink;
 
 import com.marcoecommerce.shop.model.product.ProductEntity;
 import com.marcoecommerce.shop.model.productDiscount.ProductDiscountEntity;
@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @EqualsAndHashCode(callSuper = false)
