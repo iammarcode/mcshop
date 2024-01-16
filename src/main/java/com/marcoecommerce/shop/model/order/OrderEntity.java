@@ -48,7 +48,6 @@ public class OrderEntity {
     @OneToOne(
             mappedBy = "order",
             cascade = CascadeType.ALL,
-            orphanRemoval = true,
             fetch = FetchType.LAZY
     )
     private OrderTransactionEntity transaction;

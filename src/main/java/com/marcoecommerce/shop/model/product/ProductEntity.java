@@ -96,7 +96,6 @@ public class ProductEntity {
     @OneToOne(
             mappedBy = "product",
             cascade = CascadeType.ALL,
-            orphanRemoval = true,
             fetch = FetchType.LAZY
     )
     private ProductInventoryEntity inventory;

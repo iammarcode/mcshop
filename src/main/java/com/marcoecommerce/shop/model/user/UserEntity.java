@@ -76,8 +76,7 @@ public class UserEntity {
     @OneToMany(
             mappedBy = "user",
             fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
+            cascade = CascadeType.ALL
     )
     private List<OrderEntity> orderList = new ArrayList<>();
 
