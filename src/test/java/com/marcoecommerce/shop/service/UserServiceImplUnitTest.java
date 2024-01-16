@@ -101,7 +101,7 @@ public class UserServiceImplUnitTest {
     }
 
     @Test
-    public void givenUser_whenUpdateUser_thenReturnPartialUpdatedUser() {
+    public void givenUser_whenUpdateUser_thenReturnUpdatedUser() {
         // given
         when(userRepository.findById(userA.getId())).thenReturn(Optional.of(userA));
         when(userRepository.save(userA)).thenReturn(userA);

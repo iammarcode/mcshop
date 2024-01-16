@@ -103,7 +103,7 @@ public class OrderServiceImplUnitTest {
     }
 
     @Test
-    public void givenOrder_whenUpdateOrder_thenReturnPartialUpdatedOrder() {
+    public void givenOrder_whenUpdateOrder_thenReturnUpdatedOrder() {
         // given
         when(orderRepository.findById(orderA.getId())).thenReturn(Optional.of(orderA));
         when(orderRepository.save(orderA)).thenReturn(orderA);

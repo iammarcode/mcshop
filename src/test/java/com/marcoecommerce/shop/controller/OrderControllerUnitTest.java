@@ -44,16 +44,18 @@ public class OrderControllerUnitTest {
         orderBEntity = TestDataUtil.createOrderEntityB();
         orderADto = TestDataUtil.createOrderDtoA();
         orderBDto = TestDataUtil.createOrderDtoB();
+
+        Mockito.when(orderMapper.mapFrom(orderADto)).thenReturn(orderAEntity);
+        Mockito.when(orderMapper.mapFrom(orderBDto)).thenReturn(orderBEntity);
+        Mockito.when(orderMapper.mapTo(orderAEntity)).thenReturn(orderADto);
+        Mockito.when(orderMapper.mapTo(orderBEntity)).thenReturn(orderBDto);
     }
 
     @Test
     public void givenOrder_whenCallCreateOrder_thenReturnJsonObject() throws Exception {
         // given
-        Mockito.when(orderMapper.mapFrom(orderADto)).thenReturn(orderAEntity);
         Mockito.when(orderService.create(orderAEntity)).thenReturn(orderAEntity);
-        Mockito.when(orderMapper.mapTo(orderAEntity)).thenReturn(orderADto);
 
-        // when
         // then
         String orderJson = objectMapper.writeValueAsString(orderADto);
         mockMvc.perform(
@@ -69,10 +71,10 @@ public class OrderControllerUnitTest {
 
     @Test
     public void givenOrders_whenCallGetOrders_thenReturnJsonArray() throws Exception {
+        // given
         Mockito.when(orderService.findAll()).thenReturn(List.of(orderAEntity, orderBEntity));
-        Mockito.when(orderMapper.mapTo(orderAEntity)).thenReturn(orderADto);
-        Mockito.when(orderMapper.mapTo(orderBEntity)).thenReturn(orderBDto);
 
+        // then
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/orders")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -93,9 +95,7 @@ public class OrderControllerUnitTest {
         Long orderId = 1L;
 
         Mockito.when(orderService.findById(orderId)).thenReturn(Optional.of(orderAEntity));
-        Mockito.when(orderMapper.mapTo(orderAEntity)).thenReturn(orderADto);
 
-        // when
         // then
         String orderDtoJson = objectMapper.writeValueAsString(orderADto);
         mockMvc.perform(
@@ -111,11 +111,12 @@ public class OrderControllerUnitTest {
 
     @Test
     public void givenNonexistentOrder_whenUpdate_thenReturn404() throws Exception {
+        // given
         Long nonexistentOrderId = 1L;
-
         Mockito.when(orderService.isExist(nonexistentOrderId)).thenReturn(false);
         String orderDtoJson = objectMapper.writeValueAsString(orderADto);
 
+        // then
         mockMvc.perform(
                 MockMvcRequestBuilders.patch("/orders/" + nonexistentOrderId)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -125,23 +126,20 @@ public class OrderControllerUnitTest {
 
     @Test
     public void givenOrder_whenUpdate_thenReturn200() throws Exception {
-        orderADto.setId(1L);
-        orderAEntity.setId(1L);
-        Mockito.when(orderMapper.mapFrom(orderADto)).thenReturn(orderAEntity);
-        Mockito.when(orderService.update(orderAEntity.getId(), orderAEntity)).thenReturn(orderAEntity);
-        Mockito.when(orderMapper.mapTo(orderAEntity)).thenReturn(orderADto);
-        Mockito.when(orderService.isExist(orderADto.getId())).thenReturn(true);
+        Long orderId = 1L;
+        Mockito.when(orderService.update(orderId, orderAEntity)).thenReturn(orderBEntity);
+        Mockito.when(orderService.isExist(orderId)).thenReturn(true);
 
         String orderDtoJson = objectMapper.writeValueAsString(orderADto);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.patch("/orders/" + orderADto.getId())
+                MockMvcRequestBuilders.patch("/orders/" + orderId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(orderDtoJson)
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
         ).andExpect(
-                MockMvcResultMatchers.jsonPath("$.total").value(orderAEntity.getTotal())
+                MockMvcResultMatchers.jsonPath("$.total").value(orderBEntity.getTotal())
         );
     }
 

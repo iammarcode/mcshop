@@ -43,16 +43,18 @@ public class UserControllerUnitTest {
         userBEntity = TestDataUtil.createUserEntityB();
         userADto = TestDataUtil.createUserDtoA();
         userBDto = TestDataUtil.createUserDtoB();
+
+        Mockito.when(userMapper.mapFrom(userADto)).thenReturn(userAEntity);
+        Mockito.when(userMapper.mapFrom(userBDto)).thenReturn(userBEntity);
+        Mockito.when(userMapper.mapTo(userAEntity)).thenReturn(userADto);
+        Mockito.when(userMapper.mapTo(userBEntity)).thenReturn(userBDto);
     }
 
     @Test
     public void givenUser_whenCallCreateUser_thenReturnJsonObject() throws Exception {
         // given
-        Mockito.when(userMapper.mapFrom(userADto)).thenReturn(userAEntity);
         Mockito.when(userService.create(userAEntity)).thenReturn(userAEntity);
-        Mockito.when(userMapper.mapTo(userAEntity)).thenReturn(userADto);
 
-        // when
         // then
         String userJson = objectMapper.writeValueAsString(userADto);
         mockMvc.perform(
@@ -68,10 +70,10 @@ public class UserControllerUnitTest {
 
     @Test
     public void givenUsers_whenCallGetUsers_thenReturnJsonArray() throws Exception {
+        // given
         Mockito.when(userService.findAll()).thenReturn(List.of(userAEntity, userBEntity));
-        Mockito.when(userMapper.mapTo(userAEntity)).thenReturn(userADto);
-        Mockito.when(userMapper.mapTo(userBEntity)).thenReturn(userBDto);
 
+        // then
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/users")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -90,11 +92,8 @@ public class UserControllerUnitTest {
     public void givenUser_whenFindById_thenReturn200() throws Exception {
         // given
         Long userId = 1L;
-
         Mockito.when(userService.findById(userId)).thenReturn(Optional.of(userAEntity));
-        Mockito.when(userMapper.mapTo(userAEntity)).thenReturn(userADto);
 
-        // when
         // then
         String userDtoJson = objectMapper.writeValueAsString(userADto);
         mockMvc.perform(
@@ -110,11 +109,12 @@ public class UserControllerUnitTest {
 
     @Test
     public void givenNonexistentUser_whenUpdate_thenReturn404() throws Exception {
+        // given
         Long nonexistentUserId = 1L;
-
         Mockito.when(userService.isExist(nonexistentUserId)).thenReturn(false);
         String userDtoJson = objectMapper.writeValueAsString(userADto);
 
+        // then
         mockMvc.perform(
                 MockMvcRequestBuilders.patch("/users/" + nonexistentUserId)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -124,17 +124,16 @@ public class UserControllerUnitTest {
 
     @Test
     public void givenUser_whenUpdate_thenReturn200() throws Exception {
-        userADto.setId(1L);
-        userAEntity.setId(1L);
-        Mockito.when(userMapper.mapFrom(userADto)).thenReturn(userAEntity);
-        Mockito.when(userService.update(userAEntity.getId(), userAEntity)).thenReturn(userAEntity);
-        Mockito.when(userMapper.mapTo(userAEntity)).thenReturn(userADto);
-        Mockito.when(userService.isExist(userADto.getId())).thenReturn(true);
+        // given
+        Long userId = 1L;
+        Mockito.when(userService.update(userId, userAEntity)).thenReturn(userAEntity);
+        Mockito.when(userService.isExist(userId)).thenReturn(true);
 
         String userDtoJson = objectMapper.writeValueAsString(userADto);
 
+        // then
         mockMvc.perform(
-                MockMvcRequestBuilders.patch("/users/" + userADto.getId())
+                MockMvcRequestBuilders.patch("/users/" + userId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(userDtoJson)
         ).andExpect(
@@ -146,9 +145,11 @@ public class UserControllerUnitTest {
 
     @Test
     public void givenNoUser_whenCallDelete_thenReturn404() throws Exception {
+        // given
         Long nonexistentUserId = 1L;
         Mockito.when(userService.isExist(nonexistentUserId)).thenReturn(false);
 
+        // then
         mockMvc.perform(
                 MockMvcRequestBuilders.delete("/users/" + nonexistentUserId)
                         .contentType(MediaType.APPLICATION_JSON)
