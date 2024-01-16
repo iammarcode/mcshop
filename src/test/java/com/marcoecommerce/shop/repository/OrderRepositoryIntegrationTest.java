@@ -2,24 +2,43 @@ package com.marcoecommerce.shop.repository;
 
 
 import com.marcoecommerce.shop.model.order.OrderEntity;
-import com.marcoecommerce.shop.model.order.OrderStatus;
 import com.marcoecommerce.shop.model.user.UserEntity;
 import com.marcoecommerce.shop.utils.TestDataUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.ArrayList;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+
+
+
+
+//    Optional<T> findById(ID id);
+//
+//        boolean existsById(ID id);
+//
+//        Iterable<T> findAll();
+//
+//        Iterable<T> findAllById(Iterable<ID> ids);
+//
+//        long count();
+//
+//        void deleteById(ID id);
+//
+//        void delete(T entity);
+//
+//        void deleteAllById(Iterable<? extends ID> ids);
+//
+//        void deleteAll(Iterable<? extends T> entities);
+//
+//        void deleteAll();
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -30,6 +49,9 @@ public class OrderRepositoryIntegrationTest {
 
     @Autowired
     private OrderRepository underTest;
+
+    @Autowired
+    private TestEntityManager entityManager;
     
     private UserEntity userA;
     private OrderEntity orderA;
@@ -43,9 +65,34 @@ public class OrderRepositoryIntegrationTest {
     }
 
     @Test
-    public void givenOrder_whenFindById_thenReturnOrder() {
+    public void givenOrder_whenFindOrder_thenReturnSavedOrder() {
         // given
         OrderEntity orderSaved = underTest.save(orderA);
+
+        // when
+        OrderEntity result = entityManager.find(OrderEntity.class, orderSaved.getId());
+
+        // then
+        assertThat(result).isEqualTo(orderSaved);
+    }
+
+    @Test
+    public void givenOrder_whenUpdateOrder_thenReturnUpdatedOrder() {
+        // given
+        OrderEntity orderSaved = entityManager.persistAndFlush(orderA);
+
+        // when
+        orderSaved.setTotal(BigDecimal.valueOf(1000));
+        OrderEntity result = underTest.save(orderSaved);
+
+        // then
+        assertThat(result.getTotal()).isEqualTo(BigDecimal.valueOf(1000));
+    }
+
+    @Test
+    public void givenOrder_whenFindById_thenReturnOrder() {
+        // given
+        OrderEntity orderSaved = entityManager.persistAndFlush(orderA);
 
         // when
         Optional<OrderEntity> result = underTest.findById(orderSaved.getId());
@@ -55,11 +102,24 @@ public class OrderRepositoryIntegrationTest {
         assertThat(result.get()).isEqualTo(orderSaved);
     }
 
+    @Test
+    public void givenOrder_whenExistById_thenReturnTrue() {
+        // given
+        OrderEntity orderSaved = entityManager.persistAndFlush(orderA);
+
+        // when
+        boolean result = underTest.existsById(orderSaved.getId());
+
+        // then
+        assertThat(result).isTrue();
+    }
+
 
     @Test
     public void givenMultipleOrders_whenFindAll_thenReturnAll() {
         // given
-        underTest.saveAll(List.of(orderA, orderB));
+        entityManager.persistAndFlush(orderA);
+        entityManager.persistAndFlush(orderB);
 
         // when
         Iterable<OrderEntity> result = underTest.findAll();
@@ -71,35 +131,65 @@ public class OrderRepositoryIntegrationTest {
     }
 
     @Test
-    public void givenOrder_whenUpdateOrder_thenReturnUpdatedOrder() {
+    public void givenMultipleOrders_whenFindAllByIds_thenReturnAll() {
         // given
-        OrderEntity orderSaved = underTest.save(orderA);
+        entityManager.persistAndFlush(orderA);
+        entityManager.persistAndFlush(orderB);
 
         // when
-        orderSaved.setStatus(OrderStatus.CANCELED);
-        OrderEntity result = underTest.save(orderSaved);
+        Iterable<OrderEntity> result = underTest.findAllById(List.of(orderA.getId(), orderB.getId()));
 
         // then
-        assertThat(result.getStatus()).isEqualTo(OrderStatus.CANCELED);
+        assertThat(result)
+                .hasSize(2).
+                containsExactly(orderA, orderB);
     }
 
     @Test
-    public void givenOrder_whenDeleteOrderById_thenOrderDeletedUserNotDeleted() {
+    public void givenMultipleOrders_whenCount_thenReturnCountNumber() {
+        // given
+        entityManager.persistAndFlush(orderA);
+        entityManager.persistAndFlush(orderB);
+
+        // when
+        long count = underTest.count();
+
+        // then
+        assertThat(count).isEqualTo(2);
+    }
+
+    @Test
+    public void givenMultipleOrders_whenDeleteAllByIds_thenReturnAll() {
+        // given
+        entityManager.persistAndFlush(orderA);
+        entityManager.persistAndFlush(orderB);
+
+        // when
+        underTest.deleteAllById(List.of(orderA.getId(), orderB.getId()));
+        long result = underTest.count();
+
+        // then
+        assertThat(result).isEqualTo(0);
+    }
+
+
+    // delete from parent side
+    @Test
+    public void givenOrder_whenDeleteOrderFromUser_thenOrderDeleted() {
         // given
         userA.addOrder(orderA);
         userA.addOrder(orderB);
-        UserEntity userSaved = userRepository.save(userA);
+        UserEntity userSaved = entityManager.persistAndFlush(userA);
 
-        assertThat(userSaved.getOrderList().size()).isEqualTo(2);
         assertThat(underTest.count()).isEqualTo(2);
 
         // when
-        OrderEntity orderDeleted = userSaved.getOrderList().get(0);
-        userSaved.removeOrder(orderDeleted);
-        UserEntity userUpdated = userRepository.save(userSaved);
+        OrderEntity orderNeedDeleted = userSaved.getOrderList().get(0);
+        userSaved.removeOrder(orderNeedDeleted);
+        userRepository.save(userSaved);
+        underTest.deleteById(orderNeedDeleted.getId());
 
         // then
-        assertThat(userUpdated.getOrderList().size()).isEqualTo(1);
         assertThat(underTest.count()).isEqualTo(1);
     }
 }

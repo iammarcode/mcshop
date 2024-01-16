@@ -12,9 +12,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,6 +37,9 @@ public class UserRepositoryIntegrationTest {
     private UserAddressRepository userAddressRepository;
     @Autowired
     private ShoppingCartRepository shoppingCartRepository;
+
+    @Autowired
+    private TestEntityManager entityManager;
 
     private UserEntity userA;
     private UserEntity userB;
@@ -60,22 +65,61 @@ public class UserRepositoryIntegrationTest {
     }
 
     @Test
-    public void givenUser_whenFindById_thenReturnUser() {
+    public void givenUser_whenFindUser_thenReturnSavedUser() {
         // given
         UserEntity userSaved = underTest.save(userA);
 
         // when
-        Optional<UserEntity> result = underTest.findById(userSaved.getId());
+        UserEntity result = entityManager.find(UserEntity.class, userSaved.getId());
+
+        // then
+        assertThat(result).isEqualTo(userSaved);
+    }
+
+    @Test
+    public void givenUser_whenUpdateUser_thenReturnUpdatedUser() {
+        // given
+        UserEntity userSaved = entityManager.persistAndFlush(userA);
+
+        // when
+        userSaved.setUsername("Updated Username");
+        UserEntity result = underTest.save(userSaved);
+
+        // then
+        assertThat(result.getUsername()).isEqualTo("Updated Username");
+    }
+
+    @Test
+    public void givenUser_whenFindById_thenReturnUser() {
+        // given
+        UserEntity UserEntity = entityManager.persistAndFlush(userA);
+
+        // when
+        Optional<UserEntity> result = underTest.findById(UserEntity.getId());
 
         // then
         assertThat(result).isPresent();
-        assertThat(result.get()).isEqualTo(userSaved);
+        assertThat(result.get()).isEqualTo(UserEntity);
     }
+
+    @Test
+    public void givenUser_whenExistById_thenReturnTrue() {
+        // given
+        UserEntity userSaved = entityManager.persistAndFlush(userA);
+
+        // when
+        boolean result = underTest.existsById(userSaved.getId());
+
+        // then
+        assertThat(result).isTrue();
+    }
+
 
     @Test
     public void givenMultipleUsers_whenFindAll_thenReturnAll() {
         // given
-        underTest.saveAll(List.of(userA, userB));
+        entityManager.persistAndFlush(userA);
+        entityManager.persistAndFlush(userB);
 
         // when
         Iterable<UserEntity> result = underTest.findAll();
@@ -87,22 +131,50 @@ public class UserRepositoryIntegrationTest {
     }
 
     @Test
-    public void givenUser_whenUpdateUser_thenReturnUpdatedUser() {
+    public void givenMultipleUsers_whenFindAllByIds_thenReturnAll() {
         // given
-        UserEntity userSaved = underTest.save(userA);
+        entityManager.persistAndFlush(userA);
+        entityManager.persistAndFlush(userB);
 
         // when
-        userSaved.setEmail("updated@gmail.com");
-        UserEntity result = underTest.save(userSaved);
+        Iterable<UserEntity> result = underTest.findAllById(List.of(userA.getId(), userB.getId()));
 
         // then
-        assertThat(result.getEmail()).isEqualTo("updated@gmail.com");
+        assertThat(result)
+                .hasSize(2).
+                containsExactly(userA, userB);
+    }
+
+    @Test
+    public void givenMultipleUsers_whenCount_thenReturnCountNumber() {
+        // given
+        entityManager.persistAndFlush(userA);
+        entityManager.persistAndFlush(userB);
+
+        // when
+        long count = underTest.count();
+
+        // then
+        assertThat(count).isEqualTo(2);
+    }
+
+    @Test
+    public void givenMultipleUsers_whenDeleteAllByIds_thenReturnAll() {
+        // given
+        entityManager.persistAndFlush(userA);
+        entityManager.persistAndFlush(userB);
+
+        // when
+        underTest.deleteAllById(List.of(userA.getId(), userB.getId()));
+        long result = underTest.count();
+
+        // then
+        assertThat(result).isEqualTo(0);
     }
 
     @Test
     public void givenUser_whenDeleteUserById_thenUserAndAssociationDeleted() {
         // given
-        
         userA.addAddress(addressA);
         userA.addAddress(addressB);
         userA.addPayment(paymentA);
