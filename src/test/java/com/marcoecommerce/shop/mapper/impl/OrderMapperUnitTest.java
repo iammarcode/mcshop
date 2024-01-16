@@ -8,7 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
@@ -18,21 +19,47 @@ public class OrderMapperUnitTest {
     private Mapper<OrderEntity, OrderDto> underTest;
 
     @Test
-    public void TestConvertOrderEntityToDto() {
+    public void givenOrderEntity_whenMapTo_thenReturnOrderDto() {
+        // given
         OrderEntity orderAEntity = TestDataUtil.createOrderEntityA();
+        orderAEntity.setTransaction(TestDataUtil.createOrderTransactionEntityA());
+        orderAEntity.setUser(TestDataUtil.createUserEntityA());
+        orderAEntity.setAddress(TestDataUtil.createUserAddressEntityA());
+        orderAEntity.setOrderItemList(List.of(TestDataUtil.createOrderItemEntityA(), TestDataUtil.createOrderItemEntityB()));
+
+        // when
         OrderDto orderDtoA = underTest.mapTo(orderAEntity);
 
+        // then
         assertEquals(orderDtoA.getId(), orderAEntity.getId());
         assertEquals(orderDtoA.getStatus(), orderAEntity.getStatus());
+        assertEquals(orderDtoA.getTotal(), orderAEntity.getTotal());
+        assertEquals(orderDtoA.getOrderItemList(), orderAEntity.getOrderItemList());
+        assertEquals(orderDtoA.getAddress(), orderAEntity.getAddress());
+        assertEquals(orderDtoA.getTransaction(), orderAEntity.getTransaction());
+        assertEquals(orderDtoA.getUser(), orderAEntity.getUser());
     }
 
     @Test
-    public void TestConvertOrderDtoToEntity() {
-        OrderDto orderDtoA = TestDataUtil.createOrderDtoA();
-        OrderEntity orderEntityA = underTest.mapFrom(orderDtoA);
+    public void givenOrderDto_whenMapFrom_thenReturnOrderEntity() {
+        // given
+        OrderDto orderADto = TestDataUtil.createOrderDtoA();
+        orderADto.setTransaction(TestDataUtil.createOrderTransactionEntityA());
+        orderADto.setUser(TestDataUtil.createUserEntityA());
+        orderADto.setAddress(TestDataUtil.createUserAddressEntityA());
+        orderADto.setOrderItemList(List.of(TestDataUtil.createOrderItemEntityA(), TestDataUtil.createOrderItemEntityB()));
 
-        assertEquals(orderEntityA.getId(), orderDtoA.getId());
-        assertEquals(orderEntityA.getStatus(), orderDtoA.getStatus());
+        // when
+        OrderEntity orderAEntity = underTest.mapFrom(orderADto);
+
+        // then
+        assertEquals(orderAEntity.getId(), orderADto.getId());
+        assertEquals(orderAEntity.getStatus(), orderADto.getStatus());
+        assertEquals(orderAEntity.getTotal(), orderADto.getTotal());
+        assertEquals(orderAEntity.getOrderItemList(), orderADto.getOrderItemList());
+        assertEquals(orderAEntity.getAddress(), orderADto.getAddress());
+        assertEquals(orderAEntity.getTransaction(), orderADto.getTransaction());
+        assertEquals(orderAEntity.getUser(), orderADto.getUser());
     }
 
 }

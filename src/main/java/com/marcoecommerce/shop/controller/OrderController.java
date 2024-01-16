@@ -23,7 +23,7 @@ public class OrderController {
     @PostMapping(path = "/orders")
     public ResponseEntity<OrderDto> createOrders(@RequestBody OrderDto orderDto) {
         OrderEntity orderEntity = orderMapper.mapFrom(orderDto);
-        OrderEntity savedOrderEntity = orderService.save(orderEntity);
+        OrderEntity savedOrderEntity = orderService.create(orderEntity);
 
         return new ResponseEntity<>(orderMapper.mapTo(savedOrderEntity), HttpStatus.CREATED);
     }
@@ -42,25 +42,8 @@ public class OrderController {
         return foundOrder.map(orderEntity -> new ResponseEntity<>(orderMapper.mapTo(orderEntity), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PutMapping(path = "/orders/{id}")
-    public ResponseEntity<OrderDto> fullUpdateOrder(
-            @PathVariable("id") Long id,
-            @RequestBody OrderDto orderDto) {
-
-        if(!orderService.isExist(id)) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-        orderDto.setId(id);
-        OrderEntity orderEntity = orderMapper.mapFrom(orderDto);
-        OrderEntity savedOrderEntity = orderService.save(orderEntity);
-        return new ResponseEntity<>(
-                orderMapper.mapTo(savedOrderEntity),
-                HttpStatus.OK);
-    }
-
     @PatchMapping(path = "/orders/{id}")
-    public ResponseEntity<OrderDto> partialUpdate(
+    public ResponseEntity<OrderDto> updateOrder(
             @PathVariable("id") Long id,
             @RequestBody OrderDto orderDto
     ) {
@@ -69,7 +52,7 @@ public class OrderController {
         }
 
         OrderEntity orderEntity = orderMapper.mapFrom(orderDto);
-        OrderEntity updatedOrder = orderService.partialUpdate(id, orderEntity);
+        OrderEntity updatedOrder = orderService.update(id, orderEntity);
         return new ResponseEntity<>(
                 orderMapper.mapTo(updatedOrder),
                 HttpStatus.OK);
@@ -77,6 +60,10 @@ public class OrderController {
 
     @DeleteMapping(path = "/orders/{id}")
     public ResponseEntity<OrderDto> deleteOrder(@PathVariable("id") Long id) {
+        if(!orderService.isExist(id)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
         orderService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

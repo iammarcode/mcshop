@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface OrderService {
-    OrderEntity save(OrderEntity customerEntity);
+    OrderEntity create(OrderEntity userEntity);
 
     List<OrderEntity> findAll();
 
@@ -16,5 +16,5 @@ public interface OrderService {
 
     void deleteById(Long id);
 
-    OrderEntity partialUpdate(Long id, OrderEntity authorEntity);
+    OrderEntity update(Long id, OrderEntity authorEntity);
 }

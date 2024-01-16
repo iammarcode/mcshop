@@ -3,85 +3,103 @@ package com.marcoecommerce.shop.repository;
 
 import com.marcoecommerce.shop.model.order.OrderEntity;
 import com.marcoecommerce.shop.model.order.OrderStatus;
+import com.marcoecommerce.shop.model.user.UserEntity;
 import com.marcoecommerce.shop.utils.TestDataUtil;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
-@SpringBootTest
-@ExtendWith(SpringExtension.class)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@DataJpaTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class OrderRepositoryIntegrationTest {
+
+    @Autowired
+    private UserRepository userRepository;
+
     @Autowired
     private OrderRepository underTest;
-
-    @Test
-    public void testThatOrderCanBeCreatedAndRecalled() {
-        // Given
-        OrderEntity orderEntity = TestDataUtil.createOrderEntityA();
-        underTest.save(orderEntity);
-
-        // When
-        Optional<OrderEntity> result = underTest.findById(orderEntity.getId());
-
-        // Then
-        assertThat(result).isPresent();
-        assertThat(result.get()).isEqualTo(orderEntity);
+    
+    private UserEntity userA;
+    private OrderEntity orderA;
+    private OrderEntity orderB;
+    
+    @BeforeEach
+    public void setUp() {
+        userA = TestDataUtil.createUserEntityA();
+        orderA = TestDataUtil.createOrderEntityA();
+        orderB = TestDataUtil.createOrderEntityB();
     }
 
     @Test
-    public void testThatMultipleOrdersCanBeCreatedAndRecalled() {
-        // Given
-        OrderEntity orderEntityA = TestDataUtil.createOrderEntityA();
-        underTest.save(orderEntityA);
-        OrderEntity orderEntityB = TestDataUtil.createOrderEntityB();
-        underTest.save(orderEntityB);
-        OrderEntity orderEntityC = TestDataUtil.createOrderEntityC();
-        underTest.save(orderEntityC);
+    public void givenOrder_whenFindById_thenReturnOrder() {
+        // given
+        OrderEntity orderSaved = underTest.save(orderA);
 
-        // When
+        // when
+        Optional<OrderEntity> result = underTest.findById(orderSaved.getId());
+
+        // then
+        assertThat(result).isPresent();
+        assertThat(result.get()).isEqualTo(orderSaved);
+    }
+
+
+    @Test
+    public void givenMultipleOrders_whenFindAll_thenReturnAll() {
+        // given
+        underTest.saveAll(List.of(orderA, orderB));
+
+        // when
         Iterable<OrderEntity> result = underTest.findAll();
 
-        // Then
+        // then
         assertThat(result)
-                .hasSize(3).
-                containsExactly(orderEntityA, orderEntityB, orderEntityC);
+                .hasSize(2).
+                containsExactly(orderA, orderB);
     }
 
     @Test
-    public void testThatOrderCanBeUpdated() {
-        // Given
-        OrderEntity orderEntityA = TestDataUtil.createOrderEntityA();
-        underTest.save(orderEntityA);
-        orderEntityA.setStatus(OrderStatus.CANCELED);
-        underTest.save(orderEntityA);
+    public void givenOrder_whenUpdateOrder_thenReturnUpdatedOrder() {
+        // given
+        OrderEntity orderSaved = underTest.save(orderA);
 
-        // When
-        Optional<OrderEntity> result = underTest.findById(orderEntityA.getId());
+        // when
+        orderSaved.setStatus(OrderStatus.CANCELED);
+        OrderEntity result = underTest.save(orderSaved);
 
-        // Then
-        assertThat(result).isPresent();
-        assertThat(result.get().getStatus()).isEqualTo(OrderStatus.CANCELED);
+        // then
+        assertThat(result.getStatus()).isEqualTo(OrderStatus.CANCELED);
     }
 
     @Test
-    public void testThatOrderCanBeDeleted() {
-        // Given
-        OrderEntity orderEntityA = TestDataUtil.createOrderEntityA();
-        underTest.save(orderEntityA);
+    public void givenOrder_whenDeleteOrderById_thenOrderDeletedUserNotDeleted() {
+        // given
+        userA.addOrder(orderA);
+        userA.addOrder(orderB);
+        UserEntity userSaved = userRepository.save(userA);
 
-        // When
-        underTest.deleteById(orderEntityA.getId());
-        Optional<OrderEntity> result = underTest.findById(orderEntityA.getId());
+        assertThat(userSaved.getOrderList().size()).isEqualTo(2);
+        assertThat(underTest.count()).isEqualTo(2);
 
-        // Then
-        assertThat(result).isEmpty();
+        // when
+        OrderEntity orderDeleted = userSaved.getOrderList().get(0);
+        userSaved.removeOrder(orderDeleted);
+        UserEntity userUpdated = userRepository.save(userSaved);
+
+        // then
+        assertThat(userUpdated.getOrderList().size()).isEqualTo(1);
+        assertThat(underTest.count()).isEqualTo(1);
     }
 }

@@ -17,7 +17,7 @@ public class OrderServiceImpl implements OrderService {
     private OrderRepository orderRepository;
 
     @Override
-    public OrderEntity save(OrderEntity orderEntity) {
+    public OrderEntity create(OrderEntity orderEntity) {
         return orderRepository.save(orderEntity);
     }
 
@@ -43,12 +43,17 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderEntity partialUpdate(Long id, OrderEntity orderEntity) {
-        orderEntity.setId(id);
+    public OrderEntity update(Long id, OrderEntity order) {
+        order.setId(id);
 
         return orderRepository.findById(id).map(existingOrder -> {
-            Optional.ofNullable(orderEntity.getStatus()).ifPresent(existingOrder::setStatus);
-            // TODO: update customer?
+            Optional.ofNullable(order.getStatus()).ifPresent(existingOrder::setStatus);
+            Optional.ofNullable(order.getTotal()).ifPresent(existingOrder::setTotal);
+
+            if (order.getTransaction() != null) {
+                existingOrder.addTransaction(order.getTransaction());
+            }
+
             return orderRepository.save(existingOrder);
         }).orElseThrow(() -> new RuntimeException("Order does not exist"));
     }

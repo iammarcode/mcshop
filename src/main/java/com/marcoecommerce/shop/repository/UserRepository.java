@@ -1,9 +1,9 @@
 package com.marcoecommerce.shop.repository;
 
-import com.marcoecommerce.shop.model.customer.CustomerEntity;
+import com.marcoecommerce.shop.model.user.UserEntity;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CustomerRepository extends CrudRepository<CustomerEntity, Long> {
+public interface UserRepository extends CrudRepository<UserEntity, Long> {
 }
