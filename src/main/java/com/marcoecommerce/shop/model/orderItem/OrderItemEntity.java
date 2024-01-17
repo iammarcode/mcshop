@@ -1,19 +1,13 @@
 package com.marcoecommerce.shop.model.orderItem;
 
 import com.marcoecommerce.shop.model.order.OrderEntity;
-import com.marcoecommerce.shop.model.order.OrderStatus;
-import com.marcoecommerce.shop.model.orderTransaction.OrderTransactionEntity;
 import com.marcoecommerce.shop.model.product.ProductEntity;
-import com.marcoecommerce.shop.model.user.UserEntity;
-import com.marcoecommerce.shop.model.userAddress.UserAddressEntity;
-import com.marcoecommerce.shop.model.userPayment.UserPaymentEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @EqualsAndHashCode(callSuper = false)

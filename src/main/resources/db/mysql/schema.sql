@@ -2,7 +2,7 @@
 CREATE SCHEMA IF NOT EXISTS shop;
 
 -- Tables
-CREATE TABLE IF NOT EXISTS `shop`.`users` (
+CREATE TABLE IF NOT EXISTS `shop`.`customer` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `email` varchar(100) NOT NULL,
   `phone` varchar(100) NOT NULL,
@@ -14,13 +14,13 @@ CREATE TABLE IF NOT EXISTS `shop`.`users` (
   `created_at` datetime NOT NULL,
   `modified_at` datetime NULL DEFAULT NULL,
   `deleted_at` datetime NULL DEFAULT NULL,
-  CONSTRAINT PK_Users PRIMARY KEY (`id`) USING BTREE,
-  CONSTRAINT UQ_Users_Email UNIQUE (`email`),
-  CONSTRAINT UQ_Users_Phone UNIQUE (`phone`),
-  CONSTRAINT UQ_Users_Username UNIQUE (`username`)
+  CONSTRAINT PK_Customer PRIMARY KEY (`id`) USING BTREE,
+  CONSTRAINT UQ_Customer_Email UNIQUE (`email`),
+  CONSTRAINT UQ_Customer_Phone UNIQUE (`phone`),
+  CONSTRAINT UQ_Customer_Username UNIQUE (`username`)
 );
 
-CREATE TABLE IF NOT EXISTS `shop`.`user_address` (
+CREATE TABLE IF NOT EXISTS `shop`.`customer_address` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `address_line1` text NULL DEFAULT NULL,
   `address_line2` text NULL DEFAULT NULL,
@@ -29,30 +29,30 @@ CREATE TABLE IF NOT EXISTS `shop`.`user_address` (
   `country` varchar(100) NOT NULL,
   `phone` varchar(64) NOT NULL,
 
-  `user_id` bigint NULL DEFAULT NULL,
+  `customer_id` bigint NULL DEFAULT NULL,
 
   `created_at` datetime NOT NULL,
   `modified_at` datetime NULL DEFAULT NULL,
   `deleted_at` datetime NULL DEFAULT NULL,
-  CONSTRAINT PK_UserAddress PRIMARY KEY (`id`) USING BTREE,
-  CONSTRAINT FK_UserAddress_Users FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+  CONSTRAINT PK_CustomerAddress PRIMARY KEY (`id`) USING BTREE,
+  CONSTRAINT FK_CustomerAddress_Customer FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id`)
 );
 
-CREATE TABLE IF NOT EXISTS `shop`.`user_payment` (
+CREATE TABLE IF NOT EXISTS `shop`.`customer_payment` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `type` varchar(64) NOT NULL COMMENT 'PAYPAL; CREDIT_CARD',
   `provider` varchar(64) NOT NULL,
   `account_no` varchar(64) NOT NULL,
   `expiry` datetime NULL DEFAULT NULL,
 
-  `user_id` bigint NULL DEFAULT NULL,
+  `customer_id` bigint NULL DEFAULT NULL,
 
   `created_at` datetime NOT NULL,
   `modified_at` datetime NULL DEFAULT NULL,
   `deleted_at` datetime NULL DEFAULT NULL,
-  CONSTRAINT PK_UserPayment PRIMARY KEY (`id`) USING BTREE,
-  CONSTRAINT FK_UserPayment_Users FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
-  CONSTRAINT FK_UserPayment_AccountNo UNIQUE (`account_no`)
+  CONSTRAINT PK_CustomerPayment PRIMARY KEY (`id`) USING BTREE,
+  CONSTRAINT FK_CustomerPayment_Customer FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id`),
+  CONSTRAINT FK_CustomerPayment_AccountNo UNIQUE (`account_no`)
 );
 
 CREATE TABLE IF NOT EXISTS `shop`.`product_category` (
@@ -134,15 +134,15 @@ CREATE TABLE IF NOT EXISTS `shop`.`orders` (
   `status` varchar(100) NOT NULL COMMENT 'ORDERED, PROCESSED, DELIVERED, REFUNDED, CANCELED',
   `total` decimal NOT NULL,
 
-  `user_id` bigint NULL DEFAULT NULL,
-  `user_address_id` bigint NULL DEFAULT NULL,
+  `customer_id` bigint NULL DEFAULT NULL,
+  `customer_address_id` bigint NULL DEFAULT NULL,
 
   `created_at` datetime NOT NULL,
   `modified_at` datetime  NULL DEFAULT NULL,
   `deleted_at` datetime NULL DEFAULT NULL,
   CONSTRAINT PK_Orders PRIMARY KEY (`id`) USING BTREE,
-  CONSTRAINT FK_Orders_Users FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
-  CONSTRAINT FK_Orders_UserAddress FOREIGN KEY (`user_address_id`) REFERENCES `user_address` (`id`)
+  CONSTRAINT FK_Orders_Customer FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id`),
+  CONSTRAINT FK_Orders_CustomerAddress FOREIGN KEY (`customer_address_id`) REFERENCES `customer_address` (`id`)
 );
 
 CREATE TABLE IF NOT EXISTS `shop`.`order_transaction` (
@@ -181,13 +181,13 @@ CREATE TABLE IF NOT EXISTS `shop`.`shopping_cart` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `total` decimal NOT NULL,
 
-  `user_id` bigint NULL DEFAULT NULL,
+  `customer_id` bigint NULL DEFAULT NULL,
 
   `created_at` datetime NOT NULL,
   `modified_at` datetime NULL DEFAULT NULL,
   `deleted_at` datetime NULL DEFAULT NULL,
   CONSTRAINT PK_ShoppingCart PRIMARY KEY (`id`) USING BTREE,
-  CONSTRAINT FK_ShoppingCart_Users FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+  CONSTRAINT FK_ShoppingCart_Customer FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id`)
 );
 
 CREATE TABLE IF NOT EXISTS `shop`.`shopping_cart_item` (

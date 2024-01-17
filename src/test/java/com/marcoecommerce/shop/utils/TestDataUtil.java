@@ -9,14 +9,14 @@ import com.marcoecommerce.shop.model.productDiscount.ProductDiscountEntity;
 import com.marcoecommerce.shop.model.productInventory.ProductInventoryEntity;
 import com.marcoecommerce.shop.model.shoppingCart.ShoppingCartEntity;
 import com.marcoecommerce.shop.model.shoppingCartItem.ShoppingCartItemEntity;
-import com.marcoecommerce.shop.model.user.UserDto;
+import com.marcoecommerce.shop.model.customer.CustomerDto;
 import com.marcoecommerce.shop.model.order.OrderDto;
-import com.marcoecommerce.shop.model.user.UserEntity;
+import com.marcoecommerce.shop.model.customer.CustomerEntity;
 import com.marcoecommerce.shop.model.order.OrderEntity;
 import com.marcoecommerce.shop.model.order.OrderStatus;
-import com.marcoecommerce.shop.model.userAddress.UserAddressEntity;
-import com.marcoecommerce.shop.model.userPayment.UserPaymentEntity;
-import com.marcoecommerce.shop.model.userPayment.UserPaymentType;
+import com.marcoecommerce.shop.model.customerAddress.CustomerAddressEntity;
+import com.marcoecommerce.shop.model.customerPayment.CustomerPaymentEntity;
+import com.marcoecommerce.shop.model.customerPayment.CustomerPaymentType;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -28,9 +28,9 @@ public class TestDataUtil {
     private TestDataUtil() {
     }
 
-    // User
-    public static UserEntity createUserEntityA() {
-        return UserEntity.builder()
+    // Customer
+    public static CustomerEntity createCustomerEntityA() {
+        return CustomerEntity.builder()
                 .email("aaa@example.com")
                 .phone("11111111")
                 .username("usernameA")
@@ -43,8 +43,8 @@ public class TestDataUtil {
                 .build();
     }
 
-    public static UserEntity createUserEntityB() {
-        return UserEntity.builder()
+    public static CustomerEntity createCustomerEntityB() {
+        return CustomerEntity.builder()
                 .email("bbb@example.com")
                 .phone("22222222")
                 .username("usernameB")
@@ -57,8 +57,8 @@ public class TestDataUtil {
                 .build();
     }
 
-    public static UserDto createUserDtoA() {
-        return UserDto.builder()
+    public static CustomerDto createCustomerDtoA() {
+        return CustomerDto.builder()
                 .email("aaa@example.com")
                 .phone("11111111")
                 .username("usernameA")
@@ -71,8 +71,8 @@ public class TestDataUtil {
                 .build();
     }
 
-    public static UserDto createUserDtoB() {
-        return UserDto.builder()
+    public static CustomerDto createCustomerDtoB() {
+        return CustomerDto.builder()
                 .email("bbb@example.com")
                 .phone("222222")
                 .username("usernameB")
@@ -85,9 +85,9 @@ public class TestDataUtil {
                 .build();
     }
 
-    // UserAddress
-    public static UserAddressEntity createUserAddressEntityA() {
-        return UserAddressEntity.builder()
+    // CustomerAddress
+    public static CustomerAddressEntity createCustomerAddressEntityA() {
+        return CustomerAddressEntity.builder()
                 .phone("11111111")
                 .city("city A")
                 .country("country A")
@@ -97,8 +97,8 @@ public class TestDataUtil {
                 .build();
     }
 
-    public static UserAddressEntity createUserAddressEntityB() {
-        return UserAddressEntity.builder()
+    public static CustomerAddressEntity createCustomerAddressEntityB() {
+        return CustomerAddressEntity.builder()
                 .phone("2222222")
                 .city("city B")
                 .country("country B")
@@ -108,22 +108,22 @@ public class TestDataUtil {
                 .build();
     }
 
-    // UserPayment
-    public static UserPaymentEntity createUserPaymentEntityA() {
-        return UserPaymentEntity.builder()
+    // CustomerPayment
+    public static CustomerPaymentEntity createCustomerPaymentEntityA() {
+        return CustomerPaymentEntity.builder()
                 .accountNo("663377889")
                 .expiry(LocalDate.of(2046, 9, 9))
                 .provider("HSBC")
-                .type(UserPaymentType.CREDIT_CARD)
+                .type(CustomerPaymentType.CREDIT_CARD)
                 .build();
     }
 
-    public static UserPaymentEntity createUserPaymentEntityB() {
-        return UserPaymentEntity.builder()
+    public static CustomerPaymentEntity createCustomerPaymentEntityB() {
+        return CustomerPaymentEntity.builder()
                 .accountNo("663377777")
                 .expiry(LocalDate.of(2041, 8, 1))
                 .provider("Citi")
-                .type(UserPaymentType.CREDIT_CARD)
+                .type(CustomerPaymentType.CREDIT_CARD)
                 .build();
     }
 

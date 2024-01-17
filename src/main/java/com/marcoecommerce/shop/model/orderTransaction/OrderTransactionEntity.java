@@ -1,10 +1,6 @@
 package com.marcoecommerce.shop.model.orderTransaction;
 
 import com.marcoecommerce.shop.model.order.OrderEntity;
-import com.marcoecommerce.shop.model.order.OrderStatus;
-import com.marcoecommerce.shop.model.user.UserEntity;
-import com.marcoecommerce.shop.model.userAddress.UserAddressEntity;
-import com.marcoecommerce.shop.model.userPayment.UserPaymentEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;

@@ -1,1 +1,1 @@
-SELECT * FROM `shop`.`users`;
+SELECT * FROM `shop`.`customer`;

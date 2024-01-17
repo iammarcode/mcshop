@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface OrderService {
-    OrderEntity create(OrderEntity userEntity);
+    OrderEntity create(OrderEntity customerEntity);
 
     List<OrderEntity> findAll();
 

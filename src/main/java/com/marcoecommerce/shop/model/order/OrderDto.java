@@ -2,13 +2,9 @@ package com.marcoecommerce.shop.model.order;
 
 import com.marcoecommerce.shop.model.orderItem.OrderItemEntity;
 import com.marcoecommerce.shop.model.orderTransaction.OrderTransactionEntity;
-import com.marcoecommerce.shop.model.user.UserEntity;
-import com.marcoecommerce.shop.model.userAddress.UserAddressEntity;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+import com.marcoecommerce.shop.model.customer.CustomerEntity;
+import com.marcoecommerce.shop.model.customerAddress.CustomerAddressEntity;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -27,9 +23,9 @@ public class OrderDto {
 
     private BigDecimal total;
 
-    private UserEntity user;
+    private CustomerEntity customer;
 
-    private UserAddressEntity address;
+    private CustomerAddressEntity address;
 
     private OrderTransactionEntity transaction;
 

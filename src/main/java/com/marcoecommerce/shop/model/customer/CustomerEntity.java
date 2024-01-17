@@ -1,9 +1,9 @@
-package com.marcoecommerce.shop.model.user;
+package com.marcoecommerce.shop.model.customer;
 
 import com.marcoecommerce.shop.model.order.OrderEntity;
 import com.marcoecommerce.shop.model.shoppingCart.ShoppingCartEntity;
-import com.marcoecommerce.shop.model.userAddress.UserAddressEntity;
-import com.marcoecommerce.shop.model.userPayment.UserPaymentEntity;
+import com.marcoecommerce.shop.model.customerAddress.CustomerAddressEntity;
+import com.marcoecommerce.shop.model.customerPayment.CustomerPaymentEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Email;
@@ -19,8 +19,8 @@ import java.util.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Entity(name = "users")
-public class UserEntity {
+@Entity(name = "customer")
+public class CustomerEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -47,34 +47,34 @@ public class UserEntity {
     @Column(name = "last_name")
     private String lastName;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<UserAddressEntity> addressList = new ArrayList<>();
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<CustomerAddressEntity> addressList = new ArrayList<>();
 
-    public void addAddress(UserAddressEntity address) {
+    public void addAddress(CustomerAddressEntity address) {
         this.addressList.add(address);
-        address.setUser(this);
+        address.setCustomer(this);
     }
 
-    public void removeAddress(UserAddressEntity address) {
+    public void removeAddress(CustomerAddressEntity address) {
         this.addressList.remove(address);
-        address.setUser(null);
+        address.setCustomer(null);
     }
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<UserPaymentEntity> paymentList = new ArrayList<>();
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<CustomerPaymentEntity> paymentList = new ArrayList<>();
 
-    public void addPayment(UserPaymentEntity payment) {
+    public void addPayment(CustomerPaymentEntity payment) {
         this.paymentList.add(payment);
-        payment.setUser(this);
+        payment.setCustomer(this);
     }
 
-    public void removePayment(UserPaymentEntity payment) {
+    public void removePayment(CustomerPaymentEntity payment) {
         this.paymentList.remove(payment);
-        payment.setUser(null);
+        payment.setCustomer(null);
     }
 
     @OneToMany(
-            mappedBy = "user",
+            mappedBy = "customer",
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL
     )
@@ -82,29 +82,29 @@ public class UserEntity {
 
     public void addOrder(OrderEntity order) {
         this.orderList.add(order);
-        order.setUser(this);
+        order.setCustomer(this);
     }
 
     public void removeOrder(OrderEntity order) {
         this.orderList.remove(order);
-        order.setUser(null);
+        order.setCustomer(null);
     }
 
     @OneToOne(
-            mappedBy = "user",
+            mappedBy = "customer",
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL
     )
     private ShoppingCartEntity shoppingCart;
 
     public void addShoppingCart(ShoppingCartEntity shoppingCart) {
-        shoppingCart.setUser(this);
+        shoppingCart.setCustomer(this);
         this.setShoppingCart(shoppingCart);
     }
 
     public void removeShoppingCart() {
         if (this.shoppingCart != null) {
-            this.shoppingCart.setUser(null);
+            this.shoppingCart.setCustomer(null);
             this.shoppingCart = null;
         }
     }

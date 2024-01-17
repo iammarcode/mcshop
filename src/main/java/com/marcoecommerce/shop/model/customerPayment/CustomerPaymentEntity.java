@@ -1,6 +1,6 @@
-package com.marcoecommerce.shop.model.userPayment;
+package com.marcoecommerce.shop.model.customerPayment;
 
-import com.marcoecommerce.shop.model.user.UserEntity;
+import com.marcoecommerce.shop.model.customer.CustomerEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -16,15 +16,15 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "user_payment")
-public class UserPaymentEntity {
+@Table(name = "customer_payment")
+public class CustomerPaymentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "type")
     @NotNull
-    private UserPaymentType type;
+    private CustomerPaymentType type;
 
     @Column(name = "provider")
     @NotNull
@@ -38,8 +38,8 @@ public class UserPaymentEntity {
     private LocalDate expiry;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private UserEntity user;
+    @JoinColumn(name = "customer_id")
+    private CustomerEntity customer;
 
     @Column(name = "created_at")
     @CreationTimestamp

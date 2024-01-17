@@ -1,11 +1,7 @@
 package com.marcoecommerce.shop.model.shoppingCart;
 
-import com.marcoecommerce.shop.model.user.UserEntity;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+import com.marcoecommerce.shop.model.customer.CustomerEntity;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -20,7 +16,7 @@ public class ShoppingCartDto {
 
     private BigDecimal total;
 
-    private UserEntity user;
+    private CustomerEntity customer;
 
     private LocalDateTime createdAt;
 

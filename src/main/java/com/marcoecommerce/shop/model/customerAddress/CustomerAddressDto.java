@@ -1,22 +1,16 @@
-package com.marcoecommerce.shop.model.userAddress;
+package com.marcoecommerce.shop.model.customerAddress;
 
-import com.marcoecommerce.shop.model.user.UserDto;
-import com.marcoecommerce.shop.model.user.UserEntity;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+import com.marcoecommerce.shop.model.customer.CustomerDto;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @EqualsAndHashCode(callSuper = false)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserAddressDto {
+public class CustomerAddressDto {
     private Long id;
 
     private String addressLine1;
@@ -31,7 +25,7 @@ public class UserAddressDto {
 
     private String phone;
 
-    private UserDto user;
+    private CustomerDto customer;
 
     private LocalDateTime createdAt;
 

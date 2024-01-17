@@ -1,6 +1,6 @@
-package com.marcoecommerce.shop.model.userAddress;
+package com.marcoecommerce.shop.model.customerAddress;
 
-import com.marcoecommerce.shop.model.user.UserEntity;
+import com.marcoecommerce.shop.model.customer.CustomerEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -8,16 +8,15 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
-@EqualsAndHashCode(callSuper = false, exclude = "user")
+@EqualsAndHashCode(callSuper = false, exclude = "customer")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Entity(name = "user_address")
-@ToString(exclude = "user")
-public class UserAddressEntity {
+@Entity(name = "customer_address")
+@ToString(exclude = "customer")
+public class CustomerAddressEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -46,8 +45,8 @@ public class UserAddressEntity {
 
     // owning side
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id") // join foreign key column
-    private UserEntity user;
+    @JoinColumn(name = "customer_id") // join foreign key column
+    private CustomerEntity customer;
 
     @Column(name = "created_at")
     @CreationTimestamp

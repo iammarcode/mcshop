@@ -23,8 +23,8 @@ public class OrderMapperUnitTest {
         // given
         OrderEntity orderAEntity = TestDataUtil.createOrderEntityA();
         orderAEntity.setTransaction(TestDataUtil.createOrderTransactionEntityA());
-        orderAEntity.setUser(TestDataUtil.createUserEntityA());
-        orderAEntity.setAddress(TestDataUtil.createUserAddressEntityA());
+        orderAEntity.setCustomer(TestDataUtil.createCustomerEntityA());
+        orderAEntity.setAddress(TestDataUtil.createCustomerAddressEntityA());
         orderAEntity.setOrderItemList(List.of(TestDataUtil.createOrderItemEntityA(), TestDataUtil.createOrderItemEntityB()));
 
         // when
@@ -37,7 +37,7 @@ public class OrderMapperUnitTest {
         assertEquals(orderDtoA.getOrderItemList(), orderAEntity.getOrderItemList());
         assertEquals(orderDtoA.getAddress(), orderAEntity.getAddress());
         assertEquals(orderDtoA.getTransaction(), orderAEntity.getTransaction());
-        assertEquals(orderDtoA.getUser(), orderAEntity.getUser());
+        assertEquals(orderDtoA.getCustomer(), orderAEntity.getCustomer());
     }
 
     @Test
@@ -45,8 +45,8 @@ public class OrderMapperUnitTest {
         // given
         OrderDto orderADto = TestDataUtil.createOrderDtoA();
         orderADto.setTransaction(TestDataUtil.createOrderTransactionEntityA());
-        orderADto.setUser(TestDataUtil.createUserEntityA());
-        orderADto.setAddress(TestDataUtil.createUserAddressEntityA());
+        orderADto.setCustomer(TestDataUtil.createCustomerEntityA());
+        orderADto.setAddress(TestDataUtil.createCustomerAddressEntityA());
         orderADto.setOrderItemList(List.of(TestDataUtil.createOrderItemEntityA(), TestDataUtil.createOrderItemEntityB()));
 
         // when
@@ -59,7 +59,7 @@ public class OrderMapperUnitTest {
         assertEquals(orderAEntity.getOrderItemList(), orderADto.getOrderItemList());
         assertEquals(orderAEntity.getAddress(), orderADto.getAddress());
         assertEquals(orderAEntity.getTransaction(), orderADto.getTransaction());
-        assertEquals(orderAEntity.getUser(), orderADto.getUser());
+        assertEquals(orderAEntity.getCustomer(), orderADto.getCustomer());
     }
 
 }

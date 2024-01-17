@@ -2,7 +2,7 @@ package com.marcoecommerce.shop.repository;
 
 
 import com.marcoecommerce.shop.model.order.OrderEntity;
-import com.marcoecommerce.shop.model.user.UserEntity;
+import com.marcoecommerce.shop.model.customer.CustomerEntity;
 import com.marcoecommerce.shop.utils.TestDataUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -45,7 +45,7 @@ import java.util.Optional;
 public class OrderRepositoryIntegrationTest {
 
     @Autowired
-    private UserRepository userRepository;
+    private CustomerRepository customerRepository;
 
     @Autowired
     private OrderRepository underTest;
@@ -53,13 +53,13 @@ public class OrderRepositoryIntegrationTest {
     @Autowired
     private TestEntityManager entityManager;
     
-    private UserEntity userA;
+    private CustomerEntity customerA;
     private OrderEntity orderA;
     private OrderEntity orderB;
     
     @BeforeEach
     public void setUp() {
-        userA = TestDataUtil.createUserEntityA();
+        customerA = TestDataUtil.createCustomerEntityA();
         orderA = TestDataUtil.createOrderEntityA();
         orderB = TestDataUtil.createOrderEntityB();
     }
@@ -175,18 +175,18 @@ public class OrderRepositoryIntegrationTest {
 
     // delete from parent side
     @Test
-    public void givenOrder_whenDeleteOrderFromUser_thenOrderDeleted() {
+    public void givenOrder_whenDeleteOrderFromCustomer_thenOrderDeleted() {
         // given
-        userA.addOrder(orderA);
-        userA.addOrder(orderB);
-        UserEntity userSaved = entityManager.persistAndFlush(userA);
+        customerA.addOrder(orderA);
+        customerA.addOrder(orderB);
+        CustomerEntity customerSaved = entityManager.persistAndFlush(customerA);
 
         assertThat(underTest.count()).isEqualTo(2);
 
         // when
-        OrderEntity orderNeedDeleted = userSaved.getOrderList().get(0);
-        userSaved.removeOrder(orderNeedDeleted);
-        userRepository.save(userSaved);
+        OrderEntity orderNeedDeleted = customerSaved.getOrderList().get(0);
+        customerSaved.removeOrder(orderNeedDeleted);
+        customerRepository.save(customerSaved);
         underTest.deleteById(orderNeedDeleted.getId());
 
         // then

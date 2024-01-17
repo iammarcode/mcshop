@@ -3,8 +3,8 @@ package com.marcoecommerce.shop.model.order;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.marcoecommerce.shop.model.orderItem.OrderItemEntity;
 import com.marcoecommerce.shop.model.orderTransaction.OrderTransactionEntity;
-import com.marcoecommerce.shop.model.user.UserEntity;
-import com.marcoecommerce.shop.model.userAddress.UserAddressEntity;
+import com.marcoecommerce.shop.model.customer.CustomerEntity;
+import com.marcoecommerce.shop.model.customerAddress.CustomerAddressEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -38,12 +38,12 @@ public class OrderEntity {
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private UserEntity user;
+    @JoinColumn(name = "customer_id")
+    private CustomerEntity customer;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_address_id")
-    private UserAddressEntity address;
+    @JoinColumn(name = "customer_address_id")
+    private CustomerAddressEntity address;
 
     @OneToOne(
             mappedBy = "order",

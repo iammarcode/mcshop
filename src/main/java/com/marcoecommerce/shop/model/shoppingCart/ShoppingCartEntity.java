@@ -1,8 +1,7 @@
 package com.marcoecommerce.shop.model.shoppingCart;
 
-import com.marcoecommerce.shop.model.product.ProductEntity;
 import com.marcoecommerce.shop.model.shoppingCartItem.ShoppingCartItemEntity;
-import com.marcoecommerce.shop.model.user.UserEntity;
+import com.marcoecommerce.shop.model.customer.CustomerEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -29,8 +28,8 @@ public class ShoppingCartEntity {
     private BigDecimal total;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private UserEntity user;
+    @JoinColumn(name = "customer_id")
+    private CustomerEntity customer;
 
     @OneToMany(
             mappedBy = "shoppingCart",
