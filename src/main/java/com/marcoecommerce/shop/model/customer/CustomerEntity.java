@@ -5,11 +5,12 @@ import com.marcoecommerce.shop.model.shoppingCart.ShoppingCartEntity;
 import com.marcoecommerce.shop.model.customerAddress.CustomerAddressEntity;
 import com.marcoecommerce.shop.model.customerPayment.CustomerPaymentEntity;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -20,26 +21,24 @@ import java.util.*;
 @AllArgsConstructor
 @Builder
 @Entity(name = "customer")
-public class CustomerEntity {
+public class CustomerEntity implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "email")
-    @NotNull
-    @Email
+    @NotEmpty
     private String email;
 
+    @Column(name = "password")
+    @NotEmpty
+    private String password;
+
     @Column(name = "phone")
-    @NotNull
     private String phone;
 
-    @Column(name = "username")
-    @NotNull
-    private String username;
-
-    @Column(name = "password")
-    private String password;
+    @Column(name = "nickname")
+    private String nickname;
 
     @Column(name = "first_name")
     private String firstName;
@@ -119,4 +118,34 @@ public class CustomerEntity {
 
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of();
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }

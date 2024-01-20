@@ -2,7 +2,7 @@ package com.marcoecommerce.shop.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.marcoecommerce.shop.mapper.impl.CustomerMapper;
-import com.marcoecommerce.shop.model.customer.CustomerDto;
+import com.marcoecommerce.shop.model.customer.CustomerResponse;
 import com.marcoecommerce.shop.model.customer.CustomerEntity;
 import com.marcoecommerce.shop.service.CustomerService;
 import com.marcoecommerce.shop.utils.TestDataUtil;
@@ -34,8 +34,8 @@ public class CustomerControllerUnitTest {
 
     private CustomerEntity customerAEntity;
     private CustomerEntity customerBEntity;
-    private CustomerDto customerADto;
-    private CustomerDto customerBDto;
+    private CustomerResponse customerADto;
+    private CustomerResponse customerBDto;
 
     @BeforeEach
     public void setUp() {
@@ -44,10 +44,10 @@ public class CustomerControllerUnitTest {
         customerADto = TestDataUtil.createCustomerDtoA();
         customerBDto = TestDataUtil.createCustomerDtoB();
 
-        Mockito.when(customerMapper.mapFrom(customerADto)).thenReturn(customerAEntity);
-        Mockito.when(customerMapper.mapFrom(customerBDto)).thenReturn(customerBEntity);
-        Mockito.when(customerMapper.mapTo(customerAEntity)).thenReturn(customerADto);
-        Mockito.when(customerMapper.mapTo(customerBEntity)).thenReturn(customerBDto);
+        Mockito.when(customerMapper.toEntity(customerADto)).thenReturn(customerAEntity);
+        Mockito.when(customerMapper.toEntity(customerBDto)).thenReturn(customerBEntity);
+        Mockito.when(customerMapper.toResponse(customerAEntity)).thenReturn(customerADto);
+        Mockito.when(customerMapper.toResponse(customerBEntity)).thenReturn(customerBDto);
     }
 
     @Test
@@ -64,7 +64,7 @@ public class CustomerControllerUnitTest {
         ).andExpect(
                 MockMvcResultMatchers.status().isCreated()
         ).andExpect(
-                MockMvcResultMatchers.jsonPath("$.username").value(customerAEntity.getUsername())
+                MockMvcResultMatchers.jsonPath("$.email").value(customerAEntity.getNickname())
         );
     }
 
@@ -82,9 +82,9 @@ public class CustomerControllerUnitTest {
         ).andExpect(
                 MockMvcResultMatchers.jsonPath("$.length()").value(2)
         ).andExpect(
-                MockMvcResultMatchers.jsonPath("$[0].username").value(customerAEntity.getUsername())
+                MockMvcResultMatchers.jsonPath("$[0].email").value(customerAEntity.getNickname())
         ).andExpect(
-                MockMvcResultMatchers.jsonPath("$[1].username").value(customerBEntity.getUsername())
+                MockMvcResultMatchers.jsonPath("$[1].email").value(customerBEntity.getNickname())
         );
     }
 
@@ -103,7 +103,7 @@ public class CustomerControllerUnitTest {
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
         ).andExpect(
-                MockMvcResultMatchers.jsonPath("$.username").value(customerAEntity.getUsername())
+                MockMvcResultMatchers.jsonPath("$.email").value(customerAEntity.getNickname())
         );
     }
 
@@ -139,7 +139,7 @@ public class CustomerControllerUnitTest {
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
         ).andExpect(
-                MockMvcResultMatchers.jsonPath("$.username").value(customerAEntity.getUsername())
+                MockMvcResultMatchers.jsonPath("$.email").value(customerAEntity.getNickname())
         );
     }
 
@@ -155,7 +155,6 @@ public class CustomerControllerUnitTest {
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(MockMvcResultMatchers.status().isNotFound());
     }
-
 
     @Test
     public void givenCustomer_whenCallDelete_thenReturn204() throws Exception {

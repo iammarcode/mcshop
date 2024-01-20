@@ -17,12 +17,12 @@ public class OrderMapper implements Mapper<OrderEntity, OrderDto> {
     }
 
     @Override
-    public OrderDto mapTo(OrderEntity order) {
+    public OrderDto toResponse(OrderEntity order) {
         return modelMapper.map(order, OrderDto.class);
     }
 
     @Override
-    public OrderEntity mapFrom(OrderDto orderDto) {
+    public OrderEntity toEntity(OrderDto orderDto) {
         return modelMapper.map(orderDto, OrderEntity.class);
     }
 

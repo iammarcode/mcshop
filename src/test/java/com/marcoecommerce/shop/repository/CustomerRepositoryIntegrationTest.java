@@ -81,11 +81,11 @@ public class CustomerRepositoryIntegrationTest {
         CustomerEntity customerSaved = entityManager.persistAndFlush(customerA);
 
         // when
-        customerSaved.setUsername("Updated Username");
+        customerSaved.setNickname("Updated Username");
         CustomerEntity result = underTest.save(customerSaved);
 
         // then
-        assertThat(result.getUsername()).isEqualTo("Updated Username");
+        assertThat(result.getNickname()).isEqualTo("Updated Username");
     }
 
     @Test
@@ -169,6 +169,22 @@ public class CustomerRepositoryIntegrationTest {
 
         // then
         assertThat(result).isEqualTo(0);
+    }
+
+    @Test
+    public void givenEmailPhoneUsername_whenExistByEmailPhoneUsername_thenReturnTrue() {
+        // given
+        entityManager.persistAndFlush(customerA);
+
+        // when
+        boolean isEmailExist = underTest.existsByEmail(customerA.getEmail());
+        boolean isPhoneExist = underTest.existsByPhone(customerA.getPhone());
+        boolean isUsernameExist = underTest.existsByUsername(customerA.getNickname());
+
+        // then
+        assertThat(isEmailExist).isTrue();
+        assertThat(isPhoneExist).isTrue();
+        assertThat(isUsernameExist).isTrue();
     }
 
     @Test

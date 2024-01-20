@@ -107,13 +107,13 @@ public class CustomerServiceImplUnitTest {
         when(customerRepository.save(customerA)).thenReturn(customerA);
 
         // when
-        customerA.setUsername("updated username");
+        customerA.setNickname("updated nickname");
         CustomerEntity customerUpdated = customerService.update(customerA.getId(), customerA);
 
         // then
         verify(customerRepository, times(1)).save(any(CustomerEntity.class));
         verify(customerRepository, times(1)).findById(any(Long.class));
-        assertEquals("updated username", customerUpdated.getUsername());
+        assertEquals("updated nickname", customerUpdated.getNickname());
     }
 
 }

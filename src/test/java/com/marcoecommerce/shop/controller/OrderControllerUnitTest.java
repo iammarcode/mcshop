@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.marcoecommerce.shop.mapper.impl.OrderMapper;
 import com.marcoecommerce.shop.model.order.OrderDto;
 import com.marcoecommerce.shop.model.order.OrderEntity;
-import com.marcoecommerce.shop.model.order.OrderDto;
 import com.marcoecommerce.shop.service.OrderService;
 import com.marcoecommerce.shop.utils.TestDataUtil;
 import org.junit.jupiter.api.BeforeEach;
@@ -45,10 +44,10 @@ public class OrderControllerUnitTest {
         orderADto = TestDataUtil.createOrderDtoA();
         orderBDto = TestDataUtil.createOrderDtoB();
 
-        Mockito.when(orderMapper.mapFrom(orderADto)).thenReturn(orderAEntity);
-        Mockito.when(orderMapper.mapFrom(orderBDto)).thenReturn(orderBEntity);
-        Mockito.when(orderMapper.mapTo(orderAEntity)).thenReturn(orderADto);
-        Mockito.when(orderMapper.mapTo(orderBEntity)).thenReturn(orderBDto);
+        Mockito.when(orderMapper.toEntity(orderADto)).thenReturn(orderAEntity);
+        Mockito.when(orderMapper.toEntity(orderBDto)).thenReturn(orderBEntity);
+        Mockito.when(orderMapper.toResponse(orderAEntity)).thenReturn(orderADto);
+        Mockito.when(orderMapper.toResponse(orderBEntity)).thenReturn(orderBDto);
     }
 
     @Test

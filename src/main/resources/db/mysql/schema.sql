@@ -5,8 +5,8 @@ CREATE SCHEMA IF NOT EXISTS shop;
 CREATE TABLE IF NOT EXISTS `shop`.`customer` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `email` varchar(100) NOT NULL,
-  `phone` varchar(100) NOT NULL,
-  `username` varchar(100) NOT NULL,
+  `phone` varchar(100) NULL DEFAULT NULL,
+  `nickname` varchar(100) NULL DEFAULT NULL,
   `password` varchar(100) NULL DEFAULT NULL,
   `first_name` varchar(100) NULL DEFAULT NULL,
   `last_name` varchar(100) NULL DEFAULT NULL,
@@ -15,9 +15,7 @@ CREATE TABLE IF NOT EXISTS `shop`.`customer` (
   `modified_at` datetime NULL DEFAULT NULL,
   `deleted_at` datetime NULL DEFAULT NULL,
   CONSTRAINT PK_Customer PRIMARY KEY (`id`) USING BTREE,
-  CONSTRAINT UQ_Customer_Email UNIQUE (`email`),
-  CONSTRAINT UQ_Customer_Phone UNIQUE (`phone`),
-  CONSTRAINT UQ_Customer_Username UNIQUE (`username`)
+  CONSTRAINT UQ_Customer_Email UNIQUE (`email`)
 );
 
 CREATE TABLE IF NOT EXISTS `shop`.`customer_address` (

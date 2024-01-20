@@ -1,6 +1,6 @@
 package com.marcoecommerce.shop.model.customerAddress;
 
-import com.marcoecommerce.shop.model.customer.CustomerDto;
+import com.marcoecommerce.shop.model.customer.CustomerResponse;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -25,7 +25,7 @@ public class CustomerAddressDto {
 
     private String phone;
 
-    private CustomerDto customer;
+    private CustomerResponse customer;
 
     private LocalDateTime createdAt;
 

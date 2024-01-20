@@ -1,14 +1,16 @@
 package com.marcoecommerce.shop.mapper.impl;
 
 import com.marcoecommerce.shop.mapper.Mapper;
+import com.marcoecommerce.shop.model.auth.LoginRequest;
+import com.marcoecommerce.shop.model.auth.RegisterRequest;
 import com.marcoecommerce.shop.model.customer.CustomerEntity;
-import com.marcoecommerce.shop.model.customer.CustomerDto;
+import com.marcoecommerce.shop.model.customer.CustomerResponse;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CustomerMapper implements Mapper<CustomerEntity, CustomerDto> {
+public class CustomerMapper implements Mapper<CustomerEntity, CustomerResponse> {
     private final ModelMapper modelMapper;
 
     @Autowired
@@ -17,14 +19,23 @@ public class CustomerMapper implements Mapper<CustomerEntity, CustomerDto> {
     }
 
     @Override
-    public CustomerDto mapTo(CustomerEntity customer) {
-        return modelMapper.map(customer, CustomerDto.class);
+    public CustomerResponse toResponse(CustomerEntity customerEntity) {
+        return modelMapper.map(customerEntity, CustomerResponse.class);
     }
 
     @Override
-    public CustomerEntity mapFrom(CustomerDto customerDto) {
-        return modelMapper.map(customerDto, CustomerEntity.class);
+    public CustomerEntity toEntity(CustomerResponse customerResponse) {
+        return modelMapper.map(customerResponse, CustomerEntity.class);
     }
+
+    public CustomerEntity toEntityRegister(RegisterRequest registerRequest) {
+        return modelMapper.map(registerRequest, CustomerEntity.class);
+    }
+
+    public CustomerEntity toEntityLogin(LoginRequest loginRequest) {
+        return modelMapper.map(loginRequest, CustomerEntity.class);
+    }
+
 
 
 }

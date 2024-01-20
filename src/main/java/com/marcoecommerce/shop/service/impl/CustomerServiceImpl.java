@@ -7,6 +7,9 @@ import com.marcoecommerce.shop.model.customerPayment.CustomerPaymentEntity;
 import com.marcoecommerce.shop.repository.CustomerRepository;
 import com.marcoecommerce.shop.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -50,7 +53,7 @@ public class CustomerServiceImpl implements CustomerService {
         customer.setId(id);
 
         return customerRepository.findById(id).map(existingCustomer -> {
-            Optional.ofNullable(customer.getUsername()).ifPresent(existingCustomer::setUsername);
+            Optional.ofNullable(customer.getNickname()).ifPresent(existingCustomer::setNickname);
             Optional.ofNullable(customer.getEmail()).ifPresent(existingCustomer::setEmail);
             Optional.ofNullable(customer.getPhone()).ifPresent(existingCustomer::setPhone);
             Optional.ofNullable(customer.getPassword()).ifPresent(existingCustomer::setPassword);
@@ -75,5 +78,15 @@ public class CustomerServiceImpl implements CustomerService {
 
             return customerRepository.save(existingCustomer);
         }).orElseThrow(() -> new RuntimeException("Customer does not exist"));
+    }
+
+    @Override
+    public boolean isEmailExit(String email) {
+        return customerRepository.existsByEmail(email);
+    }
+
+    @Override
+    public Optional<CustomerEntity> findByEmail(String email) {
+        return customerRepository.findByEmail(email);
     }
 }
