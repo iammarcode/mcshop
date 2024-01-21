@@ -1,5 +1,6 @@
 package com.marcoecommerce.shop.model.auth;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -7,18 +8,20 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+import java.util.Date;
+
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class TokenResponse {
-
-    @JsonProperty("access_token")
     private String accessToken;
-    @JsonProperty("refresh_token")
+
     private String refreshToken;
-    @JsonProperty("message")
+
     private String message;
-    @JsonProperty("expire_at")
-    private Long expire_at;
+
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime expireAt;
 }

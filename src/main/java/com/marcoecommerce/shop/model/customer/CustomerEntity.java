@@ -1,5 +1,6 @@
 package com.marcoecommerce.shop.model.customer;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.marcoecommerce.shop.model.order.OrderEntity;
 import com.marcoecommerce.shop.model.shoppingCart.ShoppingCartEntity;
 import com.marcoecommerce.shop.model.customerAddress.CustomerAddressEntity;
@@ -110,13 +111,16 @@ public class CustomerEntity implements UserDetails {
 
     @Column(name = "created_at")
     @CreationTimestamp
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
 
     @Column(name = "modified_at")
     @UpdateTimestamp
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime modifiedAt;
 
     @Column(name = "deleted_at")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime deletedAt;
 
     @Override

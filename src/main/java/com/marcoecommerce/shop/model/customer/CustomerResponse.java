@@ -1,5 +1,6 @@
 package com.marcoecommerce.shop.model.customer;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.marcoecommerce.shop.model.order.OrderEntity;
 import com.marcoecommerce.shop.model.shoppingCart.ShoppingCartEntity;
 import com.marcoecommerce.shop.model.customerAddress.CustomerAddressEntity;
@@ -37,9 +38,12 @@ public class CustomerResponse {
 
     private ShoppingCartEntity shoppingCart;
 
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
 
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime modifiedAt;
 
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime deletedAt;
 }

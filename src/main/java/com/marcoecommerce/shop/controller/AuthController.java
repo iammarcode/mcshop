@@ -54,7 +54,7 @@ public class AuthController {
 
         String jwt = jwtUtil.generateToken(customer);
 
-        return ResponseEntity.ok(TokenResponse.builder().accessToken(jwt).expire_at(jwtUtil.getExpirationTime()).build());
+        return ResponseEntity.ok(TokenResponse.builder().accessToken(jwt).expireAt(jwtUtil.getExpirationTime()).build());
     }
 
 }
