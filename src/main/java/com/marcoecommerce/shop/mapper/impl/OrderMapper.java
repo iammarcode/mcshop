@@ -17,7 +17,7 @@ public class OrderMapper implements Mapper<OrderEntity, OrderDto> {
     }
 
     @Override
-    public OrderDto toResponse(OrderEntity order) {
+    public OrderDto toDto(OrderEntity order) {
         return modelMapper.map(order, OrderDto.class);
     }
 

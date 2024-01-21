@@ -46,8 +46,8 @@ public class OrderControllerUnitTest {
 
         Mockito.when(orderMapper.toEntity(orderADto)).thenReturn(orderAEntity);
         Mockito.when(orderMapper.toEntity(orderBDto)).thenReturn(orderBEntity);
-        Mockito.when(orderMapper.toResponse(orderAEntity)).thenReturn(orderADto);
-        Mockito.when(orderMapper.toResponse(orderBEntity)).thenReturn(orderBDto);
+        Mockito.when(orderMapper.toDto(orderAEntity)).thenReturn(orderADto);
+        Mockito.when(orderMapper.toDto(orderBEntity)).thenReturn(orderBDto);
     }
 
     @Test

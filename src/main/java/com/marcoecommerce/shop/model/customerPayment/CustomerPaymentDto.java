@@ -1,6 +1,6 @@
 package com.marcoecommerce.shop.model.customerPayment;
 
-import com.marcoecommerce.shop.model.customer.CustomerResponse;
+import com.marcoecommerce.shop.model.customer.CustomerDto;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -22,7 +22,7 @@ public class CustomerPaymentDto {
 
     private LocalDate expiry;
 
-    private CustomerResponse customer;
+    private CustomerDto customer;
 
     private LocalDateTime createdAt;
 

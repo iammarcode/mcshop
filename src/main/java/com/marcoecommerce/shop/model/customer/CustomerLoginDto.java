@@ -1,13 +1,16 @@
-package com.marcoecommerce.shop.model.auth;
+package com.marcoecommerce.shop.model.customer;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoginRequest {
+public class CustomerLoginDto {
     @NotBlank
     private String email;
 

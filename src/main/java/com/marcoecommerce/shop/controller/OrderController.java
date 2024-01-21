@@ -25,21 +25,21 @@ public class OrderController {
         OrderEntity orderEntity = orderMapper.toEntity(orderDto);
         OrderEntity savedOrderEntity = orderService.create(orderEntity);
 
-        return new ResponseEntity<>(orderMapper.toResponse(savedOrderEntity), HttpStatus.CREATED);
+        return new ResponseEntity<>(orderMapper.toDto(savedOrderEntity), HttpStatus.CREATED);
     }
 
     @GetMapping(path = "/orders")
     public ResponseEntity<List<OrderDto>> getOrders() {
         List<OrderEntity> orderEntities = orderService.findAll();
         return new ResponseEntity<>(orderEntities.stream()
-                .map(orderMapper::toResponse)
+                .map(orderMapper::toDto)
                 .collect(Collectors.toList()), HttpStatus.OK);
     }
 
     @GetMapping(path = "/orders/{id}")
     public ResponseEntity<OrderDto> getOrderById(@PathVariable("id") Long id) {
         Optional<OrderEntity> foundOrder = orderService.findById(id);
-        return foundOrder.map(orderEntity -> new ResponseEntity<>(orderMapper.toResponse(orderEntity), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return foundOrder.map(orderEntity -> new ResponseEntity<>(orderMapper.toDto(orderEntity), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PatchMapping(path = "/orders/{id}")
@@ -54,7 +54,7 @@ public class OrderController {
         OrderEntity orderEntity = orderMapper.toEntity(orderDto);
         OrderEntity updatedOrder = orderService.update(id, orderEntity);
         return new ResponseEntity<>(
-                orderMapper.toResponse(updatedOrder),
+                orderMapper.toDto(updatedOrder),
                 HttpStatus.OK);
     }
 

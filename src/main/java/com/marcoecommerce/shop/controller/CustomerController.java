@@ -1,7 +1,7 @@
 package com.marcoecommerce.shop.controller;
 
 import com.marcoecommerce.shop.mapper.impl.CustomerMapper;
-import com.marcoecommerce.shop.model.customer.CustomerResponse;
+import com.marcoecommerce.shop.model.customer.CustomerDto;
 import com.marcoecommerce.shop.model.customer.CustomerEntity;
 import com.marcoecommerce.shop.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,39 +22,39 @@ public class CustomerController {
     private CustomerMapper customerMapper;
 
     @GetMapping(path = "")
-    public ResponseEntity<List<CustomerResponse>> getCustomers() {
+    public ResponseEntity<List<CustomerDto>> getCustomers() {
         List<CustomerEntity> customerEntities = customerService.findAll();
 
         return new ResponseEntity<>(customerEntities.stream()
-                .map(customerMapper::toResponse)
+                .map(customerMapper::toDto)
                 .collect(Collectors.toList()), HttpStatus.OK);
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<CustomerResponse> getCustomerById(@PathVariable("id") Long id) {
+    public ResponseEntity<CustomerDto> getCustomerById(@PathVariable("id") Long id) {
         Optional<CustomerEntity> foundCustomer = customerService.findById(id);
 
-        return foundCustomer.map(customerEntity -> new ResponseEntity<>(customerMapper.toResponse(customerEntity), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return foundCustomer.map(customerEntity -> new ResponseEntity<>(customerMapper.toDto(customerEntity), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PatchMapping(path = "/{id}")
-    public ResponseEntity<CustomerResponse> updateCustomer(
+    public ResponseEntity<CustomerDto> updateCustomer(
             @PathVariable("id") Long id,
-            @RequestBody CustomerResponse customerResponse
+            @RequestBody CustomerDto customerDto
     ) {
         if(!customerService.isExist(id)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        CustomerEntity customerEntity = customerMapper.toEntity(customerResponse);
+        CustomerEntity customerEntity = customerMapper.toEntity(customerDto);
         CustomerEntity updatedCustomer = customerService.update(id, customerEntity);
         return new ResponseEntity<>(
-                customerMapper.toResponse(updatedCustomer),
+                customerMapper.toDto(updatedCustomer),
                 HttpStatus.OK);
     }
 
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity<CustomerResponse> deleteCustomer(@PathVariable("id") Long id) {
+    public ResponseEntity<CustomerDto> deleteCustomer(@PathVariable("id") Long id) {
         if(!customerService.isExist(id)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

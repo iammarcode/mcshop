@@ -9,7 +9,7 @@ import com.marcoecommerce.shop.model.productDiscount.ProductDiscountEntity;
 import com.marcoecommerce.shop.model.productInventory.ProductInventoryEntity;
 import com.marcoecommerce.shop.model.shoppingCart.ShoppingCartEntity;
 import com.marcoecommerce.shop.model.shoppingCartItem.ShoppingCartItemEntity;
-import com.marcoecommerce.shop.model.customer.CustomerResponse;
+import com.marcoecommerce.shop.model.customer.CustomerDto;
 import com.marcoecommerce.shop.model.order.OrderDto;
 import com.marcoecommerce.shop.model.customer.CustomerEntity;
 import com.marcoecommerce.shop.model.order.OrderEntity;
@@ -57,8 +57,8 @@ public class TestDataUtil {
                 .build();
     }
 
-    public static CustomerResponse createCustomerDtoA() {
-        return CustomerResponse.builder()
+    public static CustomerDto createCustomerDtoA() {
+        return CustomerDto.builder()
                 .email("aaa@example.com")
                 .phone("11111111")
                 .nickname("nicknameA")
@@ -70,8 +70,8 @@ public class TestDataUtil {
                 .build();
     }
 
-    public static CustomerResponse createCustomerDtoB() {
-        return CustomerResponse.builder()
+    public static CustomerDto createCustomerDtoB() {
+        return CustomerDto.builder()
                 .email("bbb@example.com")
                 .phone("222222")
                 .nickname("nicknameB")

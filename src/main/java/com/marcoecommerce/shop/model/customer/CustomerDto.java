@@ -12,11 +12,10 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 @Data
-@EqualsAndHashCode(callSuper = false, exclude = "shoppingCart")
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class CustomerResponse {
+public class CustomerDto {
     private Long id;
 
     @NotBlank

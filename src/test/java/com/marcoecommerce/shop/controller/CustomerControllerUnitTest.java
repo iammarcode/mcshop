@@ -2,7 +2,7 @@ package com.marcoecommerce.shop.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.marcoecommerce.shop.mapper.impl.CustomerMapper;
-import com.marcoecommerce.shop.model.customer.CustomerResponse;
+import com.marcoecommerce.shop.model.customer.CustomerDto;
 import com.marcoecommerce.shop.model.customer.CustomerEntity;
 import com.marcoecommerce.shop.service.CustomerService;
 import com.marcoecommerce.shop.utils.TestDataUtil;
@@ -34,8 +34,8 @@ public class CustomerControllerUnitTest {
 
     private CustomerEntity customerAEntity;
     private CustomerEntity customerBEntity;
-    private CustomerResponse customerADto;
-    private CustomerResponse customerBDto;
+    private CustomerDto customerADto;
+    private CustomerDto customerBDto;
 
     @BeforeEach
     public void setUp() {
@@ -46,8 +46,8 @@ public class CustomerControllerUnitTest {
 
         Mockito.when(customerMapper.toEntity(customerADto)).thenReturn(customerAEntity);
         Mockito.when(customerMapper.toEntity(customerBDto)).thenReturn(customerBEntity);
-        Mockito.when(customerMapper.toResponse(customerAEntity)).thenReturn(customerADto);
-        Mockito.when(customerMapper.toResponse(customerBEntity)).thenReturn(customerBDto);
+        Mockito.when(customerMapper.toDto(customerAEntity)).thenReturn(customerADto);
+        Mockito.when(customerMapper.toDto(customerBEntity)).thenReturn(customerBDto);
     }
 
     @Test
