@@ -1,15 +1,14 @@
 package com.marcoecommerce.shop.service.impl;
 
+import com.marcoecommerce.shop.exception.customer.CustomerNotFoundException;
 import com.marcoecommerce.shop.model.order.OrderEntity;
 import com.marcoecommerce.shop.model.customer.CustomerEntity;
 import com.marcoecommerce.shop.model.customerAddress.CustomerAddressEntity;
 import com.marcoecommerce.shop.model.customerPayment.CustomerPaymentEntity;
 import com.marcoecommerce.shop.repository.CustomerRepository;
 import com.marcoecommerce.shop.service.CustomerService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +17,7 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Service
+@Slf4j
 public class CustomerServiceImpl implements CustomerService {
     @Autowired
     private CustomerRepository customerRepository;
@@ -34,8 +34,16 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Optional<CustomerEntity> findById(Long id) {
-        return customerRepository.findById(id);
+    public CustomerEntity findById(Long id) {
+        Optional<CustomerEntity> customerFound = customerRepository.findById(id);
+
+        if (customerFound.isEmpty()) {
+            // TODO: log error
+            log.error("Customer not found with ID: " + id);
+            throw new CustomerNotFoundException(id);
+        }
+
+        return customerFound.get();
     }
 
     @Override
@@ -45,6 +53,12 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public void deleteById(Long id) {
+        if (!customerRepository.existsById(id)) {
+            // TODO: log error
+            log.error("Customer not found with ID: " + id);
+            throw new CustomerNotFoundException(id);
+        }
+
         customerRepository.deleteById(id);
     }
 
@@ -77,16 +91,25 @@ public class CustomerServiceImpl implements CustomerService {
             }
 
             return customerRepository.save(existingCustomer);
-        }).orElseThrow(() -> new RuntimeException("Customer does not exist"));
+        }).orElseThrow(() ->
+            {
+                // TODO: log error
+                log.error("Customer not found with ID: " + id);
+                return new CustomerNotFoundException(id);
+            }
+        );
     }
 
     @Override
-    public boolean isEmailExit(String email) {
-        return customerRepository.existsByEmail(email);
-    }
+    public CustomerEntity findByEmail(String email) {
+        Optional<CustomerEntity> customerFound = customerRepository.findByEmail(email);
 
-    @Override
-    public Optional<CustomerEntity> findByEmail(String email) {
-        return customerRepository.findByEmail(email);
+        if (customerFound.isEmpty()) {
+            // TODO: log error
+            log.error("Customer not found with email: " + email);
+            throw new CustomerNotFoundException(email);
+        }
+
+        return customerFound.get();
     }
 }

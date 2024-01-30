@@ -18,6 +18,8 @@ import java.util.*;
 public class CustomerDto {
     private Long id;
 
+    // avoid sensitive info returning, like password
+
     @NotBlank
     private String email;
 

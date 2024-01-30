@@ -32,9 +32,9 @@ public class CustomerController {
 
     @GetMapping(path = "/{id}")
     public ResponseEntity<CustomerDto> getCustomerById(@PathVariable("id") Long id) {
-        Optional<CustomerEntity> foundCustomer = customerService.findById(id);
+        CustomerEntity customerFound = customerService.findById(id);
 
-        return foundCustomer.map(customerEntity -> new ResponseEntity<>(customerMapper.toDto(customerEntity), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return new ResponseEntity<>(customerMapper.toDto(customerFound), HttpStatus.OK);
     }
 
     @PatchMapping(path = "/{id}")
@@ -42,12 +42,9 @@ public class CustomerController {
             @PathVariable("id") Long id,
             @RequestBody CustomerDto customerDto
     ) {
-        if(!customerService.isExist(id)) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
         CustomerEntity customerEntity = customerMapper.toEntity(customerDto);
         CustomerEntity updatedCustomer = customerService.update(id, customerEntity);
+
         return new ResponseEntity<>(
                 customerMapper.toDto(updatedCustomer),
                 HttpStatus.OK);
@@ -55,10 +52,6 @@ public class CustomerController {
 
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<CustomerDto> deleteCustomer(@PathVariable("id") Long id) {
-        if(!customerService.isExist(id)) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
         customerService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

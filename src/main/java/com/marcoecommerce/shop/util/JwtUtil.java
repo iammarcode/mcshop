@@ -85,6 +85,6 @@ public class JwtUtil {
     }
 
     public LocalDateTime getExpirationTime() {
-        return LocalDateTime.now().plusSeconds(JWT_EXPIRATION);
+        return LocalDateTime.now().plusSeconds(JWT_EXPIRATION / 1000);
     }
 }

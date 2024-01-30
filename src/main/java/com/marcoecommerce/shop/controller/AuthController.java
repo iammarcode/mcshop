@@ -2,6 +2,7 @@ package com.marcoecommerce.shop.controller;
 
 import com.marcoecommerce.shop.mapper.impl.CustomerMapper;
 import com.marcoecommerce.shop.model.auth.TokenDto;
+import com.marcoecommerce.shop.model.customer.CustomerDto;
 import com.marcoecommerce.shop.model.customer.CustomerLoginDto;
 import com.marcoecommerce.shop.model.customer.CustomerEntity;
 import com.marcoecommerce.shop.model.customer.CustomerRegisterDto;
@@ -9,6 +10,7 @@ import com.marcoecommerce.shop.service.AuthenticationService;
 import com.marcoecommerce.shop.service.CustomerService;
 import com.marcoecommerce.shop.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,17 +33,14 @@ public class AuthController {
     private CustomerService customerService;
 
     @PostMapping("/register")
-    public ResponseEntity<CustomerEntity> register(@RequestBody CustomerRegisterDto customerRegisterDto) throws Exception {
-        // check unique
-        if (customerService.isEmailExit(customerRegisterDto.getEmail())) {
-            throw new IllegalArgumentException("Duplicate email " + customerRegisterDto.getEmail());
-        }
-
-        // save customer
+    public ResponseEntity<CustomerDto> register(@RequestBody CustomerRegisterDto customerRegisterDto) throws Exception {
+        // create customer
         CustomerEntity customerRegister = customerMapper.toEntityRegister(customerRegisterDto);
         CustomerEntity customerSaved = authenticationService.register(customerRegister);
 
-        return ResponseEntity.ok(customerSaved);
+        // TODO: send email
+
+        return new ResponseEntity<>(customerMapper.toDto(customerSaved), HttpStatus.OK);
     }
 
     @PostMapping("/login")
@@ -51,7 +50,8 @@ public class AuthController {
 
         String jwt = jwtUtil.generateToken(customer);
 
-        return ResponseEntity.ok(TokenDto.builder().accessToken(jwt).expireAt(jwtUtil.getExpirationTime()).build());
+        return new ResponseEntity<>(TokenDto.builder().accessToken(jwt).expireAt(jwtUtil.getExpirationTime()).build(), HttpStatus.OK);
     }
 
+    // TODO: refresh token
 }

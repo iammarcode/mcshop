@@ -172,19 +172,15 @@ public class CustomerRepositoryIntegrationTest {
     }
 
     @Test
-    public void givenEmailPhoneUsername_whenExistByEmailPhoneUsername_thenReturnTrue() {
+    public void givenEmailPhoneUsername_whenExistByEmail_thenReturnTrue() {
         // given
         entityManager.persistAndFlush(customerA);
 
         // when
         boolean isEmailExist = underTest.existsByEmail(customerA.getEmail());
-        boolean isPhoneExist = underTest.existsByPhone(customerA.getPhone());
-        boolean isUsernameExist = underTest.existsByUsername(customerA.getNickname());
 
         // then
         assertThat(isEmailExist).isTrue();
-        assertThat(isPhoneExist).isTrue();
-        assertThat(isUsernameExist).isTrue();
     }
 
     @Test

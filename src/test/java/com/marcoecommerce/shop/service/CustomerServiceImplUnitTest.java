@@ -56,12 +56,11 @@ public class CustomerServiceImplUnitTest {
         when(customerRepository.findById(customerA.getId())).thenReturn(Optional.of(customerA));
 
         // when
-        Optional<CustomerEntity> customerFound = customerService.findById(customerA.getId());
+        CustomerEntity customerFound = customerService.findById(customerA.getId());
 
         // then
         verify(customerRepository, times(1)).findById(any(Long.class));
-        assertTrue(customerFound.isPresent());
-        assertEquals(customerA, customerFound.get());
+        assertEquals(customerA, customerFound);
     }
 
     @Test

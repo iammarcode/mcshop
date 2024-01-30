@@ -1,5 +1,7 @@
 package com.marcoecommerce.shop.service.impl;
 
+import com.marcoecommerce.shop.exception.customer.CustomerAlreadyExistException;
+import com.marcoecommerce.shop.exception.customer.CustomerNotFoundException;
 import com.marcoecommerce.shop.model.customer.CustomerEntity;
 import com.marcoecommerce.shop.repository.CustomerRepository;
 import com.marcoecommerce.shop.service.AuthenticationService;
@@ -9,8 +11,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
-public class AuthenticationImpl implements AuthenticationService {
+public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Autowired
     private CustomerRepository customerRepository;
@@ -23,6 +27,12 @@ public class AuthenticationImpl implements AuthenticationService {
 
     @Override
     public CustomerEntity register(CustomerEntity customer) {
+        Optional<CustomerEntity> customerFound = customerRepository.findByEmail(customer.getEmail());
+        if (customerFound.isPresent()) {
+            throw new CustomerAlreadyExistException(customer.getEmail());
+        }
+
+        // hash password
         customer.setPassword(passwordEncoder.encode(customer.getPassword()));
 
         return customerRepository.save(customer);
@@ -31,12 +41,19 @@ public class AuthenticationImpl implements AuthenticationService {
     @Override
     public CustomerEntity login(CustomerEntity customer) {
         authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(
-                    customer.getEmail(),
-                    customer.getPassword()
-            )
+                new UsernamePasswordAuthenticationToken(
+                        customer.getEmail(),
+                        customer.getPassword()
+                )
         );
 
-        return customerRepository.findByEmail(customer.getEmail()).orElseThrow();
+        Optional<CustomerEntity> customerFound = customerRepository.findByEmail(customer.getEmail());
+        if (customerFound.isEmpty()) {
+            throw new CustomerNotFoundException(customer.getEmail());
+        }
+
+        return customerFound.get();
     }
+
+    // TODO: refresh token
 }

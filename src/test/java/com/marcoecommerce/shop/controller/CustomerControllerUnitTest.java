@@ -92,7 +92,7 @@ public class CustomerControllerUnitTest {
     public void givenCustomer_whenFindById_thenReturn200() throws Exception {
         // given
         Long customerId = 1L;
-        Mockito.when(customerService.findById(customerId)).thenReturn(Optional.of(customerAEntity));
+        Mockito.when(customerService.findById(customerId)).thenReturn(customerAEntity);
 
         // then
         String customerDtoJson = objectMapper.writeValueAsString(customerADto);
