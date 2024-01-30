@@ -2,6 +2,7 @@ package com.marcoecommerce.shop.model.customerAddress;
 
 import com.marcoecommerce.shop.model.customer.CustomerEntity;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -28,24 +29,24 @@ public class CustomerAddressEntity {
     private String addressLine2;
 
     @Column(name = "postal_code")
-    @NotNull
+    @NotBlank
     private String postalCode;
 
     @Column(name = "city")
-    @NotNull
+    @NotBlank
     private String city;
 
     @Column(name = "country")
-    @NotNull
+    @NotBlank
     private String country;
 
     @Column(name = "phone")
-    @NotNull
+    @NotBlank
     private String phone;
 
     // owning side
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id") // join foreign key column
+    @JoinColumn(name = "customer_id")
     private CustomerEntity customer;
 
     @Column(name = "created_at")
