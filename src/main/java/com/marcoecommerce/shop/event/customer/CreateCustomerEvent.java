@@ -6,10 +6,10 @@ import org.springframework.context.ApplicationEvent;
 
 @Getter
 public class CreateCustomerEvent extends ApplicationEvent {
-    private final CustomerEntity message;
+    private final CustomerEntity customer;
 
-    public CreateCustomerEvent(Object source, CustomerEntity message) {
+    public CreateCustomerEvent(Object source, CustomerEntity customer) {
         super(source);
-        this.message = message;
+        this.customer = customer;
     }
 }

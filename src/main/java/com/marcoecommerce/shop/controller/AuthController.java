@@ -34,10 +34,10 @@ public class AuthController {
     @Autowired
     private OtpService otpService;
     @GetMapping("/otp")
-    public ResponseEntity<CustomerDto> requestOtp(@RequestBody OtpDto otpDto) throws Exception {
+    public ResponseEntity<String> requestOtp(@RequestBody OtpDto otpDto) throws Exception {
         authenticationService.requestOtp(otpDto.getEmail());
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>("Request OTP Successfully" ,HttpStatus.OK);
     }
 
     @PostMapping("/register")

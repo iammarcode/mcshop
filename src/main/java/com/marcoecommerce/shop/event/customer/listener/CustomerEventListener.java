@@ -25,7 +25,7 @@ public class CustomerEventListener {
     @EventListener
     public void handleCreateCustomer(CreateCustomerEvent event) {
         emailService.sendSimpleMessage(
-                event.getMessage().getEmail(),
+                event.getCustomer().getEmail(),
                 "Registration Successfully",
                 "Welcome To MC-Shop"
         );
