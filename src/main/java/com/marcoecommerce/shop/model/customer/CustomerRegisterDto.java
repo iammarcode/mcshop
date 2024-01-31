@@ -17,6 +17,9 @@ public class CustomerRegisterDto {
     @NotBlank
     private String password;
 
+    @NotBlank
+    private String otp;
+
     private String phone;
 
     private String nickname;

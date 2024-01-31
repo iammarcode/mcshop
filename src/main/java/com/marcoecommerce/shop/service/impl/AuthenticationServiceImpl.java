@@ -1,23 +1,35 @@
 package com.marcoecommerce.shop.service.impl;
 
+import com.marcoecommerce.shop.exception.auth.OtpValidationFailedException;
 import com.marcoecommerce.shop.exception.customer.CustomerAlreadyExistException;
 import com.marcoecommerce.shop.exception.customer.CustomerNotFoundException;
+import com.marcoecommerce.shop.mapper.impl.CustomerMapper;
 import com.marcoecommerce.shop.model.customer.CustomerEntity;
+import com.marcoecommerce.shop.model.customer.CustomerLoginDto;
+import com.marcoecommerce.shop.model.customer.CustomerRegisterDto;
 import com.marcoecommerce.shop.repository.CustomerRepository;
 import com.marcoecommerce.shop.service.AuthenticationService;
+import com.marcoecommerce.shop.service.OtpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Autowired
+    private CustomerMapper customerMapper;
+
+    @Autowired
     private CustomerRepository customerRepository;
+
+    @Autowired
+    private OtpService otpService;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -26,7 +38,25 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public CustomerEntity register(CustomerEntity customer) {
+    public String getOtp(String email) {
+        // check email
+        boolean existsByEmail = customerRepository.existsByEmail(email);
+        if (existsByEmail) {
+            throw new CustomerAlreadyExistException(email);
+        }
+
+        return otpService.generateOTP(email);
+    }
+
+    @Override
+    public CustomerEntity register(CustomerRegisterDto customer) {
+        // check otp
+        String otpCached = otpService.getOtpByKey(customer.getEmail());
+        if (!customer.getOtp().equals(otpCached)) {
+            throw new OtpValidationFailedException(customer.getOtp());
+        }
+
+        // check email
         Optional<CustomerEntity> customerFound = customerRepository.findByEmail(customer.getEmail());
         if (customerFound.isPresent()) {
             throw new CustomerAlreadyExistException(customer.getEmail());
@@ -35,11 +65,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         // hash password
         customer.setPassword(passwordEncoder.encode(customer.getPassword()));
 
-        return customerRepository.save(customer);
+        // convert to entity
+        CustomerEntity customerRegister = customerMapper.toEntityRegister(customer);
+
+        return customerRepository.save(customerRegister);
     }
 
     @Override
-    public CustomerEntity login(CustomerEntity customer) {
+    public CustomerEntity login(CustomerLoginDto customer) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         customer.getEmail(),

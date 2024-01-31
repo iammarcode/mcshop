@@ -38,7 +38,6 @@ public class CustomerServiceImpl implements CustomerService {
         Optional<CustomerEntity> customerFound = customerRepository.findById(id);
 
         if (customerFound.isEmpty()) {
-            // TODO: log error
             log.error("Customer not found with ID: " + id);
             throw new CustomerNotFoundException(id);
         }
@@ -54,7 +53,6 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public void deleteById(Long id) {
         if (!customerRepository.existsById(id)) {
-            // TODO: log error
             log.error("Customer not found with ID: " + id);
             throw new CustomerNotFoundException(id);
         }
@@ -93,7 +91,6 @@ public class CustomerServiceImpl implements CustomerService {
             return customerRepository.save(existingCustomer);
         }).orElseThrow(() ->
             {
-                // TODO: log error
                 log.error("Customer not found with ID: " + id);
                 return new CustomerNotFoundException(id);
             }
@@ -105,7 +102,6 @@ public class CustomerServiceImpl implements CustomerService {
         Optional<CustomerEntity> customerFound = customerRepository.findByEmail(email);
 
         if (customerFound.isEmpty()) {
-            // TODO: log error
             log.error("Customer not found with email: " + email);
             throw new CustomerNotFoundException(email);
         }

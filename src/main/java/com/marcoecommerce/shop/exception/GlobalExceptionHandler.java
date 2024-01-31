@@ -1,5 +1,6 @@
 package com.marcoecommerce.shop.exception;
 
+import com.marcoecommerce.shop.exception.auth.OtpValidationFailedException;
 import com.marcoecommerce.shop.exception.customer.CustomerAlreadyExistException;
 import com.marcoecommerce.shop.exception.customer.CustomerNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,13 @@ public class GlobalExceptionHandler {
     }
     @ExceptionHandler({CustomerAlreadyExistException.class})
     public ResponseEntity<Object> handleCustomerAlreadyExistsException(CustomerAlreadyExistException exception) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), exception.getMessage()));
+    }
+
+    @ExceptionHandler({OtpValidationFailedException.class})
+    public ResponseEntity<Object> handleOtpValidationFailedException(OtpValidationFailedException exception) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), exception.getMessage()));
