@@ -1,5 +1,7 @@
 package com.marcoecommerce.shop.service.impl;
 
+import com.marcoecommerce.shop.event.customer.CreateCustomerEvent;
+import com.marcoecommerce.shop.event.customer.RequestOtpCustomerEvent;
 import com.marcoecommerce.shop.exception.auth.OtpValidationFailedException;
 import com.marcoecommerce.shop.exception.customer.CustomerAlreadyExistException;
 import com.marcoecommerce.shop.exception.customer.CustomerNotFoundException;
@@ -11,12 +13,12 @@ import com.marcoecommerce.shop.repository.CustomerRepository;
 import com.marcoecommerce.shop.service.AuthenticationService;
 import com.marcoecommerce.shop.service.OtpService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -35,17 +37,23 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private AuthenticationManager authenticationManager;
 
     @Autowired
+    private ApplicationEventPublisher eventPublisher;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public String getOtp(String email) {
+    public void requestOtp(String email) {
         // check email
         boolean existsByEmail = customerRepository.existsByEmail(email);
         if (existsByEmail) {
             throw new CustomerAlreadyExistException(email);
         }
 
-        return otpService.generateOTP(email);
+        String otp = otpService.generateOTP(email);
+
+        // event
+        eventPublisher.publishEvent(new RequestOtpCustomerEvent(eventPublisher, otp, email));
     }
 
     @Override
@@ -65,6 +73,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         // clear otp cache
         otpService.clearOtpByKey(customer.getEmail());
+
+        // event
+        eventPublisher.publishEvent(new CreateCustomerEvent(eventPublisher ,customerSaved));
 
         return customerSaved;
     }

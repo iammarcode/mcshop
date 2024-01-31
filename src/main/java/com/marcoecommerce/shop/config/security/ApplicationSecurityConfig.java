@@ -1,4 +1,4 @@
-package com.marcoecommerce.shop.config;
+package com.marcoecommerce.shop.config.security;
 
 import com.marcoecommerce.shop.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;

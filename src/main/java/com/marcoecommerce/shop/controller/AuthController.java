@@ -33,31 +33,16 @@ public class AuthController {
 
     @Autowired
     private OtpService otpService;
-
     @GetMapping("/otp")
-    public ResponseEntity<CustomerDto> otp(@RequestBody OtpDto otpDto) throws Exception {
-        String otp = authenticationService.getOtp(otpDto.getEmail());
-
-        emailService.sendSimpleMessage(
-                otpDto.getEmail(),
-                "One-time password",
-                otp
-        );
+    public ResponseEntity<CustomerDto> requestOtp(@RequestBody OtpDto otpDto) throws Exception {
+        authenticationService.requestOtp(otpDto.getEmail());
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/register")
     public ResponseEntity<CustomerDto> register(@RequestBody CustomerRegisterDto customerRegisterDto) throws Exception {
-        // create customer
         CustomerEntity customerSaved = authenticationService.register(customerRegisterDto);
-
-        // send email
-        emailService.sendSimpleMessage(
-                customerSaved.getEmail(),
-                "Registration Successfully",
-                "Welcome To MC-Shop"
-        );
 
         return new ResponseEntity<>(customerMapper.toDto(customerSaved), HttpStatus.OK);
     }

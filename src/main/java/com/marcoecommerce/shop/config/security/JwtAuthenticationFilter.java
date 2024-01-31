@@ -1,4 +1,4 @@
-package com.marcoecommerce.shop.config;
+package com.marcoecommerce.shop.config.security;
 
 import com.marcoecommerce.shop.service.impl.CustomerServiceImpl;
 import com.marcoecommerce.shop.util.JwtUtil;
