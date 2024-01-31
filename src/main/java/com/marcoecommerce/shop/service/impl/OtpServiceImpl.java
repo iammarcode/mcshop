@@ -29,10 +29,6 @@ public class OtpServiceImpl implements OtpService {
     @Override
     public String getOtpByKey(String key) {
         Object otp = redisService.get(key);
-        if (otp == null) {
-            // TODO: log error
-            throw new RuntimeException("No Such key: " + key);
-        }
 
         return (String) otp;
     }

@@ -56,19 +56,17 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new OtpValidationFailedException(customer.getOtp());
         }
 
-        // check email
-        Optional<CustomerEntity> customerFound = customerRepository.findByEmail(customer.getEmail());
-        if (customerFound.isPresent()) {
-            throw new CustomerAlreadyExistException(customer.getEmail());
-        }
-
         // hash password
         customer.setPassword(passwordEncoder.encode(customer.getPassword()));
 
-        // convert to entity
+        // create customer
         CustomerEntity customerRegister = customerMapper.toEntityRegister(customer);
+        CustomerEntity customerSaved = customerRepository.save(customerRegister);
 
-        return customerRepository.save(customerRegister);
+        // clear otp cache
+        otpService.clearOtpByKey(customer.getEmail());
+
+        return customerSaved;
     }
 
     @Override
