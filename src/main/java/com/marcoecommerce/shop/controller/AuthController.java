@@ -39,27 +39,27 @@ public class AuthController {
     public ResponseEntity<String> requestOtp(@RequestBody OtpDto otpDto) throws Exception {
         authenticationService.requestOtp(otpDto.getEmail());
 
-        return new ResponseEntity<>("Request OTP Successfully" ,HttpStatus.OK);
+        return ResponseEntity.ok("Request OTP Successfully");
     }
 
     @PostMapping("/register")
     public ResponseEntity<CustomerDto> register(@RequestBody CustomerRegisterDto customerRegisterDto) throws Exception {
         CustomerDto customerDto = authenticationService.register(customerRegisterDto);
 
-        return new ResponseEntity<>(customerDto, HttpStatus.OK);
+        return ResponseEntity.ok(customerDto);
     }
 
     @PostMapping("/login")
     public ResponseEntity<TokenDto> login(@RequestBody CustomerLoginDto customerLoginDto) {
         TokenDto tokenDto = authenticationService.login(customerLoginDto);
 
-        return new ResponseEntity<>(tokenDto, HttpStatus.OK);
+        return ResponseEntity.ok(tokenDto);
     }
 
     @GetMapping("/refresh")
     public ResponseEntity<TokenDto> refreshToken(HttpServletRequest request, HttpServletResponse response) {
         TokenDto tokenDto = authenticationService.refreshToken(request, response);
 
-        return new ResponseEntity<>(tokenDto, HttpStatus.OK);
+        return ResponseEntity.ok(tokenDto);
     }
 }
