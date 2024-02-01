@@ -21,8 +21,10 @@ public class JwtUtil {
 
     @Value("${application.security.jwt.secret-key}")
     private String SECRET_KEY;
-    @Value("${application.security.jwt.expiration}")
-    private long JWT_EXPIRATION;
+    @Value("${application.security.jwt.access-token.expiration}")
+    private long ACCESS_TOKEN_EXPIRATION;
+    @Value("${application.security.jwt.refresh-token.expiration}")
+    private long REFRESH_TOKEN_EXPIRATION;
 
     public String getUsername(String token) {
         return getClaim(token, Claims::getSubject);
@@ -33,12 +35,20 @@ public class JwtUtil {
         return claimsResolver.apply(claims);
     }
 
-    public String generateToken(UserDetails userDetails) {
-        return buildToken(new HashMap<>(), userDetails, JWT_EXPIRATION);
+    public String generateAccessToken(UserDetails userDetails) {
+        return buildToken(new HashMap<>(), userDetails, ACCESS_TOKEN_EXPIRATION);
     }
 
-    public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
-        return buildToken(extraClaims, userDetails, JWT_EXPIRATION);
+    public String generateAccessToken(Map<String, Object> extraClaims, UserDetails userDetails) {
+        return buildToken(extraClaims, userDetails, ACCESS_TOKEN_EXPIRATION);
+    }
+
+    public String generateRefreshToken(UserDetails userDetails) {
+        return buildToken(new HashMap<>(), userDetails, REFRESH_TOKEN_EXPIRATION);
+    }
+
+    public String generateRefreshToken(Map<String, Object> extraClaims, UserDetails userDetails) {
+        return buildToken(extraClaims, userDetails, REFRESH_TOKEN_EXPIRATION);
     }
 
     private String buildToken(
@@ -83,7 +93,11 @@ public class JwtUtil {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public LocalDateTime getExpirationTime() {
-        return LocalDateTime.now().plusSeconds(JWT_EXPIRATION / 1000);
+    public LocalDateTime getAccessExpirationTime() {
+        return LocalDateTime.now().plusSeconds(ACCESS_TOKEN_EXPIRATION / 1000);
+    }
+
+    public LocalDateTime getRefreshExpirationTime() {
+        return LocalDateTime.now().plusSeconds(REFRESH_TOKEN_EXPIRATION / 1000);
     }
 }

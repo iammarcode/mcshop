@@ -8,6 +8,8 @@ import com.marcoecommerce.shop.service.CustomerService;
 import com.marcoecommerce.shop.service.EmailService;
 import com.marcoecommerce.shop.service.OtpService;
 import com.marcoecommerce.shop.util.JwtUtil;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,19 +44,22 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<CustomerDto> register(@RequestBody CustomerRegisterDto customerRegisterDto) throws Exception {
-        CustomerEntity customerSaved = authenticationService.register(customerRegisterDto);
+        CustomerDto customerDto = authenticationService.register(customerRegisterDto);
 
-        return new ResponseEntity<>(customerMapper.toDto(customerSaved), HttpStatus.OK);
+        return new ResponseEntity<>(customerDto, HttpStatus.OK);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<TokenDto> register(@RequestBody CustomerLoginDto customerLoginDto) {
-        CustomerEntity customer = authenticationService.login(customerLoginDto);
+    public ResponseEntity<TokenDto> login(@RequestBody CustomerLoginDto customerLoginDto) {
+        TokenDto tokenDto = authenticationService.login(customerLoginDto);
 
-        String jwt = jwtUtil.generateToken(customer);
-
-        return new ResponseEntity<>(TokenDto.builder().accessToken(jwt).expireAt(jwtUtil.getExpirationTime()).build(), HttpStatus.OK);
+        return new ResponseEntity<>(tokenDto, HttpStatus.OK);
     }
 
-    // TODO: refresh token
+    @GetMapping("/refresh")
+    public ResponseEntity<TokenDto> refreshToken(HttpServletRequest request, HttpServletResponse response) {
+        TokenDto tokenDto = authenticationService.refreshToken(request, response);
+
+        return new ResponseEntity<>(tokenDto, HttpStatus.OK);
+    }
 }

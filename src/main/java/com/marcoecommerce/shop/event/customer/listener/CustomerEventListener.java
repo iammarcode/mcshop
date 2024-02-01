@@ -27,7 +27,7 @@ public class CustomerEventListener {
         emailService.sendSimpleMessage(
                 event.getCustomer().getEmail(),
                 "Registration Successfully",
-                "Welcome To MC-Shop"
+                "Welcome To MC-Shop, " + event.getCustomer().getNickname()
         );
     }
 }
