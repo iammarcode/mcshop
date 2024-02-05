@@ -22,7 +22,7 @@ public class CustomerPaymentDto {
 
     private LocalDate expiry;
 
-    private CustomerDto customer;
+//    private CustomerDto customer;
 
     private LocalDateTime createdAt;
 

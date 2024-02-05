@@ -1,6 +1,9 @@
 package com.marcoecommerce.shop.model.customer;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.marcoecommerce.shop.model.customerAddress.CustomerAddressDto;
+import com.marcoecommerce.shop.model.customerPayment.CustomerPaymentDto;
+import com.marcoecommerce.shop.model.order.OrderDto;
 import com.marcoecommerce.shop.model.order.OrderEntity;
 import com.marcoecommerce.shop.model.shoppingCart.ShoppingCartEntity;
 import com.marcoecommerce.shop.model.customerAddress.CustomerAddressEntity;
@@ -31,11 +34,11 @@ public class CustomerDto {
 
     private String lastName;
 
-    private List<CustomerAddressEntity> addressList = new ArrayList<>();
+    private List<CustomerAddressDto> addressList = new ArrayList<>();
 
-    private List<CustomerPaymentEntity> paymentList = new ArrayList<>();
+    private List<CustomerPaymentDto> paymentList = new ArrayList<>();
 
-    private List<OrderEntity> orderList = new ArrayList<>();
+    private List<OrderDto> orderList = new ArrayList<>();
 
     private ShoppingCartEntity shoppingCart;
 

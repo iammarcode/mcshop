@@ -18,7 +18,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.List;
-import java.util.Optional;
 
 @WebMvcTest(CustomerController.class)
 public class CustomerControllerUnitTest {
@@ -71,7 +70,7 @@ public class CustomerControllerUnitTest {
     @Test
     public void givenCustomer_whenCallGetCustomer_thenReturnJsonArray() throws Exception {
         // given
-        Mockito.when(customerService.findAll()).thenReturn(List.of(customerAEntity, customerBEntity));
+        Mockito.when(customerService.findAll()).thenReturn(List.of(customerADto, customerBDto));
 
         // then
         mockMvc.perform(
@@ -92,7 +91,7 @@ public class CustomerControllerUnitTest {
     public void givenCustomer_whenFindById_thenReturn200() throws Exception {
         // given
         Long customerId = 1L;
-        Mockito.when(customerService.findById(customerId)).thenReturn(customerAEntity);
+        Mockito.when(customerService.findById(customerId)).thenReturn(customerADto);
 
         // then
         String customerDtoJson = objectMapper.writeValueAsString(customerADto);
@@ -126,7 +125,7 @@ public class CustomerControllerUnitTest {
     public void givenCustomer_whenUpdate_thenReturn200() throws Exception {
         // given
         Long customerId = 1L;
-        Mockito.when(customerService.update(customerId, customerAEntity)).thenReturn(customerAEntity);
+        Mockito.when(customerService.updateInfo(customerId, customerADto)).thenReturn(customerADto);
         Mockito.when(customerService.isExist(customerId)).thenReturn(true);
 
         String customerDtoJson = objectMapper.writeValueAsString(customerADto);

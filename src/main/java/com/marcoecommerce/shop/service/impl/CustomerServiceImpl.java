@@ -1,19 +1,22 @@
 package com.marcoecommerce.shop.service.impl;
 
 import com.marcoecommerce.shop.exception.customer.CustomerNotFoundException;
-import com.marcoecommerce.shop.model.order.OrderEntity;
+import com.marcoecommerce.shop.mapper.impl.CustomerMapper;
+import com.marcoecommerce.shop.model.customer.CustomerDto;
 import com.marcoecommerce.shop.model.customer.CustomerEntity;
+import com.marcoecommerce.shop.model.customerAddress.CustomerAddressDto;
 import com.marcoecommerce.shop.model.customerAddress.CustomerAddressEntity;
-import com.marcoecommerce.shop.model.customerPayment.CustomerPaymentEntity;
 import com.marcoecommerce.shop.repository.CustomerRepository;
 import com.marcoecommerce.shop.service.CustomerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Service
@@ -22,19 +25,25 @@ public class CustomerServiceImpl implements CustomerService {
     @Autowired
     private CustomerRepository customerRepository;
 
+    @Autowired
+    private CustomerMapper customerMapper;
+
     @Override
     public CustomerEntity create(CustomerEntity customerEntity) {
         return customerRepository.save(customerEntity);
     }
 
     @Override
-    public List<CustomerEntity> findAll() {
-        return StreamSupport.stream(customerRepository.findAll().spliterator(), false)
-                .collect(Collectors.toList());
+    public List<CustomerDto> findAll() {
+        List<CustomerEntity> customerEntityList = StreamSupport.stream(customerRepository.findAll().spliterator(), false).toList();
+
+        return customerEntityList.stream()
+                .map(customerMapper::toDto)
+                .toList();
     }
 
     @Override
-    public CustomerEntity findById(Long id) {
+    public CustomerDto findById(Long id) {
         Optional<CustomerEntity> customerFound = customerRepository.findById(id);
 
         if (customerFound.isEmpty()) {
@@ -42,7 +51,7 @@ public class CustomerServiceImpl implements CustomerService {
             throw new CustomerNotFoundException(id);
         }
 
-        return customerFound.get();
+        return customerMapper.toDto(customerFound.get());
     }
 
     @Override
@@ -61,34 +70,20 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public CustomerEntity update(Long id, CustomerEntity customer) {
-        customer.setId(id);
-
+    public CustomerDto updateInfo(Long id, CustomerDto customerDto) {
         return customerRepository.findById(id).map(existingCustomer -> {
-            Optional.ofNullable(customer.getNickname()).ifPresent(existingCustomer::setNickname);
-            Optional.ofNullable(customer.getEmail()).ifPresent(existingCustomer::setEmail);
-            Optional.ofNullable(customer.getPhone()).ifPresent(existingCustomer::setPhone);
-            Optional.ofNullable(customer.getPassword()).ifPresent(existingCustomer::setPassword);
-            Optional.ofNullable(customer.getFirstName()).ifPresent(existingCustomer::setFirstName);
-            Optional.ofNullable(customer.getLastName()).ifPresent(existingCustomer::setLastName);
+            existingCustomer.setNickname(customerDto.getNickname());
+            existingCustomer.setFirstName(customerDto.getFirstName());
+            existingCustomer.setLastName(customerDto.getLastName());
 
-            for (OrderEntity order : customer.getOrderList()) {
-                existingCustomer.addOrder(order);
-            }
+//            for (OrderEntity order : customer.getOrderList()) {
+//                existingCustomer.addOrder(order);
+//            }
+//            for (CustomerPaymentEntity payment : customer.getPaymentList()) {
+//                existingCustomer.addPayment(payment);
+//            }
 
-            for (CustomerPaymentEntity payment : customer.getPaymentList()) {
-                existingCustomer.addPayment(payment);
-            }
-
-            for (CustomerAddressEntity address : customer.getAddressList()) {
-                existingCustomer.addAddress(address);
-            }
-
-            if (customer.getShoppingCart() != null) {
-                existingCustomer.addShoppingCart(customer.getShoppingCart());
-            }
-
-            return customerRepository.save(existingCustomer);
+            return customerMapper.toDto(customerRepository.save(existingCustomer));
         }).orElseThrow(() ->
             {
                 log.error("Customer not found with ID: " + id);
@@ -108,4 +103,21 @@ public class CustomerServiceImpl implements CustomerService {
 
         return customerFound.get();
     }
+
+    @Override
+    public CustomerEntity getCurrentCustomer() {
+        // TODO: customer update?
+        CustomerEntity currentCustomer = (CustomerEntity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        return customerRepository.findByEmail(currentCustomer.getEmail()).orElseThrow(
+                () -> {
+                    log.error("Customer not found with email: " + currentCustomer.getEmail());
+                    return new CustomerNotFoundException(currentCustomer.getEmail());
+                }
+        );
+    }
+
+    // TODO: update email
+    // TODO: update phone
+    // TODO: update password
 }

@@ -31,11 +31,4 @@ public class CustomerMapper implements Mapper<CustomerEntity, CustomerDto> {
     public CustomerEntity toEntityRegister(CustomerRegisterDto customerRegisterDto) {
         return modelMapper.map(customerRegisterDto, CustomerEntity.class);
     }
-
-    public CustomerEntity toEntityLogin(CustomerLoginDto customerLoginDto) {
-        return modelMapper.map(customerLoginDto, CustomerEntity.class);
-    }
-
-
-
 }

@@ -1,21 +1,25 @@
 package com.marcoecommerce.shop.service;
 
+import com.marcoecommerce.shop.model.customer.CustomerDto;
 import com.marcoecommerce.shop.model.customer.CustomerEntity;
 
 import java.util.List;
 
 public interface CustomerService {
+
     CustomerEntity create(CustomerEntity customerEntity);
 
-    List<CustomerEntity> findAll();
+    List<CustomerDto> findAll();
 
-    CustomerEntity findById(Long id);
+    CustomerDto findById(Long id);
 
     boolean isExist(Long id);
 
     void deleteById(Long id);
 
-    CustomerEntity update(Long id, CustomerEntity authorEntity);
+    CustomerDto updateInfo(Long id, CustomerDto customerDto);
 
     CustomerEntity findByEmail(String email);
+
+    CustomerEntity getCurrentCustomer();
 }

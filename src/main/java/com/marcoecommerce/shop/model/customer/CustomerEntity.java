@@ -47,7 +47,7 @@ public class CustomerEntity implements UserDetails {
     @Column(name = "last_name")
     private String lastName;
 
-    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<CustomerAddressEntity> addressList = new ArrayList<>();
 
     public void addAddress(CustomerAddressEntity address) {
@@ -60,7 +60,7 @@ public class CustomerEntity implements UserDetails {
         address.setCustomer(null);
     }
 
-    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<CustomerPaymentEntity> paymentList = new ArrayList<>();
 
     public void addPayment(CustomerPaymentEntity payment) {
@@ -75,7 +75,7 @@ public class CustomerEntity implements UserDetails {
 
     @OneToMany(
             mappedBy = "customer",
-            fetch = FetchType.LAZY,
+            fetch = FetchType.EAGER,
             cascade = CascadeType.ALL
     )
     private List<OrderEntity> orderList = new ArrayList<>();
@@ -111,16 +111,13 @@ public class CustomerEntity implements UserDetails {
 
     @Column(name = "created_at")
     @CreationTimestamp
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
 
     @Column(name = "modified_at")
     @UpdateTimestamp
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime modifiedAt;
 
     @Column(name = "deleted_at")
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime deletedAt;
 
     @Override

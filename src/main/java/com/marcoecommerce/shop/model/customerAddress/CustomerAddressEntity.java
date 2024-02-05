@@ -16,7 +16,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @Entity(name = "customer_address")
-@ToString(exclude = "customer")
 public class CustomerAddressEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

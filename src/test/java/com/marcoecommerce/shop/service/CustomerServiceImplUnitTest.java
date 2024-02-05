@@ -1,5 +1,7 @@
 package com.marcoecommerce.shop.service;
 
+import com.marcoecommerce.shop.mapper.impl.CustomerMapper;
+import com.marcoecommerce.shop.model.customer.CustomerDto;
 import com.marcoecommerce.shop.model.customer.CustomerEntity;
 import com.marcoecommerce.shop.repository.CustomerRepository;
 import com.marcoecommerce.shop.service.impl.CustomerServiceImpl;
@@ -28,6 +30,11 @@ public class CustomerServiceImplUnitTest {
 
     private CustomerEntity customerA;
     private CustomerEntity customerB;
+    private CustomerDto customerADto;
+    private CustomerDto customerBDto;
+
+    @Mock
+    private CustomerMapper customerMapper;
 
     @BeforeEach
     void setUp() {
@@ -35,6 +42,14 @@ public class CustomerServiceImplUnitTest {
         customerA.setId(1L);
         customerB = TestDataUtil.createCustomerEntityB();
         customerB.setId(2L);
+
+        customerADto = TestDataUtil.createCustomerDtoA();
+        customerADto.setId(1L);
+        customerBDto = TestDataUtil.createCustomerDtoB();
+        customerBDto.setId(2L);
+
+        when(customerMapper.toDto(customerA)).thenReturn(customerADto);
+        when(customerMapper.toDto(customerB)).thenReturn(customerBDto);
     }
 
     @Test
@@ -54,26 +69,29 @@ public class CustomerServiceImplUnitTest {
     public void givenCustomer_whenFindAllCustomer_thenReturnAllCustomers() {
         // given
         when(customerRepository.findById(customerA.getId())).thenReturn(Optional.of(customerA));
+        when(customerMapper.toDto(customerA)).thenReturn(customerADto);
 
         // when
-        CustomerEntity customerFound = customerService.findById(customerA.getId());
+        CustomerDto customerFound = customerService.findById(customerA.getId());
 
         // then
         verify(customerRepository, times(1)).findById(any(Long.class));
-        assertEquals(customerA, customerFound);
+        assertEquals(customerADto, customerFound);
     }
 
     @Test
     public void givenCustomer_whenFindById_thenReturnCustomer() {
         // given
         when(customerRepository.findAll()).thenReturn(List.of(customerA, customerB));
+        when(customerMapper.toDto(customerA)).thenReturn(customerADto);
+        when(customerMapper.toDto(customerB)).thenReturn(customerBDto);
 
         // when
-        List<CustomerEntity> result = customerService.findAll();
+        List<CustomerDto> result = customerService.findAll();
 
         // then
         verify(customerRepository, times(1)).findAll();
-        assertTrue(result.containsAll(List.of(customerA, customerB)));
+        assertTrue(result.containsAll(List.of(customerADto, customerBDto)));
     }
 
     @Test
@@ -104,10 +122,11 @@ public class CustomerServiceImplUnitTest {
         // given
         when(customerRepository.findById(customerA.getId())).thenReturn(Optional.of(customerA));
         when(customerRepository.save(customerA)).thenReturn(customerA);
+        when(customerMapper.toDto(customerA)).thenReturn(customerADto);
 
         // when
         customerA.setNickname("updated nickname");
-        CustomerEntity customerUpdated = customerService.update(customerA.getId(), customerA);
+        CustomerDto customerUpdated = customerService.updateInfo(customerA.getId(), customerADto);
 
         // then
         verify(customerRepository, times(1)).save(any(CustomerEntity.class));

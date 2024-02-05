@@ -1,5 +1,6 @@
 package com.marcoecommerce.shop.model.customerAddress;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.marcoecommerce.shop.model.customer.CustomerDto;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
@@ -30,11 +31,14 @@ public class CustomerAddressDto {
     @NotBlank
     private String phone;
 
-    private CustomerDto customer;
+//    private CustomerDto customer;
 
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
 
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime modifiedAt;
 
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime deletedAt;
 }
