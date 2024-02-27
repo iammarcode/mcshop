@@ -19,8 +19,6 @@ public class ProductDto {
 
     private String name;
 
-    private String sku;
-
     private BigDecimal price;
 
     private String description;

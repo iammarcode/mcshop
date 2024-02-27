@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS `shop`.`customer` (
   `deleted_at` datetime NULL DEFAULT NULL,
   CONSTRAINT PK_Customer PRIMARY KEY (`id`) USING BTREE,
   CONSTRAINT UQ_Customer_Email UNIQUE (`email`)
-);
+) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS `shop`.`customer_address` (
   `id` bigint NOT NULL AUTO_INCREMENT,
@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `shop`.`customer_address` (
   `deleted_at` datetime NULL DEFAULT NULL,
   CONSTRAINT PK_CustomerAddress PRIMARY KEY (`id`) USING BTREE,
   CONSTRAINT FK_CustomerAddress_Customer FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id`)
-);
+) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS `shop`.`customer_payment` (
   `id` bigint NOT NULL AUTO_INCREMENT,
@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS `shop`.`customer_payment` (
   CONSTRAINT PK_CustomerPayment PRIMARY KEY (`id`) USING BTREE,
   CONSTRAINT FK_CustomerPayment_Customer FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id`),
   CONSTRAINT FK_CustomerPayment_AccountNo UNIQUE (`account_no`)
-);
+) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS `shop`.`product_category` (
   `id` bigint NOT NULL AUTO_INCREMENT,
@@ -59,12 +59,12 @@ CREATE TABLE IF NOT EXISTS `shop`.`product_category` (
   `description` text NULL DEFAULT NULL,
   `image_url` varchar(100) NULL DEFAULT NULL,
 
-  `created_at` datetime NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `modified_at` datetime  NULL DEFAULT NULL,
   `deleted_at` datetime  NULL DEFAULT NULL,
   CONSTRAINT PK_ProductCategory PRIMARY KEY (`id`) USING BTREE,
   CONSTRAINT UQ_ProductCategory_Name UNIQUE (`name`)
-);
+) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS `shop`.`product_discount` (
   `id` bigint NOT NULL AUTO_INCREMENT,
@@ -80,26 +80,24 @@ CREATE TABLE IF NOT EXISTS `shop`.`product_discount` (
   `deleted_at` datetime NULL DEFAULT NULL,
   CONSTRAINT PK_ProductDiscount PRIMARY KEY (`id`) USING BTREE,
   CONSTRAINT UQ_ProductDiscount_Name UNIQUE (`name`)
-);
+) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS `shop`.`product` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
-  `sku` varchar(100) NOT NULL,
   `price` decimal NOT NULL,
   `description` text NULL DEFAULT NULL,
   `image_url` varchar(100) NULL DEFAULT NULL,
 
   `category_id` bigint NULL DEFAULT NULL,
 
-  `created_at` datetime NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `modified_at` datetime  NULL DEFAULT NULL,
   `deleted_at` datetime  NULL DEFAULT NULL,
   CONSTRAINT PK_Product PRIMARY KEY (`id`) USING BTREE,
   CONSTRAINT FK_Product_ProductCategory FOREIGN KEY (`category_id`) REFERENCES `product_category` (`id`),
-  CONSTRAINT UQ_Product_Name UNIQUE (`name`),
-  CONSTRAINT UQ_Product_Sku UNIQUE (`sku`)
-);
+  CONSTRAINT UQ_Product_Name UNIQUE (`name`)
+) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS `shop`.`product_discount_link` (
   `product_id` bigint NOT NULL,
@@ -109,7 +107,7 @@ CREATE TABLE IF NOT EXISTS `shop`.`product_discount_link` (
   CONSTRAINT PK_ProductDiscountLink PRIMARY KEY (`product_id`, `discount_id`) USING BTREE,
   CONSTRAINT FK_ProductDiscountLink_Product FOREIGN KEY (`product_id`) REFERENCES `product` (`id`),
   CONSTRAINT FK_ProductDiscountLink_Discount FOREIGN KEY (`discount_id`) REFERENCES `product_discount` (`id`)
-);
+) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS `shop`.`product_inventory` (
   `id` bigint NOT NULL AUTO_INCREMENT,
@@ -125,7 +123,7 @@ CREATE TABLE IF NOT EXISTS `shop`.`product_inventory` (
   CONSTRAINT FK_ProductInventory_Product FOREIGN KEY (`product_id`) REFERENCES `product` (`id`),
   CONSTRAINT UQ_ProductInventory_Name UNIQUE (`name`),
   CONSTRAINT UQ_ProductInventory_ProductId UNIQUE (`product_id`)
-);
+) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS `shop`.`orders` (
   `id` bigint NOT NULL AUTO_INCREMENT,
@@ -141,7 +139,7 @@ CREATE TABLE IF NOT EXISTS `shop`.`orders` (
   CONSTRAINT PK_Orders PRIMARY KEY (`id`) USING BTREE,
   CONSTRAINT FK_Orders_Customer FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id`),
   CONSTRAINT FK_Orders_CustomerAddress FOREIGN KEY (`customer_address_id`) REFERENCES `customer_address` (`id`)
-);
+) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS `shop`.`order_transaction` (
   `id` bigint NOT NULL AUTO_INCREMENT,
@@ -157,7 +155,7 @@ CREATE TABLE IF NOT EXISTS `shop`.`order_transaction` (
   `deleted_at` datetime NULL DEFAULT NULL,
   CONSTRAINT PK_Transaction PRIMARY KEY (`id`) USING BTREE,
   CONSTRAINT FK_OrderTransaction_Orders FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`)
-);
+) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS `shop`.`order_item` (
   `id` bigint NOT NULL AUTO_INCREMENT,
@@ -173,7 +171,7 @@ CREATE TABLE IF NOT EXISTS `shop`.`order_item` (
   CONSTRAINT FK_OrderItem_Orders FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`),
   CONSTRAINT FK_OrderItem_Product FOREIGN KEY (`product_id`) REFERENCES `product` (`id`),
   CONSTRAINT UQ_OrderItem_OrderId_ProductId UNIQUE (`order_id`, `product_id`)
-);
+) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS `shop`.`shopping_cart` (
   `id` bigint NOT NULL AUTO_INCREMENT,
@@ -186,7 +184,7 @@ CREATE TABLE IF NOT EXISTS `shop`.`shopping_cart` (
   `deleted_at` datetime NULL DEFAULT NULL,
   CONSTRAINT PK_ShoppingCart PRIMARY KEY (`id`) USING BTREE,
   CONSTRAINT FK_ShoppingCart_Customer FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id`)
-);
+) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS `shop`.`shopping_cart_item` (
   `id` bigint NOT NULL AUTO_INCREMENT,
@@ -202,4 +200,4 @@ CREATE TABLE IF NOT EXISTS `shop`.`shopping_cart_item` (
   CONSTRAINT FK_ShoppingCartItem_Product FOREIGN KEY (`product_id`) REFERENCES `product` (`id`),
   CONSTRAINT FK_ShoppingCartItem_ShoppingCart FOREIGN KEY (`shopping_cart_id`) REFERENCES `shopping_cart` (`id`),
   CONSTRAINT UQ_ShoppingCartItem_ProductId_ShoppingCartId UNIQUE (`product_id`, `shopping_cart_id`)
-);
+) ENGINE=InnoDB;

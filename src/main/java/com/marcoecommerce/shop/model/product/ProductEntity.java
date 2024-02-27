@@ -33,10 +33,6 @@ public class ProductEntity {
     @NotNull
     private String name;
 
-    @Column(name = "sku")
-    @NotNull
-    private String sku;
-
     @Column(name = "price")
     @NotNull
     private BigDecimal price;
