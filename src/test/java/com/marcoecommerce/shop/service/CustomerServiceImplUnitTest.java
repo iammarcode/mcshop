@@ -47,9 +47,6 @@ public class CustomerServiceImplUnitTest {
         customerADto.setId(1L);
         customerBDto = TestDataUtil.createCustomerDtoB();
         customerBDto.setId(2L);
-
-        when(customerMapper.toDto(customerA)).thenReturn(customerADto);
-        when(customerMapper.toDto(customerB)).thenReturn(customerBDto);
     }
 
     @Test
@@ -110,6 +107,8 @@ public class CustomerServiceImplUnitTest {
     @Test
     public void givenCustomer_whenDeleteById_thenSuccessful() {
         // given
+        when(customerRepository.existsById(customerA.getId())).thenReturn(true);
+
         // when
         customerService.deleteById(customerA.getId());
 
@@ -125,7 +124,7 @@ public class CustomerServiceImplUnitTest {
         when(customerMapper.toDto(customerA)).thenReturn(customerADto);
 
         // when
-        customerA.setNickname("updated nickname");
+        customerADto.setNickname("updated nickname");
         CustomerDto customerUpdated = customerService.updateInfo(customerA.getId(), customerADto);
 
         // then

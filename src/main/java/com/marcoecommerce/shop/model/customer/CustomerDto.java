@@ -5,6 +5,7 @@ import com.marcoecommerce.shop.model.customerAddress.CustomerAddressDto;
 import com.marcoecommerce.shop.model.customerPayment.CustomerPaymentDto;
 import com.marcoecommerce.shop.model.order.OrderDto;
 import com.marcoecommerce.shop.model.order.OrderEntity;
+import com.marcoecommerce.shop.model.shoppingCart.ShoppingCartDto;
 import com.marcoecommerce.shop.model.shoppingCart.ShoppingCartEntity;
 import com.marcoecommerce.shop.model.customerAddress.CustomerAddressEntity;
 import com.marcoecommerce.shop.model.customerPayment.CustomerPaymentEntity;
@@ -40,7 +41,7 @@ public class CustomerDto {
 
     private List<OrderDto> orderList = new ArrayList<>();
 
-    private ShoppingCartEntity shoppingCart;
+    private ShoppingCartDto shoppingCart;
 
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;

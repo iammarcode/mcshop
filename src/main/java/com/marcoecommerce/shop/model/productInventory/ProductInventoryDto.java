@@ -1,5 +1,6 @@
 package com.marcoecommerce.shop.model.productInventory;
 
+import com.marcoecommerce.shop.model.product.ProductDto;
 import com.marcoecommerce.shop.model.product.ProductEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -21,7 +22,7 @@ public class ProductInventoryDto {
 
     private Integer quantity;
 
-    private ProductEntity product;
+    private ProductDto product;
 
     private LocalDateTime createdAt;
 

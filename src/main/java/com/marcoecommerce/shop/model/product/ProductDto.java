@@ -1,7 +1,10 @@
 package com.marcoecommerce.shop.model.product;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.marcoecommerce.shop.model.productCategory.ProductCategoryDto;
 import com.marcoecommerce.shop.model.productCategory.ProductCategoryEntity;
 import com.marcoecommerce.shop.model.productDiscount.ProductDiscountDto;
+import com.marcoecommerce.shop.model.productInventory.ProductInventoryDto;
 import com.marcoecommerce.shop.model.productInventory.ProductInventoryEntity;
 import lombok.*;
 
@@ -25,15 +28,18 @@ public class ProductDto {
 
     private String imageUrl;
 
-    private ProductCategoryEntity category;
+    private ProductCategoryDto category;
 
-    private ProductInventoryEntity inventory;
+    private ProductInventoryDto inventory;
 
     private List<ProductDiscountDto> discountList;
 
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
 
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime modifiedAt;
 
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime deletedAt;
 }
