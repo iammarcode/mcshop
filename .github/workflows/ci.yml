@@ -17,6 +17,8 @@ jobs:
       dbserver:
         image: mysql:8.0
         env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: true
+          MYSQL_ROOT_PASSWORD:
           MYSQL_USER: local
           MYSQL_PASSWORD: local
           MYSQL_DATABASE: shop
