@@ -1,50 +1,54 @@
-package com.marco.shop.controller;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.marco.shop.mapper.impl.CustomerMapper;
-import com.marco.shop.model.customer.CustomerDto;
-import com.marco.shop.model.customer.CustomerEntity;
-import com.marco.shop.service.CustomerService;
-import com.marco.shop.utils.TestDataUtil;
-import org.junit.jupiter.api.BeforeEach;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.web.servlet.MockMvc;
-
-@WebMvcTest(CustomerController.class)
-public class CustomerControllerUnitTest {
-    @Autowired
-    private MockMvc mockMvc;
-    @MockBean
-    private CustomerService customerService;
-    @MockBean
-    private CustomerMapper customerMapper;
-
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    private CustomerEntity customerAEntity;
-    private CustomerEntity customerBEntity;
-    private CustomerDto customerADto;
-    private CustomerDto customerBDto;
-
-    @BeforeEach
-    public void setUp() {
-        customerAEntity = TestDataUtil.createCustomerEntityA();
-        customerBEntity = TestDataUtil.createCustomerEntityB();
-        customerADto = TestDataUtil.createCustomerDtoA();
-        customerBDto = TestDataUtil.createCustomerDtoB();
-
-        Mockito.when(customerMapper.toEntity(customerADto)).thenReturn(customerAEntity);
-        Mockito.when(customerMapper.toEntity(customerBDto)).thenReturn(customerBEntity);
-        Mockito.when(customerMapper.toDto(customerAEntity)).thenReturn(customerADto);
-        Mockito.when(customerMapper.toDto(customerBEntity)).thenReturn(customerBDto);
-    }
-
-    // TODO: authenticated
-
+//package com.marco.shop.controller;
+//
+//import com.fasterxml.jackson.databind.ObjectMapper;
+//import com.marco.shop.mapper.impl.CustomerMapper;
+//import com.marco.shop.model.customer.CustomerDto;
+//import com.marco.shop.model.customer.CustomerEntity;
+//import com.marco.shop.service.CustomerService;
+//import com.marco.shop.utils.TestDataUtil;
+//import org.junit.jupiter.api.BeforeEach;
+//import org.junit.jupiter.api.Test;
+//import org.mockito.Mockito;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+//import org.springframework.boot.test.mock.mockito.MockBean;
+//import org.springframework.http.MediaType;
+//import org.springframework.test.web.servlet.MockMvc;
+//import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+//import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+//
+//import java.util.List;
+//
+//@WebMvcTest(CustomerController.class)
+//public class CustomerControllerUnitTest {
+//    @Autowired
+//    private MockMvc mockMvc;
+//    @MockBean
+//    private CustomerService customerService;
+//    @MockBean
+//    private CustomerMapper customerMapper;
+//
+//    @Autowired
+//    private ObjectMapper objectMapper;
+//
+//    private CustomerEntity customerAEntity;
+//    private CustomerEntity customerBEntity;
+//    private CustomerDto customerADto;
+//    private CustomerDto customerBDto;
+//
+//    @BeforeEach
+//    public void setUp() {
+//        customerAEntity = TestDataUtil.createCustomerEntityA();
+//        customerBEntity = TestDataUtil.createCustomerEntityB();
+//        customerADto = TestDataUtil.createCustomerDtoA();
+//        customerBDto = TestDataUtil.createCustomerDtoB();
+//
+//        Mockito.when(customerMapper.toEntity(customerADto)).thenReturn(customerAEntity);
+//        Mockito.when(customerMapper.toEntity(customerBDto)).thenReturn(customerBEntity);
+//        Mockito.when(customerMapper.toDto(customerAEntity)).thenReturn(customerADto);
+//        Mockito.when(customerMapper.toDto(customerBEntity)).thenReturn(customerBDto);
+//    }
+//
 //    @Test
 //    public void givenCustomer_whenCallCreateCustomer_thenReturnJsonObject() throws Exception {
 //        // given
@@ -161,4 +165,4 @@ public class CustomerControllerUnitTest {
 //                        .contentType(MediaType.APPLICATION_JSON)
 //        ).andExpect(MockMvcResultMatchers.status().isNoContent());
 //    }
-}
+//}

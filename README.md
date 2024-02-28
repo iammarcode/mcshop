@@ -22,3 +22,8 @@ docker compose -f docker-compose.test.yml up
 ```bash
 docker build -t mcshop-test --target test .
 ```
+
+### Run CI locally
+```bash
+act -n
+```
