@@ -11,10 +11,10 @@ FROM base as test
 RUN ["./mvnw", "test"]
 
 FROM base as local
-CMD ["./mvnw", "spring-boot:run", "-Dspring.profiles.active=local"]
+CMD ["./mvnw", "spring-boot:run", "-Dspring-boot.run.profiles=local"]
 
 FROM base as development
-CMD ["./mvnw", "spring-boot:run", "-Dspring.profiles.active=dev"]
+CMD ["./mvnw", "spring-boot:run", "-Dspring-boot.run.profiles=dev"]
 
 FROM base as build
 RUN ./mvnw package
