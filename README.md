@@ -1,6 +1,6 @@
-# Spring Shop Server Application
+# mcshop Server
 
-## Run Shop Server locally
+## Run mcshop server locally
 
 1.Run it from Maven directly using the Spring Boot Maven plugin.
 
@@ -14,7 +14,7 @@ docker compose -f docker-compose.test.yml up
 docker compose -f docker-compose.local.yml up
 ```
 
-# Test Applications
+# Test
 
 1.Start databases services:
 ```bash
@@ -28,5 +28,5 @@ docker compose -f docker-compose.test.yml up
 or 
 
 ```bash
-docker build -t shop-test --target test .
+docker build -t mcshop-test --target test .
 ```
