@@ -6,7 +6,7 @@
 
 ```bash
 docker compose -f docker-compose.test.yml up
-./mvnw spring-boot:run -Dspring-boot-profiles=test
+./mvnw spring-boot:run -Dspring-boot.run.arguments="--spring.profiles.active=test"
 ```
 
 2.Or run it all with docker
