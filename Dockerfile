@@ -21,5 +21,5 @@ RUN ./mvnw package
 
 FROM eclipse-temurin:17-jre-jammy as production
 EXPOSE 8080
-COPY --from=build /app/target/shop-*.jar /shop-server.jar
-CMD ["java", "-Dspring.profiles.active=prod", "-jar", "/shop-server.jar"]
+COPY --from=build /app/target/mcshop-*.jar /mcshop-server.jar
+CMD ["java", "-Dspring.profiles.active=prod", "-jar", "/mcshop-server.jar"]
