@@ -1,4 +1,4 @@
-# mcshop Server
+# mcshop server
 
 ## Run mcshop server locally
 
