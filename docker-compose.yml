@@ -15,15 +15,17 @@ services:
 
   dbserver:
     image: mysql:8.0
+    env_file:
+      - .env
     container_name: shop_mysql_local
     ports:
-      - "3306:3306"
+      - "${DB_SHOP_PORT}:${DB_SHOP_PORT}"
     environment:
       - MYSQL_ROOT_PASSWORD=
       - MYSQL_ALLOW_EMPTY_PASSWORD=true
-      - MYSQL_USER=local
-      - MYSQL_PASSWORD=local
-      - MYSQL_DATABASE=shop
+      - MYSQL_USER=${DB_SHOP_USERNAME}
+      - MYSQL_PASSWORD=${DB_SHOP_PASSWORD}
+      - MYSQL_DATABASE=${DB_SHOP_DB_NAME}
     volumes:
       - mysql_data:/var/lib/mysql
       - mysql_config:/etc/mysql/conf.d
@@ -31,9 +33,11 @@ services:
   redis:
     restart: always
     image: redis:alpine
+    env_file:
+      - .env
     container_name: shop_redis_local
     ports:
-        - '6379:6379'
+        - "${REDIS_SHOP_PORT}:${REDIS_SHOP_PORT}"
 
 volumes:
   mysql_data:

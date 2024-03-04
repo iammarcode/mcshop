@@ -4,23 +4,14 @@
 
 1.Run all with docker
 ```bash
-docker compose -f docker-compose.local.yml up
+bash start-local.sh
 ```
 
 ### Test
 
-1.Start services for testing:
+1.Run test locally:
 ```bash
-docker compose -f docker-compose.test.yml up
-```
-```bash
-./mvnw test
-```
-
-2.Run test in docker:
-
-```bash
-docker build -t mcshop-test --target test .
+bash test.sh
 ```
 
 ### Run CI locally
