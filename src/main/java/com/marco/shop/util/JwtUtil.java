@@ -19,11 +19,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtUtil {
 
-    @Value("${application.security.jwt.secret-key}")
+    @Value("${mcshop.security.jwt.secret-key}")
     private String SECRET_KEY;
-    @Value("${application.security.jwt.access-token.expiration}")
+    @Value("${mcshop.security.jwt.access-token.expiration}")
     private long ACCESS_TOKEN_EXPIRATION;
-    @Value("${application.security.jwt.refresh-token.expiration}")
+    @Value("${mcshop.security.jwt.refresh-token.expiration}")
     private long REFRESH_TOKEN_EXPIRATION;
 
     public String getUsername(String token) {

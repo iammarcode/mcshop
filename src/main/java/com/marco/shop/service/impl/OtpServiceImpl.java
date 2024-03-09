@@ -13,7 +13,7 @@ public class OtpServiceImpl implements OtpService {
     @Autowired
     private RedisService<String, Object> redisService;
 
-    @Value("${otp.expire.second}")
+    @Value("${mcshop.otp.expire.second}")
     private Long OTP_EXPIRE_SECOND;
 
     @Override

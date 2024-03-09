@@ -10,17 +10,17 @@ import java.util.Properties;
 
 @Configuration
 public class EmailConfig {
-    @Value("${spring.mail.username}")
+    @Value("${mcshop.mail.username}")
     private String username;
-    @Value("${spring.mail.password}")
+    @Value("${mcshop.mail.password}")
     private String password;
-    @Value("${spring.mail.port}")
+    @Value("${mcshop.mail.port}")
     private int port;
-    @Value("${spring.mail.host}")
+    @Value("${mcshop.mail.host}")
     private String host;
-    @Value("${spring.mail.properties.mail.smtp.starttls.enable}")
+    @Value("${mcshop.mail.properties.mail.smtp.starttls.enable}")
     private String enable;
-    @Value("${spring.mail.properties.mail.smtp.auth}")
+    @Value("${mcshop.mail.properties.mail.smtp.auth}")
     private String auth;
 
     @Bean

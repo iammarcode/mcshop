@@ -6,15 +6,19 @@ COPY .mvn/ .mvn
 COPY mvnw pom.xml ./
 RUN ./mvnw dependency:resolve
 COPY src ./src
+ENV AWS_REGION=eu-west-1
+ENV AWS_ACCESS_KEY_ID=dummy_key
+ENV AWS_SECRET_ACCESS_KEY=dummy_secret
 
 FROM base as test
 RUN ["./mvnw", "test"]
 
 FROM base as local
-CMD ["./mvnw", "spring-boot:run", "-Dspring-boot.run.profiles=local"]
+CMD ["sh", "-c", "AWS_REGION=${AWS_REGION} AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} ./mvnw spring-boot:run"]
 
 FROM base as development
-CMD ["./mvnw", "spring-boot:run", "-Dspring-boot.run.profiles=dev"]
+#TODO: run in aws ec2
+CMD ["./mvnw", "spring-boot:run"]
 
 FROM base as build
 RUN ./mvnw package

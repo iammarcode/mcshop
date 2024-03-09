@@ -1,10 +1,33 @@
 version: '3.8'
 services:
+  localstack:
+    container_name: "mcshop_localstack_${DOCKER_ENV}"
+    image: localstack/localstack:3.2.0
+    env_file:
+      - .env
+    ports:
+      - "127.0.0.1:4510-4559:4510-4559"  # external service port range
+      - "127.0.0.1:4566:4566"            # LocalStack Edge Proxy
+    environment:
+      - LOCALSTACK_HOST=${LOCALSTACK_HOST}  # set this env var to expose localstack to other containers
+      - SERVICES=sns,sqs,cloudformation
+      - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    volumes:
+      - "./localstack:/etc/localstack/init/ready.d" #ready hook
+      - "${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    networks:
+      default:
+        aliases:
+          - ${LOCALSTACK_HOST} # set this env var to expose localstack to other containers
+
   server:
     build:
       context: .
-      target: local
-    container_name: shop_server_local
+      target: ${DOCKER_BUILD_TARGET}
+    container_name: "mcshop_server_${DOCKER_ENV}"
     ports:
       - "8080:8080"
     volumes:
@@ -12,12 +35,13 @@ services:
     depends_on:
       - dbserver
       - redis
+      - localstack
 
   dbserver:
     image: mysql:8.0
     env_file:
       - .env
-    container_name: shop_mysql_local
+    container_name: "mcshop_mysql_${DOCKER_ENV}"
     ports:
       - "${DB_SHOP_PORT}:${DB_SHOP_PORT}"
     environment:
@@ -35,7 +59,7 @@ services:
     image: redis:alpine
     env_file:
       - .env
-    container_name: shop_redis_local
+    container_name: "mcshop_redis_${DOCKER_ENV}"
     ports:
         - "${REDIS_SHOP_PORT}:${REDIS_SHOP_PORT}"
 

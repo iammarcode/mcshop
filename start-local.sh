@@ -4,4 +4,4 @@ set -e
 
 cp .env.local .env
 
-docker compose up -d
+docker compose up -d localstack dbserver redis

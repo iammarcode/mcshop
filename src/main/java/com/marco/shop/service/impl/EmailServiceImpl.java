@@ -12,7 +12,7 @@ public class EmailServiceImpl implements EmailService {
     @Autowired
     private JavaMailSender emailSender;
 
-    @Value("${spring.mail.username}")
+    @Value("${mcshop.mail.username}")
     private String sender;
 
     @Override
