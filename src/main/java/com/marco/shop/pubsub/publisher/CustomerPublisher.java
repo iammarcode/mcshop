@@ -1,4 +1,4 @@
-package com.marco.shop.publisher;
+package com.marco.shop.pubsub.publisher;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

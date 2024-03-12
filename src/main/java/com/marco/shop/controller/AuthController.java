@@ -5,7 +5,7 @@ import com.marco.shop.model.customer.CustomerDto;
 import com.marco.shop.model.customer.CustomerLoginDto;
 import com.marco.shop.model.customer.CustomerRegisterDto;
 import com.marco.shop.model.customer.OtpDto;
-import com.marco.shop.publisher.CustomerPublisher;
+import com.marco.shop.pubsub.publisher.CustomerPublisher;
 import com.marco.shop.service.AuthenticationService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
