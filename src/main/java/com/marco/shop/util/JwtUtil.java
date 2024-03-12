@@ -1,5 +1,6 @@
 package com.marco.shop.util;
 
+import com.marco.shop.config.properties.JwtProperties;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -12,19 +13,15 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 @Component
 public class JwtUtil {
 
-    @Value("${mcshop.security.jwt.secret-key}")
-    private String SECRET_KEY;
-    @Value("${mcshop.security.jwt.access-token.expiration}")
-    private long ACCESS_TOKEN_EXPIRATION;
-    @Value("${mcshop.security.jwt.refresh-token.expiration}")
-    private long REFRESH_TOKEN_EXPIRATION;
+    @Autowired
+    private JwtProperties jwtProperties;
 
     public String getUsername(String token) {
         return getClaim(token, Claims::getSubject);
@@ -36,19 +33,19 @@ public class JwtUtil {
     }
 
     public String generateAccessToken(UserDetails userDetails) {
-        return buildToken(new HashMap<>(), userDetails, ACCESS_TOKEN_EXPIRATION);
+        return buildToken(new HashMap<>(), userDetails, jwtProperties.getAccessTokenExpiration());
     }
 
     public String generateAccessToken(Map<String, Object> extraClaims, UserDetails userDetails) {
-        return buildToken(extraClaims, userDetails, ACCESS_TOKEN_EXPIRATION);
+        return buildToken(extraClaims, userDetails, jwtProperties.getAccessTokenExpiration());
     }
 
     public String generateRefreshToken(UserDetails userDetails) {
-        return buildToken(new HashMap<>(), userDetails, REFRESH_TOKEN_EXPIRATION);
+        return buildToken(new HashMap<>(), userDetails, jwtProperties.getRefreshTokenExpiration());
     }
 
     public String generateRefreshToken(Map<String, Object> extraClaims, UserDetails userDetails) {
-        return buildToken(extraClaims, userDetails, REFRESH_TOKEN_EXPIRATION);
+        return buildToken(extraClaims, userDetails, jwtProperties.getRefreshTokenExpiration());
     }
 
     private String buildToken(
@@ -89,15 +86,15 @@ public class JwtUtil {
     }
 
     private Key getSignInKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
+        byte[] keyBytes = Decoders.BASE64.decode(jwtProperties.getSecretKey());
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
     public LocalDateTime getAccessExpirationTime() {
-        return LocalDateTime.now().plusSeconds(ACCESS_TOKEN_EXPIRATION / 1000);
+        return LocalDateTime.now().plusSeconds(jwtProperties.getAccessTokenExpiration() / 1000);
     }
 
     public LocalDateTime getRefreshExpirationTime() {
-        return LocalDateTime.now().plusSeconds(REFRESH_TOKEN_EXPIRATION / 1000);
+        return LocalDateTime.now().plusSeconds(jwtProperties.getRefreshTokenExpiration() / 1000);
     }
 }

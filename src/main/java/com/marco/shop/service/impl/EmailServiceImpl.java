@@ -1,27 +1,33 @@
 package com.marco.shop.service.impl;
 
+import com.marco.shop.config.properties.EmailProperties;
 import com.marco.shop.service.EmailService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class EmailServiceImpl implements EmailService {
     @Autowired
     private JavaMailSender emailSender;
 
-    @Value("${mcshop.mail.username}")
-    private String sender;
+    @Autowired
+    private EmailProperties emailProperties;
 
     @Override
-    public void sendSimpleMessage(String to, String subject, String text) {
+    @Async
+    public void sendSimpleMessage(String receiver, String subject, String text) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom(sender);
-        message.setTo(to);
+        message.setFrom(emailProperties.getUsername());
+        message.setTo(receiver);
         message.setSubject(subject);
         message.setText(text);
+
+        log.info("Sending simple message:{} with subject:{} to receiver:{}", text, subject, receiver);
 
         emailSender.send(message);
     }

@@ -1,17 +1,35 @@
 AWSTemplateFormatVersion: 2010-09-09
 Resources:
-  EmailQueue:
+  # SQS
+  CustomerOtpQueue:
     Type: AWS::SQS::Queue
     Properties:
-      QueueName: email-consumer-queue
-  EmailTopic:
+      QueueName: customer-otp-queue
+  CustomerRegisterQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: customer-register-queue
+
+  # SNS topics
+  CustomerOtpTopic:
     Type: AWS::SNS::Topic
     Properties:
-      TopicName: email-topic
+      TopicName: customer-otp-topic
+  CustomerRegisterTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: customer-register-topic
 
-  SnsSubscription:
+  # Subscriptions
+  CustomerOtpSubscription:
     Type: AWS::SNS::Subscription
     Properties:
       Protocol: sqs
-      Endpoint: !GetAtt EmailQueue.Arn
-      TopicArn: !GetAtt EmailTopic.TopicArn
+      Endpoint: !GetAtt CustomerOtpQueue.Arn
+      TopicArn: !GetAtt CustomerOtpTopic.TopicArn
+  CustomerRegisterSubscription:
+    Type: AWS::SNS::Subscription
+    Properties:
+      Protocol: sqs
+      Endpoint: !GetAtt CustomerRegisterQueue.Arn
+      TopicArn: !GetAtt CustomerRegisterTopic.TopicArn

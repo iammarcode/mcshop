@@ -1,7 +1,5 @@
 package com.marco.shop.service.impl;
 
-import com.marco.shop.event.customer.CreateCustomerEvent;
-import com.marco.shop.event.customer.RequestOtpCustomerEvent;
 import com.marco.shop.exception.auth.OtpValidationFailedException;
 import com.marco.shop.exception.auth.RefreshTokenInvalidException;
 import com.marco.shop.exception.customer.CustomerAlreadyExistException;
@@ -12,6 +10,7 @@ import com.marco.shop.model.customer.CustomerEntity;
 import com.marco.shop.model.customer.CustomerLoginDto;
 import com.marco.shop.model.customer.CustomerRegisterDto;
 import com.marco.shop.repository.CustomerRepository;
+import com.marco.shop.service.EmailService;
 import com.marco.shop.util.JwtUtil;
 import com.marco.shop.model.auth.TokenDto;
 import com.marco.shop.service.AuthenticationService;
@@ -20,7 +19,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -48,10 +46,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private ApplicationEventPublisher eventPublisher;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    private EmailService emailService;
 
     @Override
     public void requestOtp(String email) {
@@ -61,10 +59,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new CustomerAlreadyExistException(email);
         }
 
+        // send otp email
         String otp = otpService.generateOTP(email);
-
-        // event
-        eventPublisher.publishEvent(new RequestOtpCustomerEvent(eventPublisher, otp, email));
+        emailService.sendSimpleMessage(email, "One-time password", otp);
     }
 
     @Override
@@ -85,8 +82,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         // clear otp cache
         otpService.clearOtpByKey(customer.getEmail());
 
-        // event
-        eventPublisher.publishEvent(new CreateCustomerEvent(eventPublisher ,customerSaved));
+        // send registration email
+        emailService.sendSimpleMessage(
+                customerSaved.getEmail(),
+                "Welcome To MCShop, " + customerSaved.getNickname(),
+                "Registration Successfully"
+        );
 
         return customerMapper.toDto(customerSaved);
     }
@@ -103,7 +104,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         Optional<CustomerEntity> customerFound = customerRepository.findByEmail(customer.getEmail());
         if (customerFound.isEmpty()) {
-            log.error("Customer not found with email: " + customer.getEmail());
+            log.error("Customer not found with email: {}", customer.getEmail());
             throw new CustomerNotFoundException(customer.getEmail());
         }
 
@@ -131,7 +132,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (email != null) {
             CustomerEntity customer = customerRepository.findByEmail(email).orElseThrow(
                     () -> {
-                        log.error("Customer not found with email: " + email);
+                        log.error("Customer not found with email: {}", email);
                         return new CustomerNotFoundException(email);
                     }
             );
