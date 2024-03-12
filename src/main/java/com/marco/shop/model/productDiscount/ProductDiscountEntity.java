@@ -1,7 +1,7 @@
 package com.marco.shop.model.productDiscount;
 
-import com.marco.shop.model.productDiscountLink.ProductDiscountLinkEntity;
 import com.marco.shop.model.product.ProductEntity;
+import com.marco.shop.model.productDiscountLink.ProductDiscountLinkEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;

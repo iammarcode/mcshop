@@ -1,7 +1,6 @@
 package com.marco.shop.config;
 
 import com.marco.shop.exception.CustomAsyncExceptionHandler;
-import lombok.AllArgsConstructor;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

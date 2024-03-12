@@ -1,7 +1,7 @@
 package com.marco.shop.service.impl;
 
-import com.marco.shop.service.RedisService;
 import com.marco.shop.service.OtpService;
+import com.marco.shop.service.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

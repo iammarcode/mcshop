@@ -1,15 +1,19 @@
 package com.marco.shop.model.customer;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.marco.shop.model.customerPayment.CustomerPaymentDto;
-import com.marco.shop.model.shoppingCart.ShoppingCartDto;
 import com.marco.shop.model.customerAddress.CustomerAddressDto;
+import com.marco.shop.model.customerPayment.CustomerPaymentDto;
 import com.marco.shop.model.order.OrderDto;
+import com.marco.shop.model.shoppingCart.ShoppingCartDto;
 import jakarta.validation.constraints.NotBlank;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Builder

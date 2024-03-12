@@ -1,9 +1,5 @@
 package com.marco.shop.service;
 
-import org.springframework.stereotype.Service;
-
-import java.util.Random;
-
 public interface OtpService {
     String generateOTP(String key);
 

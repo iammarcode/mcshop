@@ -1,9 +1,9 @@
 package com.marco.shop.model.customer;
 
-import com.marco.shop.model.customerPayment.CustomerPaymentEntity;
-import com.marco.shop.model.shoppingCart.ShoppingCartEntity;
-import com.marco.shop.model.order.OrderEntity;
 import com.marco.shop.model.customerAddress.CustomerAddressEntity;
+import com.marco.shop.model.customerPayment.CustomerPaymentEntity;
+import com.marco.shop.model.order.OrderEntity;
+import com.marco.shop.model.shoppingCart.ShoppingCartEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
@@ -13,7 +13,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = false, exclude = "shoppingCart")

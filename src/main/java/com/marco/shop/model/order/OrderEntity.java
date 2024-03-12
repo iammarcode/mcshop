@@ -2,9 +2,9 @@ package com.marco.shop.model.order;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.marco.shop.model.customer.CustomerEntity;
+import com.marco.shop.model.customerAddress.CustomerAddressEntity;
 import com.marco.shop.model.orderItem.OrderItemEntity;
 import com.marco.shop.model.orderTransaction.OrderTransactionEntity;
-import com.marco.shop.model.customerAddress.CustomerAddressEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;

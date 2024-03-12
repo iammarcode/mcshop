@@ -1,9 +1,9 @@
 package com.marco.shop.mapper.impl;
 
 import com.marco.shop.mapper.Mapper;
-import com.marco.shop.model.customer.CustomerRegisterDto;
-import com.marco.shop.model.customer.CustomerEntity;
 import com.marco.shop.model.customer.CustomerDto;
+import com.marco.shop.model.customer.CustomerEntity;
+import com.marco.shop.model.customer.CustomerRegisterDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

@@ -1,7 +1,7 @@
 package com.marco.shop.model.shoppingCart;
 
-import com.marco.shop.model.shoppingCartItem.ShoppingCartItemEntity;
 import com.marco.shop.model.customer.CustomerEntity;
+import com.marco.shop.model.shoppingCartItem.ShoppingCartItemEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
