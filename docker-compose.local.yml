@@ -1,0 +1,56 @@
+version: '3.8'
+services:
+  localstack:
+    container_name: "mcshop_localstack_local"
+    image: localstack/localstack:3.2.0
+    ports:
+      - "127.0.0.1:4510-4559:4510-4559"  # external service port range
+      - "127.0.0.1:4566:4566"            # LocalStack Edge Proxy
+    environment:
+      - LOCALSTACK_HOST=localstack
+      - SERVICES=sns,sqs,secretsmanager
+      - AWS_DEFAULT_REGION=eu-west-1
+    volumes:
+      - "./localstack:/etc/localstack/init/ready.d"
+      - "./tmp/localstack/volume:/var/lib/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+
+  server:
+    build:
+      context: .
+      target: local
+    container_name: "mcshop_server_local"
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./:/app
+    depends_on:
+      - mysql
+      - redis
+      - localstack
+
+  mysql:
+    image: mysql:8.0
+    container_name: "mcshop_mysql_local"
+    ports:
+      - "3360:3360"
+    environment:
+      - MYSQL_ROOT_PASSWORD=
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true
+      - MYSQL_USER=local
+      - MYSQL_PASSWORD=local
+      - MYSQL_DATABASE=shop
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - mysql_config:/etc/mysql/conf.d
+
+  redis:
+    restart: always
+    image: redis:alpine
+    container_name: "mcshop_redis_local"
+    ports:
+        - "6379:6379"
+
+volumes:
+  mysql_data:
+  mysql_config:

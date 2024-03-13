@@ -14,10 +14,9 @@ FROM base as test
 RUN ["./mvnw", "test"]
 
 FROM base as local
-CMD ["sh", "-c", "AWS_REGION=${AWS_REGION} AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} ./mvnw spring-boot:run"]
+CMD ["sh", "-c", "AWS_REGION=${AWS_REGION} AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} ./mvnw spring-boot:run -Dspring-boot.run.profiles=local"]
 
 FROM base as development
-#TODO: run in aws ec2
 CMD ["./mvnw", "spring-boot:run"]
 
 FROM base as build

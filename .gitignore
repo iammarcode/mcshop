@@ -41,5 +41,5 @@ demo/
 ### Docker tmp folder ###
 tmp/
 
-### .env file ###
-.env
+### Secrets Manager files ###
+*-secrets.json

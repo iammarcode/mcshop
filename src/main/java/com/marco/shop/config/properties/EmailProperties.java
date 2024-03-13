@@ -13,8 +13,8 @@ import org.springframework.context.annotation.Configuration;
 public class EmailProperties {
     private String host;
     private Integer port;
-    private String username;
-    private String password;
+    private String username; // load from secretsmanager
+    private String password; // load from secretsmanager
     private String protocol;
     private String smtpAuth;
     private String smtpStarttlsEnable;

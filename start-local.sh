@@ -2,6 +2,6 @@
 
 set -e
 
-cp .env.local .env
+chmod -R 777 ./localstack
 
-docker compose up -d localstack dbserver redis
+docker compose -f docker-compose.local.yml up -d
