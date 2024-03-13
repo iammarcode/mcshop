@@ -55,9 +55,6 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
 
-      - name: Create .env file for docker
-        run: cp .env.docker .env
-
       - name: Build and test project with Maven
         run: ./mvnw -B package --file pom.xml
   # 2
