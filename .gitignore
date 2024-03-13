@@ -32,9 +32,6 @@ build/
 ### VS Code ###
 .vscode/
 
-### Personal Demo ###
-demo/
-
 ### Ignore .DS_Store files ###
 .DS_Store
 
@@ -42,4 +39,4 @@ demo/
 tmp/
 
 ### Secrets Manager files ###
-*-secrets.json
+secrets/
