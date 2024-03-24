@@ -1,10 +1,11 @@
-# mcshop server
+# mcshop backend
 
-### Run mcshop server locally
+### Run mcshop backend project locally
 
 1.Create required secrets stored in secretsmanager
 ```bash
-cat <<EOF >./localstack/secrets/smtp-secrets.json
+mkdir -p ./data/localstack/secrets/ &&
+cat <<EOF >./data/localstack/secrets/smtp-secrets.json
 {
   "username": YOUR_SMTP_USERNAME,
   "password": YOUR_SMTP_PASSWORD
@@ -12,9 +13,15 @@ cat <<EOF >./localstack/secrets/smtp-secrets.json
 EOF
 ```
 
-2.Run all with docker locally
+2.Run with Intellij
 ```bash
 bash start-local.sh
+./mvnw spring-boot:run
+```
+
+3.Run all with docker
+```bash
+bash start-docker.sh
 ```
 
 ### Test
