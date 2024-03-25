@@ -12,11 +12,14 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class EmailServiceImpl implements EmailService {
-    @Autowired
-    private JavaMailSender emailSender;
+    private final JavaMailSender emailSender;
+    private final EmailProperties emailProperties;
 
     @Autowired
-    private EmailProperties emailProperties;
+    public EmailServiceImpl(JavaMailSender emailSender, EmailProperties emailProperties) {
+        this.emailSender = emailSender;
+        this.emailProperties = emailProperties;
+    }
 
     @Override
     @Async

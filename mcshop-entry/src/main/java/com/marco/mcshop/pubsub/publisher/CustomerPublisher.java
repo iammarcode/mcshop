@@ -12,14 +12,16 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class CustomerPublisher {
-    @Autowired
-    private SnsTemplate snsTemplate;
+    private final SnsTemplate snsTemplate;
+    private final AWSProperties awsProperties;
+    private final ObjectMapper objectMapper;
 
     @Autowired
-    private AWSProperties awsProperties;
-
-    @Autowired
-    private ObjectMapper objectMapper;
+    public CustomerPublisher(SnsTemplate snsTemplate, AWSProperties awsProperties, ObjectMapper objectMapper) {
+        this.snsTemplate = snsTemplate;
+        this.awsProperties = awsProperties;
+        this.objectMapper = objectMapper;
+    }
 
     public void publishOtp(String email) {
         Message<String> message = MessageBuilder.withPayload(email).build();

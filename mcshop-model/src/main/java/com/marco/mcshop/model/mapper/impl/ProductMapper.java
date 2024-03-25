@@ -9,8 +9,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ProductMapper implements Mapper<ProductEntity, ProductDto> {
+    private final ModelMapper modelMapper;
+
     @Autowired
-    private ModelMapper modelMapper;
+    public ProductMapper(ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
+    }
 
     @Override
     public ProductDto toDto(ProductEntity productEntity) {

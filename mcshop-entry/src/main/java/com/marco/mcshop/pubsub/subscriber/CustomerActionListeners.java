@@ -16,11 +16,14 @@ import java.util.Map;
 @Component
 @Slf4j
 public class CustomerActionListeners {
-    @Autowired
-    private AuthenticationService authenticationService;
+    private final AuthenticationService authenticationService;
+    private final ObjectMapper objectMapper;
 
     @Autowired
-    private ObjectMapper objectMapper;
+    public CustomerActionListeners(AuthenticationService authenticationService, ObjectMapper objectMapper) {
+        this.authenticationService = authenticationService;
+        this.objectMapper = objectMapper;
+    }
 
     @SqsListener("${mcshop.aws.customer-otp-queue}")
     public void listeningOtp(Message message) throws JsonProcessingException {

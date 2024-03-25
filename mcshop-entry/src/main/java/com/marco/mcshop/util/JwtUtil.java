@@ -19,9 +19,12 @@ import java.util.function.Function;
 
 @Component
 public class JwtUtil {
+    private final JwtProperties jwtProperties;
 
     @Autowired
-    private JwtProperties jwtProperties;
+    public JwtUtil(JwtProperties jwtProperties) {
+        this.jwtProperties = jwtProperties;
+    }
 
     public String getUsername(String token) {
         return getClaim(token, Claims::getSubject);

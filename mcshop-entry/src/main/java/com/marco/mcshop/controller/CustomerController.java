@@ -13,12 +13,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/customer")
 public class CustomerController {
-    @Autowired
-    private CustomerService customerService;
+    private final CustomerService customerService;
+    private final CustomerMapper customerMapper;
 
     @Autowired
-    private CustomerMapper customerMapper;
-
+    public CustomerController(CustomerService customerService, CustomerMapper customerMapper) {
+        this.customerService = customerService;
+        this.customerMapper = customerMapper;
+    }
 
     @GetMapping(path = "/current")
     public ResponseEntity<CustomerDto> getCurrentCustomer() {

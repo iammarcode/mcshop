@@ -12,9 +12,12 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 public class RedisServiceImpl implements RedisService<String, Object> {
+    private final RedisTemplate<String, Object> redisTemplate;
 
     @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
+    public RedisServiceImpl(RedisTemplate<String, Object> redisTemplate) {
+        this.redisTemplate = redisTemplate;
+    }
 
     @Override
     public void set(String key, Object value, long time) {

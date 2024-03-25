@@ -10,8 +10,12 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/v1/customer/address")
 public class CustomerAddressController {
+    private final CustomerAddressService addressService;
+
     @Autowired
-    private CustomerAddressService addressService;
+    public CustomerAddressController(CustomerAddressService addressService) {
+        this.addressService = addressService;
+    }
 
     @PostMapping
     public ResponseEntity<CustomerDto> addAddress(@RequestBody CustomerAddressDto addressDto) {

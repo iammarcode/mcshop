@@ -16,11 +16,14 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/auth")
 @RestController
 public class AuthController {
-    @Autowired
-    private AuthenticationService authenticationService;
+    private final AuthenticationService authenticationService;
+    private final CustomerPublisher customerPublisher;
 
     @Autowired
-    private CustomerPublisher customerPublisher;
+    public AuthController(AuthenticationService authenticationService, CustomerPublisher customerPublisher) {
+        this.authenticationService = authenticationService;
+        this.customerPublisher = customerPublisher;
+    }
 
     @GetMapping("/otp")
     public ResponseEntity<String> requestOtp(@RequestBody OtpDto otpDto) throws Exception {

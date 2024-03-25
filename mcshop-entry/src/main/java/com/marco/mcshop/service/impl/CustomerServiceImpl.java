@@ -20,11 +20,14 @@ import java.util.stream.StreamSupport;
 @Service
 @Slf4j
 public class CustomerServiceImpl implements CustomerService {
-    @Autowired
-    private CustomerRepository customerRepository;
+    private final CustomerRepository customerRepository;
+    private final CustomerMapper customerMapper;
 
     @Autowired
-    private CustomerMapper customerMapper;
+    public CustomerServiceImpl(CustomerRepository customerRepository, CustomerMapper customerMapper) {
+        this.customerRepository = customerRepository;
+        this.customerMapper = customerMapper;
+    }
 
     @Override
     public CustomerEntity create(CustomerEntity customerEntity) {

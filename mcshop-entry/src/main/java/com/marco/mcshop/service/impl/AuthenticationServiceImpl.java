@@ -28,30 +28,26 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class AuthenticationServiceImpl implements AuthenticationService {
+    private final CustomerMapper customerMapper;
+    private final CustomerRepository customerRepository;
+    private final CustomerService customerService;
+    private final OtpService otpService;
+    private final JwtUtil jwtUtil;
+    private final AuthenticationManager authenticationManager;
+    private final PasswordEncoder passwordEncoder;
+    private final EmailService emailService;
 
     @Autowired
-    private CustomerMapper customerMapper;
-
-    @Autowired
-    private CustomerRepository customerRepository;
-
-    @Autowired
-    private CustomerService customerService;
-
-    @Autowired
-    private OtpService otpService;
-
-    @Autowired
-    private JwtUtil jwtUtil;
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private EmailService emailService;
+    public AuthenticationServiceImpl(CustomerMapper customerMapper, CustomerRepository customerRepository, CustomerService customerService, OtpService otpService, JwtUtil jwtUtil, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, EmailService emailService) {
+        this.customerMapper = customerMapper;
+        this.customerRepository = customerRepository;
+        this.customerService = customerService;
+        this.otpService = otpService;
+        this.jwtUtil = jwtUtil;
+        this.authenticationManager = authenticationManager;
+        this.passwordEncoder = passwordEncoder;
+        this.emailService = emailService;
+    }
 
     @Override
     public void requestOtp(String email) {

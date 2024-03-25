@@ -13,8 +13,12 @@ import java.util.stream.StreamSupport;
 
 @Service
 public class OrderServiceImpl implements OrderService {
+    private final OrderRepository orderRepository;
+
     @Autowired
-    private OrderRepository orderRepository;
+    public OrderServiceImpl(OrderRepository orderRepository) {
+        this.orderRepository = orderRepository;
+    }
 
     @Override
     public OrderEntity create(OrderEntity orderEntity) {

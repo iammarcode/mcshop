@@ -15,11 +15,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 public class SecurityFilterChainConfig {
-    @Autowired
-    private AuthenticationProvider authenticationProvider;
+    private final AuthenticationProvider authenticationProvider;
+    private final JwtRequestFilter jwtRequestFilter;
 
     @Autowired
-    private JwtRequestFilter jwtRequestFilter;
+    public SecurityFilterChainConfig(AuthenticationProvider authenticationProvider, JwtRequestFilter jwtRequestFilter) {
+        this.authenticationProvider = authenticationProvider;
+        this.jwtRequestFilter = jwtRequestFilter;
+    }
 
     private static final String[] WHITE_LIST_URL = {
         "/api/v1/auth/**",

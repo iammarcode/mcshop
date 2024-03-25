@@ -13,9 +13,12 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @Configuration
 @EnableCaching
 public class RedisConfig {
+    private final RedisProperties redisProperties;
 
     @Autowired
-    private RedisProperties redisProperties;
+    public RedisConfig(RedisProperties redisProperties) {
+        this.redisProperties = redisProperties;
+    }
 
     @Bean
     LettuceConnectionFactory connectionFactory() {

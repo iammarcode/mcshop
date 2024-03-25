@@ -10,8 +10,12 @@ import java.util.Random;
 
 @Service
 public class OtpServiceImpl implements OtpService {
+    private final RedisService<String, Object> redisService;
+
     @Autowired
-    private RedisService<String, Object> redisService;
+    public OtpServiceImpl(RedisService<String, Object> redisService) {
+        this.redisService = redisService;
+    }
 
     @Value("${mcshop.otp.expire.second}")
     private Long OTP_EXPIRE_SECOND;

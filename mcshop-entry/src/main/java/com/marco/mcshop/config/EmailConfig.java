@@ -11,8 +11,12 @@ import java.util.Properties;
 
 @Configuration
 public class EmailConfig {
+    private final EmailProperties emailProperties;
+
     @Autowired
-    private EmailProperties emailProperties;
+    public EmailConfig(EmailProperties emailProperties) {
+        this.emailProperties = emailProperties;
+    }
 
     @Bean
     public JavaMailSender getJavaMailSender() {

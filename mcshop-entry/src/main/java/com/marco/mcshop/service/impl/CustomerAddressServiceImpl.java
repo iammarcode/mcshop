@@ -20,17 +20,18 @@ import java.util.concurrent.atomic.AtomicBoolean;
 @Service
 @Slf4j
 public class CustomerAddressServiceImpl implements CustomerAddressService {
-    @Autowired
-    private CustomerRepository customerRepository;
+    private final CustomerRepository customerRepository;
+    private final CustomerService customerService;
+    private final CustomerAddressMapper addressMapper;
+    private final CustomerMapper customerMapper;
 
     @Autowired
-    private CustomerService customerService;
-
-    @Autowired
-    private CustomerAddressMapper addressMapper;
-
-    @Autowired
-    private CustomerMapper customerMapper;
+    public CustomerAddressServiceImpl(CustomerRepository customerRepository, CustomerService customerService, CustomerAddressMapper addressMapper, CustomerMapper customerMapper) {
+        this.customerRepository = customerRepository;
+        this.customerService = customerService;
+        this.addressMapper = addressMapper;
+        this.customerMapper = customerMapper;
+    }
 
     @Override
     public CustomerDto create(CustomerAddressDto addressDto) {

@@ -14,9 +14,12 @@ import java.util.concurrent.Executor;
 @Configuration
 @EnableAsync
 public class AsyncConfiguration implements AsyncConfigurer {
+    private final CustomAsyncExceptionHandler customAsyncExceptionHandler;
 
     @Autowired
-    private CustomAsyncExceptionHandler customAsyncExceptionHandler;
+    public AsyncConfiguration(CustomAsyncExceptionHandler customAsyncExceptionHandler) {
+        this.customAsyncExceptionHandler = customAsyncExceptionHandler;
+    }
 
     // Spring uses a default SimpleAsyncTaskExecutor to actually run these methods asynchronously.
     @Bean(name = "threadPoolTaskExecutor")
