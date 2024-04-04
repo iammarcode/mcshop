@@ -1,13 +1,12 @@
 package com.marco.mcshop.service.impl;
 
 import com.marco.mcshop.exception.product.ProductNotFoundException;
-import com.marco.mcshop.service.ProductService;
 import com.marco.mcshop.model.dto.product.ProductDto;
 import com.marco.mcshop.model.entity.ProductEntity;
 import com.marco.mcshop.model.mapper.impl.ProductMapper;
 import com.marco.mcshop.model.repository.ProductRepository;
+import com.marco.mcshop.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,7 +18,6 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
 
-    @Autowired
     public ProductServiceImpl(ProductRepository productRepository, ProductMapper productMapper) {
         this.productRepository = productRepository;
         this.productMapper = productMapper;

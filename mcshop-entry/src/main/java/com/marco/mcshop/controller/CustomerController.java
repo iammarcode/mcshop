@@ -1,9 +1,8 @@
 package com.marco.mcshop.controller;
 
-import com.marco.mcshop.service.CustomerService;
 import com.marco.mcshop.model.dto.customer.CustomerDto;
 import com.marco.mcshop.model.mapper.impl.CustomerMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.marco.mcshop.service.CustomerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +15,6 @@ public class CustomerController {
     private final CustomerService customerService;
     private final CustomerMapper customerMapper;
 
-    @Autowired
     public CustomerController(CustomerService customerService, CustomerMapper customerMapper) {
         this.customerService = customerService;
         this.customerMapper = customerMapper;

@@ -5,14 +5,12 @@ import com.marco.mcshop.model.dto.customer.CustomerRegisterDto;
 import com.marco.mcshop.model.entity.CustomerEntity;
 import com.marco.mcshop.model.mapper.Mapper;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class CustomerMapper implements Mapper<CustomerEntity, CustomerDto> {
     private final ModelMapper modelMapper;
 
-    @Autowired
     public CustomerMapper(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
     }

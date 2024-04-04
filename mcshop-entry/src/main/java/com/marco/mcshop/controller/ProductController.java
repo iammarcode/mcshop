@@ -1,8 +1,7 @@
 package com.marco.mcshop.controller;
 
-import com.marco.mcshop.service.ProductService;
 import com.marco.mcshop.model.dto.product.ProductDto;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.marco.mcshop.service.ProductService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,7 +14,7 @@ import java.util.List;
 @RequestMapping("/api/v1/product")
 public class ProductController {
     private final ProductService productService;
-    @Autowired
+
     public ProductController(ProductService productService) {
         this.productService = productService;
     }

@@ -1,12 +1,10 @@
 package com.marco.mcshop.config.security;
 
-import com.marco.mcshop.service.impl.CustomerServiceImpl;
 import com.marco.mcshop.util.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,18 +18,15 @@ import java.io.IOException;
 
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
+    private final HandlerExceptionResolver handlerExceptionResolver;
+    private final UserDetailsService userDetailsService;
+    private final JwtUtil jwtUtil;
 
-    @Autowired
-    private HandlerExceptionResolver handlerExceptionResolver;
-
-    @Autowired
-    private UserDetailsService userDetailsService;
-
-    @Autowired
-    private JwtUtil jwtUtil;
-
-    @Autowired
-    private CustomerServiceImpl customerService;
+    public JwtRequestFilter(HandlerExceptionResolver handlerExceptionResolver, UserDetailsService userDetailsService, JwtUtil jwtUtil) {
+        this.handlerExceptionResolver = handlerExceptionResolver;
+        this.userDetailsService = userDetailsService;
+        this.jwtUtil = jwtUtil;
+    }
 
     @Override
     protected void doFilterInternal(

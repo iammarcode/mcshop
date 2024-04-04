@@ -1,9 +1,8 @@
 package com.marco.mcshop.controller;
 
-import com.marco.mcshop.service.CustomerAddressService;
 import com.marco.mcshop.model.dto.customer.CustomerDto;
 import com.marco.mcshop.model.dto.customerAddress.CustomerAddressDto;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.marco.mcshop.service.CustomerAddressService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 public class CustomerAddressController {
     private final CustomerAddressService addressService;
 
-    @Autowired
     public CustomerAddressController(CustomerAddressService addressService) {
         this.addressService = addressService;
     }

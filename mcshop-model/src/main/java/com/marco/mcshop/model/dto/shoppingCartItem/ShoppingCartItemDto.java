@@ -1,29 +1,29 @@
-package com.marco.mcshop.model.dto.shoppingCart;
+package com.marco.mcshop.model.dto.shoppingCartItem;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.marco.mcshop.model.dto.customer.CustomerDto;
-import com.marco.mcshop.model.dto.shoppingCartItem.ShoppingCartItemDto;
-import lombok.*;
+import com.marco.mcshop.model.dto.product.ProductDto;
+import com.marco.mcshop.model.dto.shoppingCart.ShoppingCartDto;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
 
-@EqualsAndHashCode(callSuper = false)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ShoppingCartDto {
+public class ShoppingCartItemDto {
     private Long id;
 
-    private BigDecimal total;
+    private Integer quantity;
 
     @JsonIgnore
-    private CustomerDto customer;
+    private ShoppingCartDto shoppingCart;
 
-    private List<ShoppingCartItemDto> itemList;
+    private ProductDto product;
 
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;

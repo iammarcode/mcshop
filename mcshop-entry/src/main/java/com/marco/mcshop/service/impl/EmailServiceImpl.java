@@ -3,7 +3,6 @@ package com.marco.mcshop.service.impl;
 import com.marco.mcshop.config.properties.EmailProperties;
 import com.marco.mcshop.service.EmailService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
@@ -15,7 +14,6 @@ public class EmailServiceImpl implements EmailService {
     private final JavaMailSender emailSender;
     private final EmailProperties emailProperties;
 
-    @Autowired
     public EmailServiceImpl(JavaMailSender emailSender, EmailProperties emailProperties) {
         this.emailSender = emailSender;
         this.emailProperties = emailProperties;

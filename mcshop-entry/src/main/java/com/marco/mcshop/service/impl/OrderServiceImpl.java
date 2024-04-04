@@ -1,9 +1,8 @@
 package com.marco.mcshop.service.impl;
 
-import com.marco.mcshop.service.OrderService;
 import com.marco.mcshop.model.entity.OrderEntity;
 import com.marco.mcshop.model.repository.OrderRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.marco.mcshop.service.OrderService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,7 +14,6 @@ import java.util.stream.StreamSupport;
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
 
-    @Autowired
     public OrderServiceImpl(OrderRepository orderRepository) {
         this.orderRepository = orderRepository;
     }

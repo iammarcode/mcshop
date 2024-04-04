@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.marco.mcshop.config.properties.AWSProperties;
 import com.marco.mcshop.model.dto.customer.CustomerRegisterDto;
 import io.awspring.cloud.sns.core.SnsTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
@@ -16,7 +15,6 @@ public class CustomerPublisher {
     private final AWSProperties awsProperties;
     private final ObjectMapper objectMapper;
 
-    @Autowired
     public CustomerPublisher(SnsTemplate snsTemplate, AWSProperties awsProperties, ObjectMapper objectMapper) {
         this.snsTemplate = snsTemplate;
         this.awsProperties = awsProperties;

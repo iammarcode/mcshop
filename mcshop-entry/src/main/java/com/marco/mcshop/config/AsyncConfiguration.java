@@ -2,7 +2,6 @@ package com.marco.mcshop.config;
 
 import com.marco.mcshop.exception.CustomAsyncExceptionHandler;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
@@ -16,7 +15,6 @@ import java.util.concurrent.Executor;
 public class AsyncConfiguration implements AsyncConfigurer {
     private final CustomAsyncExceptionHandler customAsyncExceptionHandler;
 
-    @Autowired
     public AsyncConfiguration(CustomAsyncExceptionHandler customAsyncExceptionHandler) {
         this.customAsyncExceptionHandler = customAsyncExceptionHandler;
     }

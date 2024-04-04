@@ -2,11 +2,10 @@ package com.marco.mcshop.pubsub.subscriber;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.marco.mcshop.service.AuthenticationService;
 import com.marco.mcshop.model.dto.customer.CustomerRegisterDto;
+import com.marco.mcshop.service.AuthenticationService;
 import io.awspring.cloud.sqs.annotation.SqsListener;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.Message;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +18,6 @@ public class CustomerActionListeners {
     private final AuthenticationService authenticationService;
     private final ObjectMapper objectMapper;
 
-    @Autowired
     public CustomerActionListeners(AuthenticationService authenticationService, ObjectMapper objectMapper) {
         this.authenticationService = authenticationService;
         this.objectMapper = objectMapper;

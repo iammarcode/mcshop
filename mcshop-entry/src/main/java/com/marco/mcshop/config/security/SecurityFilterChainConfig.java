@@ -1,7 +1,6 @@
 package com.marco.mcshop.config.security;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -18,7 +17,6 @@ public class SecurityFilterChainConfig {
     private final AuthenticationProvider authenticationProvider;
     private final JwtRequestFilter jwtRequestFilter;
 
-    @Autowired
     public SecurityFilterChainConfig(AuthenticationProvider authenticationProvider, JwtRequestFilter jwtRequestFilter) {
         this.authenticationProvider = authenticationProvider;
         this.jwtRequestFilter = jwtRequestFilter;

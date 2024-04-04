@@ -1,13 +1,12 @@
 package com.marco.mcshop.service.impl;
 
 import com.marco.mcshop.exception.customer.CustomerNotFoundException;
-import com.marco.mcshop.service.CustomerService;
 import com.marco.mcshop.model.dto.customer.CustomerDto;
 import com.marco.mcshop.model.entity.CustomerEntity;
 import com.marco.mcshop.model.mapper.impl.CustomerMapper;
 import com.marco.mcshop.model.repository.CustomerRepository;
+import com.marco.mcshop.service.CustomerService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,7 +22,6 @@ public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepository customerRepository;
     private final CustomerMapper customerMapper;
 
-    @Autowired
     public CustomerServiceImpl(CustomerRepository customerRepository, CustomerMapper customerMapper) {
         this.customerRepository = customerRepository;
         this.customerMapper = customerMapper;
@@ -108,12 +106,12 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public CustomerEntity getCurrentCustomer() {
         // TODO: customer update?
-        CustomerEntity currentCustomer = (CustomerEntity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserDetails currentCustomer = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        return customerRepository.findByEmail(currentCustomer.getEmail()).orElseThrow(
+        return customerRepository.findByEmail(currentCustomer.getUsername()).orElseThrow(
                 () -> {
-                    log.error("Customer not found with email: " + currentCustomer.getEmail());
-                    return new CustomerNotFoundException(currentCustomer.getEmail());
+                    log.error("Customer not found with email: " + currentCustomer.getUsername());
+                    return new CustomerNotFoundException(currentCustomer.getUsername());
                 }
         );
     }

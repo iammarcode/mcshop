@@ -4,14 +4,12 @@ import com.marco.mcshop.model.dto.product.ProductDto;
 import com.marco.mcshop.model.entity.ProductEntity;
 import com.marco.mcshop.model.mapper.Mapper;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ProductMapper implements Mapper<ProductEntity, ProductDto> {
     private final ModelMapper modelMapper;
 
-    @Autowired
     public ProductMapper(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
     }

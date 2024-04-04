@@ -1,11 +1,11 @@
 package com.marco.mcshop.service;
 
-import com.marco.mcshop.service.impl.CustomerServiceImpl;
-import com.marco.mcshop.utils.TestDataUtil;
 import com.marco.mcshop.model.dto.customer.CustomerDto;
 import com.marco.mcshop.model.entity.CustomerEntity;
 import com.marco.mcshop.model.mapper.impl.CustomerMapper;
 import com.marco.mcshop.model.repository.CustomerRepository;
+import com.marco.mcshop.service.impl.CustomerServiceImpl;
+import com.marco.mcshop.utils.TestDataUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

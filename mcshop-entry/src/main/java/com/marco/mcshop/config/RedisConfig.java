@@ -1,7 +1,6 @@
 package com.marco.mcshop.config;
 
 import com.marco.mcshop.config.properties.RedisProperties;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,7 +14,6 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 public class RedisConfig {
     private final RedisProperties redisProperties;
 
-    @Autowired
     public RedisConfig(RedisProperties redisProperties) {
         this.redisProperties = redisProperties;
     }

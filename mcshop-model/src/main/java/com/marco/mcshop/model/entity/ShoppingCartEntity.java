@@ -1,5 +1,6 @@
 package com.marco.mcshop.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -27,23 +28,29 @@ public class ShoppingCartEntity {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
+    @JsonIgnore
     private CustomerEntity customer;
 
     @OneToMany(
             mappedBy = "shoppingCart",
             cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY
+            fetch = FetchType.LAZY,
+            orphanRemoval = true
     )
     private List<ShoppingCartItemEntity> shoppingCartItemList;
 
-    public void addShoppingCartItem(ShoppingCartItemEntity shoppingCartItem) {
+    public void addAssociationCartItem(ShoppingCartItemEntity shoppingCartItem) {
         this.shoppingCartItemList.add(shoppingCartItem);
         shoppingCartItem.setShoppingCart(this);
     }
 
-    public void removeShoppingCartItem(ShoppingCartItemEntity shoppingCartItem) {
+    public void removeAssociationCartItem(ShoppingCartItemEntity shoppingCartItem) {
         this.shoppingCartItemList.remove(shoppingCartItem);
         shoppingCartItem.setShoppingCart(null);
+    }
+
+    public void clearAssociationCartItem() {
+        this.shoppingCartItemList.clear();
     }
 
     @Column(name = "created_at")

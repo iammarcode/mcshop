@@ -1,15 +1,14 @@
 package com.marco.mcshop.controller;
 
-import com.marco.mcshop.pubsub.publisher.CustomerPublisher;
-import com.marco.mcshop.service.AuthenticationService;
 import com.marco.mcshop.model.dto.auth.TokenDto;
 import com.marco.mcshop.model.dto.customer.CustomerDto;
 import com.marco.mcshop.model.dto.customer.CustomerLoginDto;
 import com.marco.mcshop.model.dto.customer.CustomerRegisterDto;
 import com.marco.mcshop.model.dto.customer.OtpDto;
+import com.marco.mcshop.pubsub.publisher.CustomerPublisher;
+import com.marco.mcshop.service.AuthenticationService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +18,6 @@ public class AuthController {
     private final AuthenticationService authenticationService;
     private final CustomerPublisher customerPublisher;
 
-    @Autowired
     public AuthController(AuthenticationService authenticationService, CustomerPublisher customerPublisher) {
         this.authenticationService = authenticationService;
         this.customerPublisher = customerPublisher;

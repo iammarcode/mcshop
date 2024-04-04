@@ -1,5 +1,6 @@
 package com.marco.mcshop.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -48,7 +49,7 @@ public class ProductEntity {
     )
     private List<ProductDiscountLinkEntity> discountLinkList = new ArrayList<>();
 
-    public void addDiscount(ProductDiscountEntity discount) {
+    public void addAssociationDiscount(ProductDiscountEntity discount) {
         ProductDiscountLinkEntity productDiscountLink = ProductDiscountLinkEntity.builder()
                 .discount(discount)
                 .product(this)
@@ -58,7 +59,7 @@ public class ProductEntity {
         discount.getProductLinkList().add(productDiscountLink);
     }
 
-    public void removeDiscount(ProductDiscountEntity discount) {
+    public void removeAssociationDiscount(ProductDiscountEntity discount) {
         ProductDiscountLinkEntity link = this.discountLinkList
                 .stream()
                 .filter(e -> e.getDiscount() == discount && e.getProduct() == this)
@@ -90,12 +91,12 @@ public class ProductEntity {
     )
     private ProductInventoryEntity inventory;
 
-    public void addInventory(ProductInventoryEntity inventory) {
+    public void addAssociationInventory(ProductInventoryEntity inventory) {
         inventory.setProduct(this);
         this.inventory = inventory;
     }
 
-    public void removeInventory() {
+    public void removeAssociationInventory() {
         if (this.inventory != null) {
             inventory.setProduct(null);
             this.inventory = null;
@@ -109,29 +110,29 @@ public class ProductEntity {
     )
     private List<OrderItemEntity> orderItemList = new ArrayList<>();
 
-    public void addOrderItem(OrderItemEntity orderItem) {
+    public void addAssociationOrderItem(OrderItemEntity orderItem) {
         this.orderItemList.add(orderItem);
         orderItem.setProduct(this);
     }
 
-    public void removeOrderItem(OrderItemEntity orderItem) {
+    public void removeAssociationOrderItem(OrderItemEntity orderItem) {
         this.orderItemList.remove(orderItem);
         orderItem.setProduct(null);
     }
 
     @OneToMany(
             mappedBy = "product",
-            cascade = CascadeType.ALL,
             fetch = FetchType.LAZY
     )
+    @JsonIgnore
     private List<ShoppingCartItemEntity> shoppingCartItemList = new ArrayList<>();
 
-    public void addShoppingCartItem(ShoppingCartItemEntity shoppingCartItem) {
+    public void addAssociationCartItem(ShoppingCartItemEntity shoppingCartItem) {
         this.shoppingCartItemList.add(shoppingCartItem);
         shoppingCartItem.setProduct(this);
     }
 
-    public void removeShoppingCartItem(ShoppingCartItemEntity shoppingCartItem) {
+    public void removeAssociationCartItem(ShoppingCartItemEntity shoppingCartItem) {
         this.shoppingCartItemList.remove(shoppingCartItem);
         shoppingCartItem.setProduct(null);
     }

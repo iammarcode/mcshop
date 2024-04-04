@@ -2,7 +2,6 @@ package com.marco.mcshop.service.impl;
 
 import com.marco.mcshop.service.OtpService;
 import com.marco.mcshop.service.RedisService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +11,6 @@ import java.util.Random;
 public class OtpServiceImpl implements OtpService {
     private final RedisService<String, Object> redisService;
 
-    @Autowired
     public OtpServiceImpl(RedisService<String, Object> redisService) {
         this.redisService = redisService;
     }

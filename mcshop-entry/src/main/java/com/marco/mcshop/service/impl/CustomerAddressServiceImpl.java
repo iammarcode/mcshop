@@ -1,8 +1,6 @@
 package com.marco.mcshop.service.impl;
 
 import com.marco.mcshop.exception.address.AddressNotFoundException;
-import com.marco.mcshop.service.CustomerAddressService;
-import com.marco.mcshop.service.CustomerService;
 import com.marco.mcshop.model.dto.customer.CustomerDto;
 import com.marco.mcshop.model.dto.customerAddress.CustomerAddressDto;
 import com.marco.mcshop.model.entity.CustomerAddressEntity;
@@ -10,8 +8,9 @@ import com.marco.mcshop.model.entity.CustomerEntity;
 import com.marco.mcshop.model.mapper.impl.CustomerAddressMapper;
 import com.marco.mcshop.model.mapper.impl.CustomerMapper;
 import com.marco.mcshop.model.repository.CustomerRepository;
+import com.marco.mcshop.service.CustomerAddressService;
+import com.marco.mcshop.service.CustomerService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -25,7 +24,6 @@ public class CustomerAddressServiceImpl implements CustomerAddressService {
     private final CustomerAddressMapper addressMapper;
     private final CustomerMapper customerMapper;
 
-    @Autowired
     public CustomerAddressServiceImpl(CustomerRepository customerRepository, CustomerService customerService, CustomerAddressMapper addressMapper, CustomerMapper customerMapper) {
         this.customerRepository = customerRepository;
         this.customerService = customerService;

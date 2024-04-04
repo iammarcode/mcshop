@@ -3,27 +3,29 @@ package com.marco.mcshop.service.impl;
 import com.marco.mcshop.exception.auth.OtpValidationFailedException;
 import com.marco.mcshop.exception.auth.RefreshTokenInvalidException;
 import com.marco.mcshop.exception.customer.CustomerAlreadyExistException;
-import com.marco.mcshop.service.AuthenticationService;
-import com.marco.mcshop.service.CustomerService;
-import com.marco.mcshop.service.EmailService;
-import com.marco.mcshop.service.OtpService;
-import com.marco.mcshop.util.JwtUtil;
 import com.marco.mcshop.model.dto.auth.TokenDto;
 import com.marco.mcshop.model.dto.customer.CustomerDto;
 import com.marco.mcshop.model.dto.customer.CustomerLoginDto;
 import com.marco.mcshop.model.dto.customer.CustomerRegisterDto;
 import com.marco.mcshop.model.entity.CustomerEntity;
+import com.marco.mcshop.model.entity.ShoppingCartEntity;
 import com.marco.mcshop.model.mapper.impl.CustomerMapper;
 import com.marco.mcshop.model.repository.CustomerRepository;
+import com.marco.mcshop.service.AuthenticationService;
+import com.marco.mcshop.service.CustomerService;
+import com.marco.mcshop.service.EmailService;
+import com.marco.mcshop.service.OtpService;
+import com.marco.mcshop.util.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
 
 @Service
 @Slf4j
@@ -37,7 +39,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
 
-    @Autowired
     public AuthenticationServiceImpl(CustomerMapper customerMapper, CustomerRepository customerRepository, CustomerService customerService, OtpService otpService, JwtUtil jwtUtil, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, EmailService emailService) {
         this.customerMapper = customerMapper;
         this.customerRepository = customerRepository;
@@ -75,6 +76,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         // create customer
         CustomerEntity customerRegister = customerMapper.toEntityRegister(customer);
+
+        // create an empty shoppingCart
+        ShoppingCartEntity shoppingCart = ShoppingCartEntity.builder().total(BigDecimal.valueOf(0)).build();
+        customerRegister.addShoppingCart(shoppingCart);
+
         CustomerEntity customerSaved = customerRepository.save(customerRegister);
 
         // clear otp cache

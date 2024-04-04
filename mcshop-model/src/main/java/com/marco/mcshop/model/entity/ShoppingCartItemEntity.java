@@ -1,5 +1,6 @@
 package com.marco.mcshop.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -23,13 +24,15 @@ public class ShoppingCartItemEntity {
     @NotNull
     private Integer quantity;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "shopping_cart_id")
+    @JsonIgnore
     private ShoppingCartEntity shoppingCart;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private ProductEntity product;
+
 
     @Column(name = "created_at")
     @CreationTimestamp

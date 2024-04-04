@@ -4,6 +4,7 @@ import com.marco.mcshop.exception.auth.OtpValidationFailedException;
 import com.marco.mcshop.exception.auth.RefreshTokenInvalidException;
 import com.marco.mcshop.exception.customer.CustomerAlreadyExistException;
 import com.marco.mcshop.exception.customer.CustomerNotFoundException;
+import com.marco.mcshop.exception.shoppingCart.CartItemNotFoundException;
 import io.jsonwebtoken.JwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -64,11 +65,21 @@ public class GlobalExceptionHandler {
                 .body(exception.getMessage());
     }
 
+    @ExceptionHandler({CartItemNotFoundException.class})
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<Object> handleCartItemNotFoundException(CartItemNotFoundException exception) {
+        log.error(exception.getMessage());
+
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(exception.getMessage());
+    }
+
     // unexpected exception
     @ExceptionHandler({RuntimeException.class})
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<Object> handleUnexpectedException(RuntimeException exception) {
-        log.error(exception.getMessage());
+        log.error("unexpected exception: " + exception.getMessage());
 
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)

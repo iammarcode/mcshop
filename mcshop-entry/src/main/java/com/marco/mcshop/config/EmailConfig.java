@@ -1,7 +1,6 @@
 package com.marco.mcshop.config;
 
 import com.marco.mcshop.config.properties.EmailProperties;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -13,7 +12,6 @@ import java.util.Properties;
 public class EmailConfig {
     private final EmailProperties emailProperties;
 
-    @Autowired
     public EmailConfig(EmailProperties emailProperties) {
         this.emailProperties = emailProperties;
     }

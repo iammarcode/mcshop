@@ -1,7 +1,6 @@
 package com.marco.mcshop.service.impl;
 
 import com.marco.mcshop.service.RedisService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +13,6 @@ import java.util.concurrent.TimeUnit;
 public class RedisServiceImpl implements RedisService<String, Object> {
     private final RedisTemplate<String, Object> redisTemplate;
 
-    @Autowired
     public RedisServiceImpl(RedisTemplate<String, Object> redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
