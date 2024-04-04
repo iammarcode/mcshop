@@ -28,7 +28,6 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 
 @Service
-@Slf4j
 public class AuthenticationServiceImpl implements AuthenticationService {
     private final CustomerMapper customerMapper;
     private final CustomerRepository customerRepository;
@@ -124,7 +123,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public TokenDto refreshToken(HttpServletRequest request, HttpServletResponse response) {
         final String authHeader = request.getHeader("Authorization");
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            log.error("Invalid refresh token header: " + authHeader);
             throw new RefreshTokenInvalidException(authHeader);
         }
 

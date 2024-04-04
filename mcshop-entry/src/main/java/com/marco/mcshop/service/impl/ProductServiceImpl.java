@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.stream.StreamSupport;
 
 @Service
-@Slf4j
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
@@ -32,10 +31,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductDto findById(Long id) {
         ProductEntity productEntity = productRepository.findById(id).orElseThrow(
-                () -> {
-                    log.error("Product not found with ID: " + id);
-                    return new ProductNotFoundException(id);
-                }
+                () -> new ProductNotFoundException(id)
         );
 
         return productMapper.toDto(productEntity);

@@ -19,7 +19,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({CustomerNotFoundException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<String> handleCustomerNotFoundException(CustomerNotFoundException exception) {
-        log.error(exception.getMessage());
+        log.error(String.valueOf(exception));
 
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
@@ -28,7 +28,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({CustomerAlreadyExistException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<String> handleCustomerAlreadyExistsException(CustomerAlreadyExistException exception) {
-        log.error(exception.getMessage());
+        log.error(String.valueOf(exception));
 
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
@@ -38,7 +38,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({OtpValidationFailedException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<Object> handleOtpValidationFailedException(OtpValidationFailedException exception) {
-        log.error(exception.getMessage());
+        log.error(String.valueOf(exception));
 
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
@@ -48,7 +48,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({JwtException.class})
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ResponseEntity<Object> handleAuthenticationException(JwtException exception) {
-        log.error(exception.getMessage());
+        log.error(String.valueOf(exception));
 
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
@@ -58,7 +58,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({RefreshTokenInvalidException.class})
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ResponseEntity<Object> handleRefreshTokenInvalidException(RefreshTokenInvalidException exception) {
-        log.error(exception.getMessage());
+        log.error(String.valueOf(exception));
 
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
@@ -68,7 +68,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({CartItemNotFoundException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<Object> handleCartItemNotFoundException(CartItemNotFoundException exception) {
-        log.error(exception.getMessage());
+        log.error(String.valueOf(exception));
 
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
@@ -79,7 +79,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({RuntimeException.class})
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<Object> handleUnexpectedException(RuntimeException exception) {
-        log.error("unexpected exception: " + exception.getMessage());
+        log.error(String.valueOf(exception));
 
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
