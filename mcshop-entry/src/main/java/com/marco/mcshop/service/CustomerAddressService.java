@@ -1,12 +1,13 @@
 package com.marco.mcshop.service;
 
-import com.marco.mcshop.model.dto.customer.CustomerDto;
 import com.marco.mcshop.model.dto.customerAddress.CustomerAddressDto;
 
+import java.util.List;
+
 public interface CustomerAddressService {
-    CustomerDto create(CustomerAddressDto addressDto);
+    List<CustomerAddressDto> create(CustomerAddressDto addressDto);
 
-    CustomerDto update(CustomerAddressDto addressDto);
+    List<CustomerAddressDto> partialUpdate(Long id, CustomerAddressDto addressDto);
 
-    CustomerDto delete(Long addressId);
+    List<CustomerAddressDto> delete(Long addressId);
 }

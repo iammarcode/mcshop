@@ -24,7 +24,7 @@ public class AuthController {
     }
 
     @GetMapping("/otp")
-    public ResponseEntity<String> requestOtp(@RequestBody OtpDto otpDto) throws Exception {
+    public ResponseEntity<String> otp(@RequestBody OtpDto otpDto) throws Exception {
         customerPublisher.publishOtp(otpDto.getEmail());
 
         return ResponseEntity.ok("Request OTP Successfully");

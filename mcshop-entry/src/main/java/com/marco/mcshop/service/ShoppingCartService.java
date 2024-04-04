@@ -6,7 +6,7 @@ import com.marco.mcshop.model.dto.shoppingCartItem.ShoppingCartItemDto;
 public interface ShoppingCartService {
     ShoppingCartDto addItem(ShoppingCartItemDto shoppingCartItemDto);
 
-    ShoppingCartDto updateItem(Long id, ShoppingCartItemDto shoppingCartItemDto);
+    ShoppingCartDto partialUpdateItem(Long id, ShoppingCartItemDto shoppingCartItemDto);
 
     ShoppingCartDto deleteItem(Long id) throws Exception;
 

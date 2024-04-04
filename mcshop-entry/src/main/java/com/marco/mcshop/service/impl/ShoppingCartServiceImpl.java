@@ -1,5 +1,6 @@
 package com.marco.mcshop.service.impl;
 
+import com.marco.mcshop.exception.product.ProductNotFoundException;
 import com.marco.mcshop.exception.shoppingCart.CartItemNotFoundException;
 import com.marco.mcshop.model.dto.product.ProductDto;
 import com.marco.mcshop.model.dto.shoppingCart.ShoppingCartDto;
@@ -40,7 +41,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         ShoppingCartEntity currentCart = customerService.getCurrentCustomer().getShoppingCart();
 
         Long productId = shoppingCartItemDto.getProduct().getId();
-        ProductDto productFound = productService.findById(productId);
+        this.checkProductValidity(productId);
 
         Boolean isProductExist = false;
         for (ShoppingCartItemEntity existingCartItem: currentCart.getShoppingCartItemList()) {
@@ -64,17 +65,16 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public ShoppingCartDto updateItem(Long id, ShoppingCartItemDto updateCartItemDto) {
+    public ShoppingCartDto partialUpdateItem(Long id, ShoppingCartItemDto updateCartItemDto) {
         ShoppingCartEntity currentCart = customerService.getCurrentCustomer().getShoppingCart();
 
-        // update quantity
-        for (ShoppingCartItemEntity existingCartItem: currentCart.getShoppingCartItemList()) {
-            if (existingCartItem.getId() == id) {
-                existingCartItem.setQuantity(updateCartItemDto.getQuantity());
-            }
-        }
+        ShoppingCartItemEntity cartItemFound = currentCart.getShoppingCartItemList().stream()
+                .filter(item -> item.getId().equals(id))
+                .findAny()
+                .orElseThrow(() -> new CartItemNotFoundException(id));
 
         //TODO: update others attributes
+        if (updateCartItemDto.getQuantity() != null) cartItemFound.setQuantity(updateCartItemDto.getQuantity());
 
         currentCart.setTotal(this.calculateAmount(currentCart));
 
@@ -93,9 +93,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                 .findAny()
                 .orElseThrow(() -> new CartItemNotFoundException(id));
 
-        if (cartItemToRemove != null) {
-            currentCart.removeAssociationCartItem(cartItemToRemove);
-        }
+        currentCart.removeAssociationCartItem(cartItemToRemove);
 
         currentCart.setTotal(this.calculateAmount(currentCart));
 
@@ -135,5 +133,12 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         }
 
         return total;
+    }
+
+    private void checkProductValidity(Long id) {
+        boolean isExist = productService.isExist(id);
+        if (isExist == false) {
+            throw new ProductNotFoundException(id);
+        }
     }
 }

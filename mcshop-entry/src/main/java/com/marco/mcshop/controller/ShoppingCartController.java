@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/cart")
+@RequestMapping("/api/v1/cart/items")
 public class ShoppingCartController {
     private final ShoppingCartService shoppingCartService;
 
@@ -18,32 +18,32 @@ public class ShoppingCartController {
         this.shoppingCartService = shoppingCartService;
     }
 
-    @PostMapping("/item")
+    @PostMapping
     public ResponseEntity<ShoppingCartDto> addItem(@RequestBody ShoppingCartItemDto shoppingCartItemDto) {
         ShoppingCartDto shoppingCartDto = shoppingCartService.addItem(shoppingCartItemDto);
 
         return ResponseEntity.ok(shoppingCartDto);
     }
 
-    @PutMapping("/item/{id}")
-    public ResponseEntity<ShoppingCartDto> updateItem(
+    @PatchMapping("/{id}")
+    public ResponseEntity<ShoppingCartDto> partialUpdateItem(
             @PathVariable("id") Long id,
             @RequestBody ShoppingCartItemDto shoppingCartItemDto
     ) {
-        ShoppingCartDto shoppingCartDto = shoppingCartService.updateItem(id, shoppingCartItemDto);
+        ShoppingCartDto shoppingCartDto = shoppingCartService.partialUpdateItem(id, shoppingCartItemDto);
 
         return ResponseEntity.ok(shoppingCartDto);
     }
 
-    @DeleteMapping("/item/{id}")
-    public ResponseEntity deleteItem(@PathVariable("id") Long id) throws Exception {
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteItemById(@PathVariable("id") Long id) throws Exception {
         ShoppingCartDto shoppingCartDto = shoppingCartService.deleteItem(id);
 
         return ResponseEntity.status(HttpStatus.OK).body(shoppingCartDto);
     }
 
     @DeleteMapping("/clear")
-    public ResponseEntity clearCart(HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity clearItems(HttpServletRequest request, HttpServletResponse response) {
         ShoppingCartDto shoppingCartDto = shoppingCartService.clearCart();
 
         return ResponseEntity.status(HttpStatus.OK).body(shoppingCartDto);

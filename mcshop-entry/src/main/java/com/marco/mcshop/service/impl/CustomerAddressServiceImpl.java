@@ -10,14 +10,13 @@ import com.marco.mcshop.model.mapper.impl.CustomerMapper;
 import com.marco.mcshop.model.repository.CustomerRepository;
 import com.marco.mcshop.service.CustomerAddressService;
 import com.marco.mcshop.service.CustomerService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 
 @Service
-@Slf4j
 public class CustomerAddressServiceImpl implements CustomerAddressService {
     private final CustomerRepository customerRepository;
     private final CustomerService customerService;
@@ -32,23 +31,25 @@ public class CustomerAddressServiceImpl implements CustomerAddressService {
     }
 
     @Override
-    public CustomerDto create(CustomerAddressDto addressDto) {
+    public List<CustomerAddressDto> create(CustomerAddressDto addressDto) {
         CustomerAddressEntity newAddressEntity = addressMapper.toEntity(addressDto);
         CustomerEntity currentCustomer = customerService.getCurrentCustomer();
 
         currentCustomer.addAddress(newAddressEntity);
-        CustomerEntity addressSaved = customerRepository.save(currentCustomer);
+        CustomerEntity customerUpdated = customerRepository.save(currentCustomer);
 
-        return customerMapper.toDto(addressSaved);
+        CustomerDto customerDtoUpdated = customerMapper.toDto(customerUpdated);
+
+        return customerDtoUpdated.getAddressList();
     }
 
     @Override
-    public CustomerDto update(CustomerAddressDto addressDto) {
+    public List<CustomerAddressDto> partialUpdate(Long id, CustomerAddressDto addressDto) {
         AtomicBoolean isAddressExist = new AtomicBoolean(false);
         CustomerEntity currentCustomer = customerService.getCurrentCustomer();
 
         currentCustomer.getAddressList().forEach(address -> {
-            if (address.getId().equals(addressDto.getId())) {
+            if (address.getId().equals(id)) {
                 isAddressExist.set(true);
                 address.setAddressLine1(addressDto.getAddressLine1());
                 address.setAddressLine2(addressDto.getAddressLine2());
@@ -65,23 +66,24 @@ public class CustomerAddressServiceImpl implements CustomerAddressService {
 
         CustomerEntity customerUpdated = customerRepository.save(currentCustomer);
 
-        return customerMapper.toDto(customerUpdated);
+        CustomerDto customerUpdatedDto = customerMapper.toDto(customerUpdated);
+
+        return customerUpdatedDto.getAddressList();
     }
 
     @Override
-    public CustomerDto delete(Long addressId) {
+    public List<CustomerAddressDto> delete(Long addressId) {
         CustomerEntity currentCustomer = customerService.getCurrentCustomer();
 
         CustomerAddressEntity existingAddress = currentCustomer.getAddressList().stream().filter(address -> address.getId().equals(addressId)).findFirst().orElseThrow(
-                () -> {
-                    log.error("Address not found with ID: " + addressId);
-                    return new AddressNotFoundException(addressId);
-                }
+                () -> new AddressNotFoundException(addressId)
         );
         currentCustomer.removeAddress(existingAddress);
 
         CustomerEntity customerUpdated = customerRepository.save(currentCustomer);
 
-        return customerMapper.toDto(customerUpdated);
+        CustomerDto customerUpdatedDto = customerMapper.toDto(customerUpdated);
+
+        return customerUpdatedDto.getAddressList();
     }
 }

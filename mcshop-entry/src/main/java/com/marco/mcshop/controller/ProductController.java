@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/product")
+@RequestMapping("/api/v1/products")
 public class ProductController {
     private final ProductService productService;
 
@@ -19,15 +19,15 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping(path = "")
-    public ResponseEntity<List<ProductDto>> getProducts() {
+    @GetMapping
+    public ResponseEntity<List<ProductDto>> getAll() {
         List<ProductDto> customerDtoList = productService.findAll();
 
         return ResponseEntity.ok(customerDtoList);
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<ProductDto> getProductById(@PathVariable("id") Long id) {
+    public ResponseEntity<ProductDto> getById(@PathVariable("id") Long id) {
         ProductDto customerFoundDto = productService.findById(id);
 
         return ResponseEntity.ok(customerFoundDto);

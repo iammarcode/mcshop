@@ -106,18 +106,6 @@ public class CustomerServiceImplUnitTest {
     }
 
     @Test
-    public void givenCustomer_whenDeleteById_thenSuccessful() {
-        // given
-        when(customerRepository.existsById(customerA.getId())).thenReturn(true);
-
-        // when
-        customerService.deleteById(customerA.getId());
-
-        // then
-        verify(customerRepository, times(1)).deleteById(any(Long.class));
-    }
-
-    @Test
     public void givenCustomer_whenUpdateCustomer_thenReturnUpdatedCustomer() {
         // given
         when(customerRepository.findById(customerA.getId())).thenReturn(Optional.of(customerA));
@@ -126,7 +114,7 @@ public class CustomerServiceImplUnitTest {
 
         // when
         customerADto.setNickname("updated nickname");
-        CustomerDto customerUpdated = customerService.updateInfo(customerA.getId(), customerADto);
+        CustomerDto customerUpdated = customerService.updateBasicInfo(customerA.getId(), customerADto);
 
         // then
         verify(customerRepository, times(1)).save(any(CustomerEntity.class));
