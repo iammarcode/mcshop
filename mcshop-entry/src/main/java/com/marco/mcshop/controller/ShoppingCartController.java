@@ -37,15 +37,15 @@ public class ShoppingCartController {
 
     @DeleteMapping("/item/{id}")
     public ResponseEntity deleteItem(@PathVariable("id") Long id) throws Exception {
-        shoppingCartService.deleteItem(id);
+        ShoppingCartDto shoppingCartDto = shoppingCartService.deleteItem(id);
 
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return ResponseEntity.status(HttpStatus.OK).body(shoppingCartDto);
     }
 
     @DeleteMapping("/clear")
     public ResponseEntity clearCart(HttpServletRequest request, HttpServletResponse response) {
-        shoppingCartService.clearCart();
+        ShoppingCartDto shoppingCartDto = shoppingCartService.clearCart();
 
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return ResponseEntity.status(HttpStatus.OK).body(shoppingCartDto);
     }
 }

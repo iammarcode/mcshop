@@ -1,6 +1,5 @@
 package com.marco.mcshop.service.impl;
 
-import com.marco.mcshop.exception.product.ProductNotFoundException;
 import com.marco.mcshop.exception.shoppingCart.CartItemNotFoundException;
 import com.marco.mcshop.model.dto.product.ProductDto;
 import com.marco.mcshop.model.dto.shoppingCart.ShoppingCartDto;
@@ -15,6 +14,8 @@ import com.marco.mcshop.service.CustomerService;
 import com.marco.mcshop.service.ProductService;
 import com.marco.mcshop.service.ShoppingCartService;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
 
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
@@ -40,9 +41,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
         Long productId = shoppingCartItemDto.getProduct().getId();
         ProductDto productFound = productService.findById(productId);
-        if (productFound == null) {
-            throw new ProductNotFoundException(productId);
-        }
 
         Boolean isProductExist = false;
         for (ShoppingCartItemEntity existingCartItem: currentCart.getShoppingCartItemList()) {
@@ -57,6 +55,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         if (isProductExist == false) {
             currentCart.addAssociationCartItem(shoppingCartItemMapper.toEntity(shoppingCartItemDto));
         }
+
+        currentCart.setTotal(this.calculateAmount(currentCart));
 
         ShoppingCartEntity shoppingCartUpdated = shoppingCartRepository.save(currentCart);
 
@@ -75,6 +75,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         }
 
         //TODO: update others attributes
+
+        currentCart.setTotal(this.calculateAmount(currentCart));
 
         ShoppingCartEntity shoppingCartUpdated = shoppingCartRepository.save(currentCart);
 
@@ -95,6 +97,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
             currentCart.removeAssociationCartItem(cartItemToRemove);
         }
 
+        currentCart.setTotal(this.calculateAmount(currentCart));
+
         ShoppingCartEntity shoppingCartUpdated = shoppingCartRepository.save(currentCart);
 
         return shoppingCartMapper.toDto(shoppingCartUpdated);
@@ -105,9 +109,31 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         ShoppingCartEntity currentCart = customerService.getCurrentCustomer().getShoppingCart();
 
         currentCart.clearAssociationCartItem();
+
+        currentCart.setTotal(this.calculateAmount(currentCart));
         
         ShoppingCartEntity shoppingCartUpdated = shoppingCartRepository.save(currentCart);
 
         return shoppingCartMapper.toDto(shoppingCartUpdated);
+    }
+
+    private BigDecimal calculateAmount(ShoppingCartEntity currentCart) {
+        BigDecimal total = BigDecimal.ZERO;
+        for (ShoppingCartItemEntity cartItem : currentCart.getShoppingCartItemList()) {
+            BigDecimal totalByItem;
+            BigDecimal priceByItem;
+
+            Long productId = cartItem.getProduct().getId();
+            ProductDto productFound = productService.findById(productId);
+
+            //TODO: discount
+            priceByItem = productFound.getPrice();
+
+            totalByItem = BigDecimal.valueOf(cartItem.getQuantity()).multiply(priceByItem);
+
+            total = total.add(totalByItem);
+        }
+
+        return total;
     }
 }
