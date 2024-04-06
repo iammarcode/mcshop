@@ -1,7 +1,6 @@
 package com.marco.mcshop.model.dto.orderTransaction;
 
 import com.marco.mcshop.model.constant.OrderTransactionStatus;
-import com.marco.mcshop.model.entity.OrderEntity;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -22,8 +21,6 @@ public class OrderTransactionDto {
     private String provider;
 
     private String accountNo;
-
-    private OrderEntity order;
 
     private LocalDateTime createdAt;
 

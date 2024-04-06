@@ -37,7 +37,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public ShoppingCartDto addItem(ShoppingCartItemDto shoppingCartItemDto) {
+    public ShoppingCartDto addItem(ShoppingCartItemDto shoppingCartItemDto) throws Exception {
         ShoppingCartEntity currentCart = customerService.getCurrentCustomer().getShoppingCart();
 
         Long productId = shoppingCartItemDto.getProduct().getId();
@@ -65,7 +65,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public ShoppingCartDto partialUpdateItem(Long id, ShoppingCartItemDto updateCartItemDto) {
+    public ShoppingCartDto partialUpdateItem(Long id, ShoppingCartItemDto updateCartItemDto) throws Exception {
         ShoppingCartEntity currentCart = customerService.getCurrentCustomer().getShoppingCart();
 
         ShoppingCartItemEntity cartItemFound = currentCart.getShoppingCartItemList().stream()
@@ -103,7 +103,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public ShoppingCartDto clearCart() {
+    public ShoppingCartDto clearCart() throws Exception {
         ShoppingCartEntity currentCart = customerService.getCurrentCustomer().getShoppingCart();
 
         currentCart.clearAssociationCartItem();

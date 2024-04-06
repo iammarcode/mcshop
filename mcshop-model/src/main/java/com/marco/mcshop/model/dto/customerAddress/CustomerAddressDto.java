@@ -30,8 +30,6 @@ public class CustomerAddressDto {
     @NotBlank
     private String phone;
 
-//    private CustomerDto customer;
-
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
 

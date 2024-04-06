@@ -31,7 +31,7 @@ public class CustomerAddressServiceImpl implements CustomerAddressService {
     }
 
     @Override
-    public List<CustomerAddressDto> create(CustomerAddressDto addressDto) {
+    public List<CustomerAddressDto> create(CustomerAddressDto addressDto) throws Exception {
         CustomerAddressEntity newAddressEntity = addressMapper.toEntity(addressDto);
         CustomerEntity currentCustomer = customerService.getCurrentCustomer();
 
@@ -44,7 +44,7 @@ public class CustomerAddressServiceImpl implements CustomerAddressService {
     }
 
     @Override
-    public List<CustomerAddressDto> partialUpdate(Long id, CustomerAddressDto addressDto) {
+    public List<CustomerAddressDto> partialUpdate(Long id, CustomerAddressDto addressDto) throws Exception {
         AtomicBoolean isAddressExist = new AtomicBoolean(false);
         CustomerEntity currentCustomer = customerService.getCurrentCustomer();
 
@@ -72,7 +72,7 @@ public class CustomerAddressServiceImpl implements CustomerAddressService {
     }
 
     @Override
-    public List<CustomerAddressDto> delete(Long addressId) {
+    public List<CustomerAddressDto> delete(Long addressId) throws Exception {
         CustomerEntity currentCustomer = customerService.getCurrentCustomer();
 
         CustomerAddressEntity existingAddress = currentCustomer.getAddressList().stream().filter(address -> address.getId().equals(addressId)).findFirst().orElseThrow(

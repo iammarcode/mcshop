@@ -17,7 +17,7 @@ public class AddressController {
     }
 
     @PostMapping
-    public ResponseEntity<List<CustomerAddressDto>> add(@RequestBody CustomerAddressDto addressDto) {
+    public ResponseEntity<List<CustomerAddressDto>> add(@RequestBody CustomerAddressDto addressDto) throws Exception {
         List<CustomerAddressDto> addressListUpdated = addressService.create(addressDto);
 
         return ResponseEntity.ok(addressListUpdated);
@@ -27,14 +27,14 @@ public class AddressController {
     public ResponseEntity<List<CustomerAddressDto>> updateAddress(
             @PathVariable Long id,
             @RequestBody CustomerAddressDto addressDto
-    ) {
+    ) throws Exception {
         List<CustomerAddressDto> addressListUpdated = addressService.partialUpdate(id, addressDto);
 
         return ResponseEntity.ok(addressListUpdated);
     }
 
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity<List<CustomerAddressDto>> updateAddress(@PathVariable("id") Long addressId) {
+    public ResponseEntity<List<CustomerAddressDto>> updateAddress(@PathVariable("id") Long addressId) throws Exception {
         List<CustomerAddressDto> addressListUpdated = addressService.delete(addressId);
 
         return ResponseEntity.ok(addressListUpdated);

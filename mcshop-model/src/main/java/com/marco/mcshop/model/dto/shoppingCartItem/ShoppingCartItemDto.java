@@ -1,9 +1,7 @@
 package com.marco.mcshop.model.dto.shoppingCartItem;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.marco.mcshop.model.dto.product.ProductDto;
-import com.marco.mcshop.model.dto.shoppingCart.ShoppingCartDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,9 +17,6 @@ public class ShoppingCartItemDto {
     private Long id;
 
     private Integer quantity;
-
-    @JsonIgnore
-    private ShoppingCartDto shoppingCart;
 
     private ProductDto product;
 

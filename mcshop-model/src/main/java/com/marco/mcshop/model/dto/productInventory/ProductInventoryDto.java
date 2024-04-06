@@ -1,6 +1,5 @@
 package com.marco.mcshop.model.dto.productInventory;
 
-import com.marco.mcshop.model.dto.product.ProductDto;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -16,8 +15,6 @@ public class ProductInventoryDto {
     private String name;
 
     private Integer quantity;
-
-    private ProductDto product;
 
     private LocalDateTime createdAt;
 

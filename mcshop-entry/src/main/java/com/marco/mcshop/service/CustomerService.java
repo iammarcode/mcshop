@@ -12,7 +12,7 @@ public interface CustomerService {
 
     CustomerDto updateBasicInfo(Long id, CustomerDto customerDto);
 
-    CustomerEntity getCurrentCustomer();
+    CustomerEntity getCurrentCustomer() throws Exception;
 
     UserDetails findUserDetailsByEmail(String email);
 }

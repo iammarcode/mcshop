@@ -1,8 +1,6 @@
 package com.marco.mcshop.model.dto.shoppingCart;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.marco.mcshop.model.dto.customer.CustomerDto;
 import com.marco.mcshop.model.dto.shoppingCartItem.ShoppingCartItemDto;
 import lombok.*;
 
@@ -19,9 +17,6 @@ public class ShoppingCartDto {
     private Long id;
 
     private BigDecimal total;
-
-    @JsonIgnore
-    private CustomerDto customer;
 
     private List<ShoppingCartItemDto> itemList;
 

@@ -6,6 +6,7 @@ import com.marco.mcshop.model.entity.CustomerEntity;
 import com.marco.mcshop.model.mapper.impl.CustomerMapper;
 import com.marco.mcshop.model.repository.CustomerRepository;
 import com.marco.mcshop.service.CustomerService;
+import io.jsonwebtoken.JwtException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -47,13 +48,15 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public CustomerEntity getCurrentCustomer() {
-        // TODO: customer update?
-        UserDetails currentCustomer = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    public CustomerEntity getCurrentCustomer() throws Exception {
+        if (SecurityContextHolder.getContext().getAuthentication() != null && SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetails) {
+            UserDetails currentCustomer = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            return customerRepository.findByEmail(currentCustomer.getUsername()).orElseThrow(
+                    () -> new CustomerNotFoundException(currentCustomer.getUsername())
+            );
+        }
 
-        return customerRepository.findByEmail(currentCustomer.getUsername()).orElseThrow(
-                () -> new CustomerNotFoundException(currentCustomer.getUsername())
-        );
+        throw new JwtException("Authentication failed");
     }
 
     @Override

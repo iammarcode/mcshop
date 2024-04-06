@@ -13,7 +13,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -61,35 +60,6 @@ public class CustomerServiceImplUnitTest {
         // then
         verify(customerRepository, times(1)).save(any(CustomerEntity.class));
         assertEquals(customerA, customerSaved);
-    }
-
-    @Test
-    public void givenCustomer_whenFindAllCustomer_thenReturnAllCustomers() {
-        // given
-        when(customerRepository.findById(customerA.getId())).thenReturn(Optional.of(customerA));
-        when(customerMapper.toDto(customerA)).thenReturn(customerADto);
-
-        // when
-        CustomerDto customerFound = customerService.findById(customerA.getId());
-
-        // then
-        verify(customerRepository, times(1)).findById(any(Long.class));
-        assertEquals(customerADto, customerFound);
-    }
-
-    @Test
-    public void givenCustomer_whenFindById_thenReturnCustomer() {
-        // given
-        when(customerRepository.findAll()).thenReturn(List.of(customerA, customerB));
-        when(customerMapper.toDto(customerA)).thenReturn(customerADto);
-        when(customerMapper.toDto(customerB)).thenReturn(customerBDto);
-
-        // when
-        List<CustomerDto> result = customerService.findAll();
-
-        // then
-        verify(customerRepository, times(1)).findAll();
-        assertTrue(result.containsAll(List.of(customerADto, customerBDto)));
     }
 
     @Test

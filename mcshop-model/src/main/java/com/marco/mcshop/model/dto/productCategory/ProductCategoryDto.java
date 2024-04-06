@@ -19,8 +19,6 @@ public class ProductCategoryDto {
 
     private String imageUrl;
 
-    //TODO: referencing/inverse side -> ProductEntity
-
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
 

@@ -18,7 +18,7 @@ public class CustomerController {
     }
 
     @GetMapping(path = "/me")
-    public ResponseEntity<CustomerDto> me() {
+    public ResponseEntity<CustomerDto> me() throws Exception {
         CustomerDto customerDto = customerMapper.toDto(customerService.getCurrentCustomer());
 
         return ResponseEntity.ok(customerDto);

@@ -6,7 +6,6 @@ import com.marco.mcshop.model.entity.ProductEntity;
 import com.marco.mcshop.model.mapper.impl.ProductMapper;
 import com.marco.mcshop.model.repository.ProductRepository;
 import com.marco.mcshop.service.ProductService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

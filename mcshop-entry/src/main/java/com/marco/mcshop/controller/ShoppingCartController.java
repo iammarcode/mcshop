@@ -19,7 +19,7 @@ public class ShoppingCartController {
     }
 
     @PostMapping
-    public ResponseEntity<ShoppingCartDto> addItem(@RequestBody ShoppingCartItemDto shoppingCartItemDto) {
+    public ResponseEntity<ShoppingCartDto> addItem(@RequestBody ShoppingCartItemDto shoppingCartItemDto) throws Exception {
         ShoppingCartDto shoppingCartDto = shoppingCartService.addItem(shoppingCartItemDto);
 
         return ResponseEntity.ok(shoppingCartDto);
@@ -29,7 +29,7 @@ public class ShoppingCartController {
     public ResponseEntity<ShoppingCartDto> partialUpdateItem(
             @PathVariable("id") Long id,
             @RequestBody ShoppingCartItemDto shoppingCartItemDto
-    ) {
+    ) throws Exception {
         ShoppingCartDto shoppingCartDto = shoppingCartService.partialUpdateItem(id, shoppingCartItemDto);
 
         return ResponseEntity.ok(shoppingCartDto);
@@ -43,7 +43,7 @@ public class ShoppingCartController {
     }
 
     @DeleteMapping("/clear")
-    public ResponseEntity clearItems(HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity clearItems(HttpServletRequest request, HttpServletResponse response) throws Exception {
         ShoppingCartDto shoppingCartDto = shoppingCartService.clearCart();
 
         return ResponseEntity.status(HttpStatus.OK).body(shoppingCartDto);
