@@ -41,7 +41,6 @@ public class CustomerAddressEntity {
     @NotBlank
     private String phone;
 
-    // owning side
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
     private CustomerEntity customer;
