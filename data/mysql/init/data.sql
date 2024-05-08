@@ -32,8 +32,7 @@ CREATE TABLE IF NOT EXISTS `mcshop`.`customer_address` (
   `created_at` datetime NOT NULL,
   `modified_at` datetime NULL DEFAULT NULL,
   `deleted_at` datetime NULL DEFAULT NULL,
-  CONSTRAINT PK_CustomerAddress PRIMARY KEY (`id`) USING BTREE,
-  CONSTRAINT FK_CustomerAddress_Customer FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id`)
+  CONSTRAINT PK_CustomerAddress PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS `mcshop`.`customer_payment` (
@@ -48,9 +47,7 @@ CREATE TABLE IF NOT EXISTS `mcshop`.`customer_payment` (
   `created_at` datetime NOT NULL,
   `modified_at` datetime NULL DEFAULT NULL,
   `deleted_at` datetime NULL DEFAULT NULL,
-  CONSTRAINT PK_CustomerPayment PRIMARY KEY (`id`) USING BTREE,
-  CONSTRAINT FK_CustomerPayment_Customer FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id`),
-  CONSTRAINT FK_CustomerPayment_AccountNo UNIQUE (`account_no`)
+  CONSTRAINT PK_CustomerPayment PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS `mcshop`.`product_category` (
@@ -95,7 +92,6 @@ CREATE TABLE IF NOT EXISTS `mcshop`.`product` (
   `modified_at` datetime  NULL DEFAULT NULL,
   `deleted_at` datetime  NULL DEFAULT NULL,
   CONSTRAINT PK_Product PRIMARY KEY (`id`) USING BTREE,
-  CONSTRAINT FK_Product_ProductCategory FOREIGN KEY (`category_id`) REFERENCES `product_category` (`id`),
   CONSTRAINT UQ_Product_Name UNIQUE (`name`)
 ) ENGINE=InnoDB;
 
@@ -104,9 +100,7 @@ CREATE TABLE IF NOT EXISTS `mcshop`.`product_discount_link` (
   `discount_id` bigint NOT NULL,
 
   `created_at` datetime NOT NULL,
-  CONSTRAINT PK_ProductDiscountLink PRIMARY KEY (`product_id`, `discount_id`) USING BTREE,
-  CONSTRAINT FK_ProductDiscountLink_Product FOREIGN KEY (`product_id`) REFERENCES `product` (`id`),
-  CONSTRAINT FK_ProductDiscountLink_Discount FOREIGN KEY (`discount_id`) REFERENCES `product_discount` (`id`)
+  CONSTRAINT PK_ProductDiscountLink PRIMARY KEY (`product_id`, `discount_id`) USING BTREE
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS `mcshop`.`product_inventory` (
@@ -120,7 +114,6 @@ CREATE TABLE IF NOT EXISTS `mcshop`.`product_inventory` (
   `modified_at` datetime  NULL DEFAULT NULL,
   `deleted_at` datetime NULL DEFAULT NULL,
   CONSTRAINT PK_ProductInventory PRIMARY KEY (`id`) USING BTREE,
-  CONSTRAINT FK_ProductInventory_Product FOREIGN KEY (`product_id`) REFERENCES `product` (`id`),
   CONSTRAINT UQ_ProductInventory_Name UNIQUE (`name`),
   CONSTRAINT UQ_ProductInventory_ProductId UNIQUE (`product_id`)
 ) ENGINE=InnoDB;
@@ -136,9 +129,7 @@ CREATE TABLE IF NOT EXISTS `mcshop`.`orders` (
   `created_at` datetime NOT NULL,
   `modified_at` datetime  NULL DEFAULT NULL,
   `deleted_at` datetime NULL DEFAULT NULL,
-  CONSTRAINT PK_Orders PRIMARY KEY (`id`) USING BTREE,
-  CONSTRAINT FK_Orders_Customer FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id`),
-  CONSTRAINT FK_Orders_CustomerAddress FOREIGN KEY (`customer_address_id`) REFERENCES `customer_address` (`id`)
+  CONSTRAINT PK_Orders PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS `mcshop`.`order_transaction` (
@@ -153,8 +144,7 @@ CREATE TABLE IF NOT EXISTS `mcshop`.`order_transaction` (
   `created_at` datetime NOT NULL,
   `modified_at` datetime  NULL DEFAULT NULL,
   `deleted_at` datetime NULL DEFAULT NULL,
-  CONSTRAINT PK_Transaction PRIMARY KEY (`id`) USING BTREE,
-  CONSTRAINT FK_OrderTransaction_Orders FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`)
+  CONSTRAINT PK_Transaction PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS `mcshop`.`order_item` (
@@ -168,8 +158,6 @@ CREATE TABLE IF NOT EXISTS `mcshop`.`order_item` (
   `modified_at` datetime  NULL DEFAULT NULL,
   `deleted_at` datetime NULL DEFAULT NULL,
   CONSTRAINT PK_OrderItem PRIMARY KEY (`id`) USING BTREE,
-  CONSTRAINT FK_OrderItem_Orders FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`),
-  CONSTRAINT FK_OrderItem_Product FOREIGN KEY (`product_id`) REFERENCES `product` (`id`),
   CONSTRAINT UQ_OrderItem_OrderId_ProductId UNIQUE (`order_id`, `product_id`)
 ) ENGINE=InnoDB;
 
@@ -182,8 +170,7 @@ CREATE TABLE IF NOT EXISTS `mcshop`.`shopping_cart` (
   `created_at` datetime NOT NULL,
   `modified_at` datetime NULL DEFAULT NULL,
   `deleted_at` datetime NULL DEFAULT NULL,
-  CONSTRAINT PK_ShoppingCart PRIMARY KEY (`id`) USING BTREE,
-  CONSTRAINT FK_ShoppingCart_Customer FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id`)
+  CONSTRAINT PK_ShoppingCart PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS `mcshop`.`shopping_cart_item` (
@@ -197,8 +184,6 @@ CREATE TABLE IF NOT EXISTS `mcshop`.`shopping_cart_item` (
   `modified_at` datetime NULL DEFAULT NULL,
   `deleted_at` datetime NULL DEFAULT NULL,
   CONSTRAINT PK_ShoppingCartItem PRIMARY KEY (`id`) USING BTREE,
-  CONSTRAINT FK_ShoppingCartItem_Product FOREIGN KEY (`product_id`) REFERENCES `product` (`id`),
-  CONSTRAINT FK_ShoppingCartItem_ShoppingCart FOREIGN KEY (`shopping_cart_id`) REFERENCES `shopping_cart` (`id`),
   CONSTRAINT UQ_ShoppingCartItem_ProductId_ShoppingCartId UNIQUE (`product_id`, `shopping_cart_id`)
 ) ENGINE=InnoDB;
 

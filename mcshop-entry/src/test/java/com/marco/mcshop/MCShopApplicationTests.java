@@ -14,7 +14,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 		properties = {"spring.cloud.config.enabled=false"})
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
-class ShopApplicationTests {
+class MCShopApplicationTests {
 
 	@Test
 	void contextLoads() {
