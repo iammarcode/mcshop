@@ -19,7 +19,7 @@
 	<description>A mcshop project for Spring Boot</description>
 
 	<modules>
-		<module>mcshop-entry</module>
 		<module>mcshop-model</module>
+		<module>mcshop-entry</module>
 	</modules>
 </project>
