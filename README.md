@@ -4,8 +4,8 @@
 
 1.Create required secrets stored in secretsmanager
 ```bash
-mkdir -p ./data/localstack/secrets/ &&
-cat <<EOF >./data/localstack/secrets/smtp-secrets.json
+mkdir -p ./data/localstack/init/secrets/ &&
+cat <<EOF >./data/localstack/init/secrets/smtp-secrets.json
 {
   "username": YOUR_SMTP_USERNAME,
   "password": YOUR_SMTP_PASSWORD

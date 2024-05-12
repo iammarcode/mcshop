@@ -26,6 +26,6 @@ FROM base as build
 RUN ./mvnw package
 
 FROM eclipse-temurin:17-jre-jammy as production
-EXPOSE 8080
+EXPOSE 8081
 COPY --from=build /app/target/mcshop-*.jar /mcshop-entry.jar
 CMD ["java", "-Dspring.profiles.active=prod", "-jar", "/mcshop-entry.jar"]
