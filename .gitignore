@@ -40,3 +40,6 @@ tmp/
 
 ### Secrets Manager files ###
 secrets/
+
+### test
+mytest/

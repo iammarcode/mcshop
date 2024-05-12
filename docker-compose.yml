@@ -13,6 +13,7 @@ services:
       - mysql
       - redis
       - localstack
+      - rabbitmq
 
   localstack:
     container_name: "mcshop_localstack"
@@ -50,6 +51,15 @@ services:
     container_name: "mcshop_redis"
     ports:
         - "6379:6379"
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"   # AMQP protocol
+      - "15672:15672" # Management UI
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
 
 volumes:
   mysql_data:
