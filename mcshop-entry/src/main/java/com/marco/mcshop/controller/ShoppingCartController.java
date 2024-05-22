@@ -1,7 +1,7 @@
 package com.marco.mcshop.controller;
 
-import com.marco.mcshop.model.dto.shoppingCart.ShoppingCartDto;
-import com.marco.mcshop.model.dto.shoppingCartItem.ShoppingCartItemDto;
+import com.marco.mcshop.model.dto.ShoppingCartDto;
+import com.marco.mcshop.model.dto.ShoppingCartItemDto;
 import com.marco.mcshop.service.ShoppingCartService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

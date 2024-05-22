@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Stop all running containers
 echo "----- Stopping all Docker containers..."

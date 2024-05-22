@@ -1,13 +1,13 @@
 package com.marco.mcshop.model.repository;
 
-import com.marco.mcshop.model.entity.CustomerEntity;
+import com.marco.mcshop.model.entity.Customer;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface CustomerRepository extends CrudRepository<CustomerEntity, Long> {
+public interface CustomerRepository extends CrudRepository<Customer, Long> {
     boolean existsByEmail(String email);
-    Optional<CustomerEntity> findByEmail(String email);
+    Optional<Customer> findByEmail(String email);
 }

@@ -1,6 +1,6 @@
 package com.marco.mcshop.controller;
 
-import com.marco.mcshop.model.dto.customerAddress.CustomerAddressDto;
+import com.marco.mcshop.model.dto.CustomerAddressDto;
 import com.marco.mcshop.service.CustomerAddressService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

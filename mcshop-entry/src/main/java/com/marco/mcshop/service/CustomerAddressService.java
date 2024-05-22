@@ -1,6 +1,6 @@
 package com.marco.mcshop.service;
 
-import com.marco.mcshop.model.dto.customerAddress.CustomerAddressDto;
+import com.marco.mcshop.model.dto.CustomerAddressDto;
 
 import java.util.List;
 

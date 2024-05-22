@@ -1,6 +1,6 @@
 package com.marco.mcshop.controller;
 
-import com.marco.mcshop.model.dto.product.ProductDto;
+import com.marco.mcshop.model.dto.ProductDto;
 import com.marco.mcshop.service.ProductService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,14 +1,13 @@
 package com.marco.mcshop.model.mapper.impl;
 
-import com.marco.mcshop.model.dto.customer.CustomerDto;
-import com.marco.mcshop.model.dto.customer.CustomerRegisterDto;
-import com.marco.mcshop.model.entity.CustomerEntity;
+import com.marco.mcshop.model.dto.CustomerDto;
+import com.marco.mcshop.model.entity.Customer;
 import com.marco.mcshop.model.mapper.Mapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CustomerMapper implements Mapper<CustomerEntity, CustomerDto> {
+public class CustomerMapper implements Mapper<Customer, CustomerDto> {
     private final ModelMapper modelMapper;
 
     public CustomerMapper(ModelMapper modelMapper) {
@@ -16,16 +15,12 @@ public class CustomerMapper implements Mapper<CustomerEntity, CustomerDto> {
     }
 
     @Override
-    public CustomerDto toDto(CustomerEntity customerEntity) {
-        return modelMapper.map(customerEntity, CustomerDto.class);
+    public CustomerDto toDto(Customer customer) {
+        return modelMapper.map(customer, CustomerDto.class);
     }
 
     @Override
-    public CustomerEntity toEntity(CustomerDto customerDto) {
-        return modelMapper.map(customerDto, CustomerEntity.class);
-    }
-
-    public CustomerEntity toEntityRegister(CustomerRegisterDto customerRegisterDto) {
-        return modelMapper.map(customerRegisterDto, CustomerEntity.class);
+    public Customer toEntity(CustomerDto customerDto) {
+        return modelMapper.map(customerDto, Customer.class);
     }
 }

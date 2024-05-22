@@ -2,11 +2,11 @@ package com.marco.mcshop.service.impl;
 
 import com.marco.mcshop.exception.product.ProductNotFoundException;
 import com.marco.mcshop.exception.shoppingCart.CartItemNotFoundException;
-import com.marco.mcshop.model.dto.product.ProductDto;
-import com.marco.mcshop.model.dto.shoppingCart.ShoppingCartDto;
-import com.marco.mcshop.model.dto.shoppingCartItem.ShoppingCartItemDto;
-import com.marco.mcshop.model.entity.ShoppingCartEntity;
-import com.marco.mcshop.model.entity.ShoppingCartItemEntity;
+import com.marco.mcshop.model.dto.ProductDto;
+import com.marco.mcshop.model.dto.ShoppingCartDto;
+import com.marco.mcshop.model.dto.ShoppingCartItemDto;
+import com.marco.mcshop.model.entity.ShoppingCart;
+import com.marco.mcshop.model.entity.ShoppingCartItem;
 import com.marco.mcshop.model.mapper.impl.ProductMapper;
 import com.marco.mcshop.model.mapper.impl.ShoppingCartItemMapper;
 import com.marco.mcshop.model.mapper.impl.ShoppingCartMapper;
@@ -38,13 +38,13 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public ShoppingCartDto addItem(ShoppingCartItemDto shoppingCartItemDto) throws Exception {
-        ShoppingCartEntity currentCart = customerService.getCurrentCustomer().getShoppingCart();
+        ShoppingCart currentCart = customerService.getCurrentCustomer().getShoppingCart();
 
         Long productId = shoppingCartItemDto.getProduct().getId();
         this.checkProductValidity(productId);
 
         Boolean isProductExist = false;
-        for (ShoppingCartItemEntity existingCartItem: currentCart.getShoppingCartItemList()) {
+        for (ShoppingCartItem existingCartItem: currentCart.getShoppingCartItemList()) {
             // modify quantity for existing item
             if (existingCartItem.getProduct().getId() == productId) {
                 isProductExist = true;
@@ -59,16 +59,16 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
         currentCart.setTotal(this.calculateAmount(currentCart));
 
-        ShoppingCartEntity shoppingCartUpdated = shoppingCartRepository.save(currentCart);
+        ShoppingCart shoppingCartUpdated = shoppingCartRepository.save(currentCart);
 
         return shoppingCartMapper.toDto(shoppingCartUpdated);
     }
 
     @Override
     public ShoppingCartDto partialUpdateItem(Long id, ShoppingCartItemDto updateCartItemDto) throws Exception {
-        ShoppingCartEntity currentCart = customerService.getCurrentCustomer().getShoppingCart();
+        ShoppingCart currentCart = customerService.getCurrentCustomer().getShoppingCart();
 
-        ShoppingCartItemEntity cartItemFound = currentCart.getShoppingCartItemList().stream()
+        ShoppingCartItem cartItemFound = currentCart.getShoppingCartItemList().stream()
                 .filter(item -> item.getId().equals(id))
                 .findAny()
                 .orElseThrow(() -> new CartItemNotFoundException(id));
@@ -78,16 +78,16 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
         currentCart.setTotal(this.calculateAmount(currentCart));
 
-        ShoppingCartEntity shoppingCartUpdated = shoppingCartRepository.save(currentCart);
+        ShoppingCart shoppingCartUpdated = shoppingCartRepository.save(currentCart);
 
         return shoppingCartMapper.toDto(shoppingCartUpdated);
     }
 
     @Override
     public ShoppingCartDto deleteItem(Long id) throws Exception {
-        ShoppingCartEntity currentCart = customerService.getCurrentCustomer().getShoppingCart();
+        ShoppingCart currentCart = customerService.getCurrentCustomer().getShoppingCart();
 
-        ShoppingCartItemEntity cartItemToRemove = currentCart.getShoppingCartItemList()
+        ShoppingCartItem cartItemToRemove = currentCart.getShoppingCartItemList()
                 .stream()
                 .filter(item -> item.getId().equals(id))
                 .findAny()
@@ -97,27 +97,27 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
         currentCart.setTotal(this.calculateAmount(currentCart));
 
-        ShoppingCartEntity shoppingCartUpdated = shoppingCartRepository.save(currentCart);
+        ShoppingCart shoppingCartUpdated = shoppingCartRepository.save(currentCart);
 
         return shoppingCartMapper.toDto(shoppingCartUpdated);
     }
 
     @Override
     public ShoppingCartDto clearCart() throws Exception {
-        ShoppingCartEntity currentCart = customerService.getCurrentCustomer().getShoppingCart();
+        ShoppingCart currentCart = customerService.getCurrentCustomer().getShoppingCart();
 
         currentCart.clearAssociationCartItem();
 
         currentCart.setTotal(this.calculateAmount(currentCart));
         
-        ShoppingCartEntity shoppingCartUpdated = shoppingCartRepository.save(currentCart);
+        ShoppingCart shoppingCartUpdated = shoppingCartRepository.save(currentCart);
 
         return shoppingCartMapper.toDto(shoppingCartUpdated);
     }
 
-    private BigDecimal calculateAmount(ShoppingCartEntity currentCart) {
+    private BigDecimal calculateAmount(ShoppingCart currentCart) {
         BigDecimal total = BigDecimal.ZERO;
-        for (ShoppingCartItemEntity cartItem : currentCart.getShoppingCartItemList()) {
+        for (ShoppingCartItem cartItem : currentCart.getShoppingCartItemList()) {
             BigDecimal totalByItem;
             BigDecimal priceByItem;
 

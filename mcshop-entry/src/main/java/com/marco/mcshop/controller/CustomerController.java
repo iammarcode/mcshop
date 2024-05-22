@@ -1,6 +1,6 @@
 package com.marco.mcshop.controller;
 
-import com.marco.mcshop.model.dto.customer.CustomerDto;
+import com.marco.mcshop.model.dto.CustomerDto;
 import com.marco.mcshop.model.mapper.impl.CustomerMapper;
 import com.marco.mcshop.service.CustomerService;
 import org.springframework.http.ResponseEntity;

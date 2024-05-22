@@ -1,6 +1,6 @@
 package com.marco.mcshop.service.impl;
 
-import com.marco.mcshop.model.entity.OrderEntity;
+import com.marco.mcshop.model.entity.Order;
 import com.marco.mcshop.model.repository.OrderRepository;
 import com.marco.mcshop.service.OrderService;
 import org.springframework.stereotype.Service;
@@ -19,18 +19,18 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderEntity create(OrderEntity orderEntity) {
-        return orderRepository.save(orderEntity);
+    public Order create(Order order) {
+        return orderRepository.save(order);
     }
 
     @Override
-    public List<OrderEntity> findAll() {
+    public List<Order> findAll() {
         return StreamSupport.stream(orderRepository.findAll().spliterator(), false)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public Optional<OrderEntity> findById(Long id) {
+    public Optional<Order> findById(Long id) {
         return orderRepository.findById(id);
     }
 
@@ -45,7 +45,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderEntity update(Long id, OrderEntity order) {
+    public Order update(Long id, Order order) {
         order.setId(id);
 
         return orderRepository.findById(id).map(existingOrder -> {

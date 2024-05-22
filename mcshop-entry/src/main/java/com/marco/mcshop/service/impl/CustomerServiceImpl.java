@@ -1,8 +1,8 @@
 package com.marco.mcshop.service.impl;
 
 import com.marco.mcshop.exception.customer.CustomerNotFoundException;
-import com.marco.mcshop.model.dto.customer.CustomerDto;
-import com.marco.mcshop.model.entity.CustomerEntity;
+import com.marco.mcshop.model.dto.CustomerDto;
+import com.marco.mcshop.model.entity.Customer;
 import com.marco.mcshop.model.mapper.impl.CustomerMapper;
 import com.marco.mcshop.model.repository.CustomerRepository;
 import com.marco.mcshop.service.CustomerService;
@@ -25,8 +25,8 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public CustomerEntity create(CustomerEntity customerEntity) {
-        return customerRepository.save(customerEntity);
+    public Customer create(Customer customer) {
+        return customerRepository.save(customer);
     }
 
     @Override
@@ -41,14 +41,14 @@ public class CustomerServiceImpl implements CustomerService {
             if (customerDto.getFirstName() != null) existingCustomer.setFirstName(customerDto.getFirstName());
             if (customerDto.getLastName() != null) existingCustomer.setLastName(customerDto.getLastName());
 
-            CustomerEntity customerUpdated = customerRepository.save(existingCustomer);
+            Customer customerUpdated = customerRepository.save(existingCustomer);
 
             return customerMapper.toDto(customerUpdated);
         }).orElseThrow(() -> new CustomerNotFoundException(id));
     }
 
     @Override
-    public CustomerEntity getCurrentCustomer() throws Exception {
+    public Customer getCurrentCustomer() throws Exception {
         if (SecurityContextHolder.getContext().getAuthentication() != null && SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetails) {
             UserDetails currentCustomer = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             return customerRepository.findByEmail(currentCustomer.getUsername()).orElseThrow(
@@ -61,7 +61,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public UserDetails findUserDetailsByEmail(String email) {
-        CustomerEntity customerFound = customerRepository.findByEmail(email).orElseThrow(
+        Customer customerFound = customerRepository.findByEmail(email).orElseThrow(
                 () -> new CustomerNotFoundException(email)
         );
 

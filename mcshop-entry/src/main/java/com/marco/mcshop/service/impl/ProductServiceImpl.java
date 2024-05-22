@@ -1,8 +1,8 @@
 package com.marco.mcshop.service.impl;
 
 import com.marco.mcshop.exception.product.ProductNotFoundException;
-import com.marco.mcshop.model.dto.product.ProductDto;
-import com.marco.mcshop.model.entity.ProductEntity;
+import com.marco.mcshop.model.dto.ProductDto;
+import com.marco.mcshop.model.entity.Product;
 import com.marco.mcshop.model.mapper.impl.ProductMapper;
 import com.marco.mcshop.model.repository.ProductRepository;
 import com.marco.mcshop.service.ProductService;
@@ -23,17 +23,17 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductDto> findAll() {
-        List<ProductEntity> productEntityList = StreamSupport.stream(productRepository.findAll().spliterator(), false).toList();
-        return productEntityList.stream().map(productMapper::toDto).toList();
+        List<Product> productList = StreamSupport.stream(productRepository.findAll().spliterator(), false).toList();
+        return productList.stream().map(productMapper::toDto).toList();
     }
 
     @Override
     public ProductDto findById(Long id) {
-        ProductEntity productEntity = productRepository.findById(id).orElseThrow(
+        Product product = productRepository.findById(id).orElseThrow(
                 () -> new ProductNotFoundException(id)
         );
 
-        return productMapper.toDto(productEntity);
+        return productMapper.toDto(product);
     }
 
     @Override

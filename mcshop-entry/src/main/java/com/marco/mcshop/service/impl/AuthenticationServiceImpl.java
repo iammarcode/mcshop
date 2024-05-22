@@ -3,12 +3,12 @@ package com.marco.mcshop.service.impl;
 import com.marco.mcshop.exception.auth.OtpValidationFailedException;
 import com.marco.mcshop.exception.auth.RefreshTokenInvalidException;
 import com.marco.mcshop.exception.customer.CustomerAlreadyExistException;
-import com.marco.mcshop.model.dto.auth.TokenDto;
-import com.marco.mcshop.model.dto.customer.CustomerDto;
-import com.marco.mcshop.model.dto.customer.CustomerLoginDto;
-import com.marco.mcshop.model.dto.customer.CustomerRegisterDto;
-import com.marco.mcshop.model.entity.CustomerEntity;
-import com.marco.mcshop.model.entity.ShoppingCartEntity;
+import com.marco.mcshop.payload.response.TokenResponse;
+import com.marco.mcshop.model.dto.CustomerDto;
+import com.marco.mcshop.payload.request.LoginRequest;
+import com.marco.mcshop.payload.request.RegisterRequest;
+import com.marco.mcshop.model.entity.Customer;
+import com.marco.mcshop.model.entity.ShoppingCart;
 import com.marco.mcshop.model.mapper.impl.CustomerMapper;
 import com.marco.mcshop.model.repository.CustomerRepository;
 import com.marco.mcshop.service.AuthenticationService;
@@ -62,27 +62,32 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public CustomerDto register(CustomerRegisterDto customer) {
+    public CustomerDto register(RegisterRequest registerRequest) {
         // check otp
-        String otpCached = otpService.getOtpByKey(customer.getEmail());
-        if (!customer.getOtp().equals(otpCached)) {
-            throw new OtpValidationFailedException(customer.getOtp());
+        String otpCached = otpService.getOtpByKey(registerRequest.getEmail());
+        if (!registerRequest.getOtp().equals(otpCached)) {
+            throw new OtpValidationFailedException(registerRequest.getOtp());
         }
 
         // hash password
-        customer.setPassword(passwordEncoder.encode(customer.getPassword()));
+        registerRequest.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
 
         // create customer
-        CustomerEntity customerRegister = customerMapper.toEntityRegister(customer);
+        Customer customerRegister = Customer.builder().email(registerRequest.getEmail())
+                .phone(registerRequest.getPhone())
+                .firstName(registerRequest.getFirstName())
+                .lastName(registerRequest.getLastName())
+                .nickname(registerRequest.getNickname())
+                .build();
 
         // create an empty shoppingCart
-        ShoppingCartEntity shoppingCart = ShoppingCartEntity.builder().total(BigDecimal.valueOf(0)).build();
+        ShoppingCart shoppingCart = ShoppingCart.builder().total(BigDecimal.valueOf(0)).build();
         customerRegister.addShoppingCart(shoppingCart);
 
-        CustomerEntity customerSaved = customerRepository.save(customerRegister);
+        Customer customerSaved = customerRepository.save(customerRegister);
 
         // clear otp cache
-        otpService.clearOtpByKey(customer.getEmail());
+        otpService.clearOtpByKey(customerRegister.getEmail());
 
         // send registration email
         emailService.sendSimpleMessage(
@@ -95,7 +100,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public TokenDto login(CustomerLoginDto customer) {
+    public TokenResponse login(LoginRequest customer) {
         // TODO: ?
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -110,7 +115,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String accessToken = jwtUtil.generateAccessToken(customerFound);
         String refreshToken = jwtUtil.generateRefreshToken(customerFound);
 
-        return TokenDto.builder()
+        return TokenResponse.builder()
                 .accessToken(accessToken)
                 .accessExpireAt(jwtUtil.getAccessExpirationTime())
                 .refreshToken(refreshToken)
@@ -119,7 +124,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public TokenDto refreshToken(HttpServletRequest request, HttpServletResponse response) {
+    public TokenResponse refreshToken(HttpServletRequest request, HttpServletResponse response) {
         final String authHeader = request.getHeader("Authorization");
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             throw new RefreshTokenInvalidException(authHeader);
@@ -134,7 +139,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 String newAccessToken = jwtUtil.generateAccessToken(customer);
                 String newRefreshToken = jwtUtil.generateRefreshToken(customer);
 
-                return TokenDto.builder()
+                return TokenResponse.builder()
                         .refreshToken(newRefreshToken)
                         .refreshExpireAt(jwtUtil.getRefreshExpirationTime())
                         .accessToken(newAccessToken)

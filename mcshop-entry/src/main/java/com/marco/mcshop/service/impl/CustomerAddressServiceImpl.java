@@ -1,10 +1,10 @@
 package com.marco.mcshop.service.impl;
 
 import com.marco.mcshop.exception.address.AddressNotFoundException;
-import com.marco.mcshop.model.dto.customer.CustomerDto;
-import com.marco.mcshop.model.dto.customerAddress.CustomerAddressDto;
-import com.marco.mcshop.model.entity.CustomerAddressEntity;
-import com.marco.mcshop.model.entity.CustomerEntity;
+import com.marco.mcshop.model.dto.CustomerDto;
+import com.marco.mcshop.model.dto.CustomerAddressDto;
+import com.marco.mcshop.model.entity.CustomerAddress;
+import com.marco.mcshop.model.entity.Customer;
 import com.marco.mcshop.model.mapper.impl.CustomerAddressMapper;
 import com.marco.mcshop.model.mapper.impl.CustomerMapper;
 import com.marco.mcshop.model.repository.CustomerRepository;
@@ -32,11 +32,11 @@ public class CustomerAddressServiceImpl implements CustomerAddressService {
 
     @Override
     public List<CustomerAddressDto> create(CustomerAddressDto addressDto) throws Exception {
-        CustomerAddressEntity newAddressEntity = addressMapper.toEntity(addressDto);
-        CustomerEntity currentCustomer = customerService.getCurrentCustomer();
+        CustomerAddress newAddressEntity = addressMapper.toEntity(addressDto);
+        Customer currentCustomer = customerService.getCurrentCustomer();
 
         currentCustomer.addAddress(newAddressEntity);
-        CustomerEntity customerUpdated = customerRepository.save(currentCustomer);
+        Customer customerUpdated = customerRepository.save(currentCustomer);
 
         CustomerDto customerDtoUpdated = customerMapper.toDto(customerUpdated);
 
@@ -46,7 +46,7 @@ public class CustomerAddressServiceImpl implements CustomerAddressService {
     @Override
     public List<CustomerAddressDto> partialUpdate(Long id, CustomerAddressDto addressDto) throws Exception {
         AtomicBoolean isAddressExist = new AtomicBoolean(false);
-        CustomerEntity currentCustomer = customerService.getCurrentCustomer();
+        Customer currentCustomer = customerService.getCurrentCustomer();
 
         currentCustomer.getAddressList().forEach(address -> {
             if (address.getId().equals(id)) {
@@ -64,7 +64,7 @@ public class CustomerAddressServiceImpl implements CustomerAddressService {
             throw new AddressNotFoundException(addressDto.getId());
         }
 
-        CustomerEntity customerUpdated = customerRepository.save(currentCustomer);
+        Customer customerUpdated = customerRepository.save(currentCustomer);
 
         CustomerDto customerUpdatedDto = customerMapper.toDto(customerUpdated);
 
@@ -73,14 +73,14 @@ public class CustomerAddressServiceImpl implements CustomerAddressService {
 
     @Override
     public List<CustomerAddressDto> delete(Long addressId) throws Exception {
-        CustomerEntity currentCustomer = customerService.getCurrentCustomer();
+        Customer currentCustomer = customerService.getCurrentCustomer();
 
-        CustomerAddressEntity existingAddress = currentCustomer.getAddressList().stream().filter(address -> address.getId().equals(addressId)).findFirst().orElseThrow(
+        CustomerAddress existingAddress = currentCustomer.getAddressList().stream().filter(address -> address.getId().equals(addressId)).findFirst().orElseThrow(
                 () -> new AddressNotFoundException(addressId)
         );
         currentCustomer.removeAddress(existingAddress);
 
-        CustomerEntity customerUpdated = customerRepository.save(currentCustomer);
+        Customer customerUpdated = customerRepository.save(currentCustomer);
 
         CustomerDto customerUpdatedDto = customerMapper.toDto(customerUpdated);
 

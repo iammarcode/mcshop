@@ -1,7 +1,7 @@
 package com.marco.mcshop.service;
 
-import com.marco.mcshop.model.dto.customer.CustomerDto;
-import com.marco.mcshop.model.entity.CustomerEntity;
+import com.marco.mcshop.model.dto.CustomerDto;
+import com.marco.mcshop.model.entity.Customer;
 import com.marco.mcshop.model.mapper.impl.CustomerMapper;
 import com.marco.mcshop.model.repository.CustomerRepository;
 import com.marco.mcshop.service.impl.CustomerServiceImpl;
@@ -24,8 +24,8 @@ public class CustomerServiceImplUnitTest {
     @InjectMocks
     private CustomerServiceImpl customerService;
 
-    private CustomerEntity customerA;
-    private CustomerEntity customerB;
+    private Customer customerA;
+    private Customer customerB;
     private CustomerDto customerADto;
     private CustomerDto customerBDto;
 

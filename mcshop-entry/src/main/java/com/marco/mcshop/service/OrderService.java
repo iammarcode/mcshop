@@ -1,20 +1,20 @@
 package com.marco.mcshop.service;
 
-import com.marco.mcshop.model.entity.OrderEntity;
+import com.marco.mcshop.model.entity.Order;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface OrderService {
-    OrderEntity create(OrderEntity customerEntity);
+    Order create(Order customerEntity);
 
-    List<OrderEntity> findAll();
+    List<Order> findAll();
 
-    Optional<OrderEntity> findById(Long id);
+    Optional<Order> findById(Long id);
 
     boolean isExist(Long id);
 
     void deleteById(Long id);
 
-    OrderEntity update(Long id, OrderEntity authorEntity);
+    Order update(Long id, Order authorEntity);
 }

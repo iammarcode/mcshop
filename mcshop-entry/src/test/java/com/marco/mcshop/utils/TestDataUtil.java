@@ -3,8 +3,8 @@ package com.marco.mcshop.utils;
 import com.marco.mcshop.model.constant.CustomerPaymentType;
 import com.marco.mcshop.model.constant.OrderStatus;
 import com.marco.mcshop.model.constant.OrderTransactionStatus;
-import com.marco.mcshop.model.dto.customer.CustomerDto;
-import com.marco.mcshop.model.dto.order.OrderDto;
+import com.marco.mcshop.model.dto.CustomerDto;
+import com.marco.mcshop.model.dto.OrderDto;
 import com.marco.mcshop.model.entity.*;
 
 import java.math.BigDecimal;
@@ -18,8 +18,8 @@ public class TestDataUtil {
     }
 
     // Customer
-    public static CustomerEntity createCustomerEntityA() {
-        return CustomerEntity.builder()
+    public static Customer createCustomerEntityA() {
+        return Customer.builder()
                 .email("aaa@example.com")
                 .phone("11111111")
                 .nickname("nicknameA")
@@ -32,8 +32,8 @@ public class TestDataUtil {
                 .build();
     }
 
-    public static CustomerEntity createCustomerEntityB() {
-        return CustomerEntity.builder()
+    public static Customer createCustomerEntityB() {
+        return Customer.builder()
                 .email("bbb@example.com")
                 .phone("22222222")
                 .nickname("nicknameB")
@@ -73,8 +73,8 @@ public class TestDataUtil {
     }
 
     // CustomerAddress
-    public static CustomerAddressEntity createCustomerAddressEntityA() {
-        return CustomerAddressEntity.builder()
+    public static CustomerAddress createCustomerAddressEntityA() {
+        return CustomerAddress.builder()
                 .phone("11111111")
                 .city("city A")
                 .country("country A")
@@ -84,8 +84,8 @@ public class TestDataUtil {
                 .build();
     }
 
-    public static CustomerAddressEntity createCustomerAddressEntityB() {
-        return CustomerAddressEntity.builder()
+    public static CustomerAddress createCustomerAddressEntityB() {
+        return CustomerAddress.builder()
                 .phone("2222222")
                 .city("city B")
                 .country("country B")
@@ -96,8 +96,8 @@ public class TestDataUtil {
     }
 
     // CustomerPayment
-    public static CustomerPaymentEntity createCustomerPaymentEntityA() {
-        return CustomerPaymentEntity.builder()
+    public static CustomerPayment createCustomerPaymentEntityA() {
+        return CustomerPayment.builder()
                 .accountNo("663377889")
                 .expiry(LocalDate.of(2046, 9, 9))
                 .provider("HSBC")
@@ -105,8 +105,8 @@ public class TestDataUtil {
                 .build();
     }
 
-    public static CustomerPaymentEntity createCustomerPaymentEntityB() {
-        return CustomerPaymentEntity.builder()
+    public static CustomerPayment createCustomerPaymentEntityB() {
+        return CustomerPayment.builder()
                 .accountNo("663377777")
                 .expiry(LocalDate.of(2041, 8, 1))
                 .provider("Citi")
@@ -115,8 +115,8 @@ public class TestDataUtil {
     }
 
     // Product
-    public static ProductEntity createProductEntityA() {
-        return ProductEntity.builder()
+    public static Product createProductEntityA() {
+        return Product.builder()
                 .name("product A")
                 .description("product description A")
                 .price(BigDecimal.valueOf(100.1))
@@ -127,8 +127,8 @@ public class TestDataUtil {
                 .build();
     }
 
-    public static ProductEntity createProductEntityB() {
-        return ProductEntity.builder()
+    public static Product createProductEntityB() {
+        return Product.builder()
                 .name("product B")
                 .description("product description B")
                 .price(BigDecimal.valueOf(10.1))
@@ -140,8 +140,8 @@ public class TestDataUtil {
     }
 
     // Product Category
-    public static ProductCategoryEntity createProductCategoryEntityA() {
-        return ProductCategoryEntity.builder()
+    public static ProductCategory createProductCategoryEntityA() {
+        return ProductCategory.builder()
                 .name("category A")
                 .description("category description A")
                 .imageUrl("https://image/product/category/a")
@@ -149,8 +149,8 @@ public class TestDataUtil {
                 .build();
     }
 
-    public static ProductCategoryEntity createProductCategoryEntityB() {
-        return ProductCategoryEntity.builder()
+    public static ProductCategory createProductCategoryEntityB() {
+        return ProductCategory.builder()
                 .name("category B")
                 .description("category description B")
                 .imageUrl("https://image/product/category/b")
@@ -159,8 +159,8 @@ public class TestDataUtil {
     }
 
     // Product Discount
-    public static ProductDiscountEntity createProductDiscountEntityA() {
-        return ProductDiscountEntity.builder()
+    public static ProductDiscount createProductDiscountEntityA() {
+        return ProductDiscount.builder()
                 .name("discount A")
                 .description("discount description A")
                 .type("flat")
@@ -171,8 +171,8 @@ public class TestDataUtil {
                 .build();
     }
 
-    public static ProductDiscountEntity createProductDiscountEntityB() {
-        return ProductDiscountEntity.builder()
+    public static ProductDiscount createProductDiscountEntityB() {
+        return ProductDiscount.builder()
                 .name("discount B")
                 .description("discount description B")
                 .type("flat")
@@ -184,15 +184,15 @@ public class TestDataUtil {
     }
 
     // Product Inventory
-    public static ProductInventoryEntity createProductInventoryEntityA() {
-        return ProductInventoryEntity.builder()
+    public static ProductInventory createProductInventoryEntityA() {
+        return ProductInventory.builder()
                 .name("inventory A")
                 .quantity(100)
                 .build();
     }
 
-    public static ProductInventoryEntity createProductInventoryEntityB() {
-        return ProductInventoryEntity.builder()
+    public static ProductInventory createProductInventoryEntityB() {
+        return ProductInventory.builder()
                 .name("inventory B")
                 .quantity(100)
                 .build();
@@ -200,16 +200,16 @@ public class TestDataUtil {
 
 
     // Order
-    public static OrderEntity createOrderEntityA() {
-        return OrderEntity.builder()
+    public static Order createOrderEntityA() {
+        return Order.builder()
                 .status(OrderStatus.ORDERED)
                 .total(BigDecimal.valueOf(100.1))
                 .orderItemList(new ArrayList<>())
                 .build();
     }
 
-    public static OrderEntity createOrderEntityB() {
-        return OrderEntity.builder()
+    public static Order createOrderEntityB() {
+        return Order.builder()
                 .status(OrderStatus.DELIVERED)
                 .total(BigDecimal.valueOf(10.1))
                 .orderItemList(new ArrayList<>())
@@ -232,8 +232,8 @@ public class TestDataUtil {
                 .build();
     }
 
-    public static OrderTransactionEntity createOrderTransactionEntityA() {
-        return OrderTransactionEntity.builder()
+    public static OrderTransaction createOrderTransactionEntityA() {
+        return OrderTransaction.builder()
                 .status(OrderTransactionStatus.PENDING)
                 .amount(BigDecimal.valueOf(101.1))
                 .accountNo("2222")
@@ -241,8 +241,8 @@ public class TestDataUtil {
                 .build();
     }
 
-    public static OrderTransactionEntity createOrderTransactionEntityB() {
-        return OrderTransactionEntity.builder()
+    public static OrderTransaction createOrderTransactionEntityB() {
+        return OrderTransaction.builder()
                 .status(OrderTransactionStatus.PENDING)
                 .amount(BigDecimal.valueOf(100.1))
                 .accountNo("1111")
@@ -250,40 +250,40 @@ public class TestDataUtil {
                 .build();
     }
 
-    public static OrderItemEntity createOrderItemEntityA() {
-        return OrderItemEntity.builder()
+    public static OrderItem createOrderItemEntityA() {
+        return OrderItem.builder()
                 .quantity(10)
                 .build();
     }
 
-    public static OrderItemEntity createOrderItemEntityB() {
-        return OrderItemEntity.builder()
+    public static OrderItem createOrderItemEntityB() {
+        return OrderItem.builder()
                 .quantity(20)
                 .build();
     }
 
-    public static ShoppingCartEntity createShoppingCartEntityA() {
-        return ShoppingCartEntity.builder()
+    public static ShoppingCart createShoppingCartEntityA() {
+        return ShoppingCart.builder()
                 .total(BigDecimal.valueOf(1000))
                 .shoppingCartItemList(new ArrayList<>())
                 .build();
     }
 
-    public static ShoppingCartEntity createShoppingCartEntityB() {
-        return ShoppingCartEntity.builder()
+    public static ShoppingCart createShoppingCartEntityB() {
+        return ShoppingCart.builder()
                 .total(BigDecimal.valueOf(2000.1))
                 .shoppingCartItemList(new ArrayList<>())
                 .build();
     }
 
-    public static ShoppingCartItemEntity createShoppingCartItemEntityA() {
-        return ShoppingCartItemEntity.builder()
+    public static ShoppingCartItem createShoppingCartItemEntityA() {
+        return ShoppingCartItem.builder()
                 .quantity(10)
                 .build();
     }
 
-    public static ShoppingCartItemEntity createShoppingCartItemEntityB() {
-        return ShoppingCartItemEntity.builder()
+    public static ShoppingCartItem createShoppingCartItemEntityB() {
+        return ShoppingCartItem.builder()
                 .quantity(20)
                 .build();
     }

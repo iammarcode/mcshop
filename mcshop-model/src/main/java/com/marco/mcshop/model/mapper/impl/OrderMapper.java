@@ -1,13 +1,13 @@
 package com.marco.mcshop.model.mapper.impl;
 
-import com.marco.mcshop.model.dto.order.OrderDto;
-import com.marco.mcshop.model.entity.OrderEntity;
+import com.marco.mcshop.model.dto.OrderDto;
+import com.marco.mcshop.model.entity.Order;
 import com.marco.mcshop.model.mapper.Mapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 @Component
-public class OrderMapper implements Mapper<OrderEntity, OrderDto> {
+public class OrderMapper implements Mapper<Order, OrderDto> {
     private final ModelMapper modelMapper;
 
     public OrderMapper(ModelMapper modelMapper) {
@@ -15,13 +15,13 @@ public class OrderMapper implements Mapper<OrderEntity, OrderDto> {
     }
 
     @Override
-    public OrderDto toDto(OrderEntity order) {
+    public OrderDto toDto(Order order) {
         return modelMapper.map(order, OrderDto.class);
     }
 
     @Override
-    public OrderEntity toEntity(OrderDto orderDto) {
-        return modelMapper.map(orderDto, OrderEntity.class);
+    public Order toEntity(OrderDto orderDto) {
+        return modelMapper.map(orderDto, Order.class);
     }
 
 
