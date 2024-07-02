@@ -1,6 +1,5 @@
 package com.marco.mcshop.model.dto;
 
-import com.marco.mcshop.model.dto.OrderDto;
 import com.marco.mcshop.model.entity.Product;
 import lombok.*;
 

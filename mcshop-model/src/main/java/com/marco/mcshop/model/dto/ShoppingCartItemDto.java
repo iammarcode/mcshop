@@ -1,7 +1,6 @@
 package com.marco.mcshop.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.marco.mcshop.model.dto.ProductDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

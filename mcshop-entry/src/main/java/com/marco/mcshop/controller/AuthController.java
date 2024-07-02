@@ -1,10 +1,10 @@
 package com.marco.mcshop.controller;
 
-import com.marco.mcshop.payload.response.TokenResponse;
 import com.marco.mcshop.model.dto.CustomerDto;
 import com.marco.mcshop.payload.request.LoginRequest;
-import com.marco.mcshop.payload.request.RegisterRequest;
 import com.marco.mcshop.payload.request.OtpRequest;
+import com.marco.mcshop.payload.request.RegisterRequest;
+import com.marco.mcshop.payload.response.TokenResponse;
 import com.marco.mcshop.service.AuthenticationService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
